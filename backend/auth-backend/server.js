@@ -12,10 +12,12 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
 app.use(express.json());
 
+// 1. Enable CORS for all origins (for development)
+app.use(cors({
+    origin: 'http://localhost:4200' // Change this to your Angular dev server port
+}));
 
 // Routes /api/auth/signUp
 app.use("/api/auth", userRoutes);

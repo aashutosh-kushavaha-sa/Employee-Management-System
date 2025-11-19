@@ -17,17 +17,29 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a password"],
     minlength: 6, // basic validation
-    select: false, // password will not show by default in query
+    select: false, 
   },
+  passwordConfirm: {
+    type: String,
+    select: false,
+  },
+  
 });
 
-// Encrypt password before saving user document
+//  Password Confirmation Check and Hashing Logic 
 userSchema.pre("save", async function (next) {
   // Only run if password is modified or new
   if (!this.isModified("password")) return next();
 
-  // Hash password with cost of 12
+  if (this.passwordConfirm && this.password !== this.passwordConfirm) {
+    const error = new Error('Passwords are not the same!');
+    return next(error); 
+  }
+
+  //  Hash password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
+
+  this.passwordConfirm = undefined;
 
   next();
 });

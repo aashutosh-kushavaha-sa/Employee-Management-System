@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 mb-10">
+        <span class="text-3xl font-bold text-blue-400">EMS</span>
+      </div>
+
+      <!-- Menu Items -->
+      <nav class="flex flex-col gap-2">
+        <!-- Home -->
+        <a
+          routerLink="/dashboard"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
+        >
+          <fa-icon [icon]="faHouse" class="w-5 h-5"></fa-icon>
+          <span>Home</span>
+        </a>
+
+        <!-- Employees Dropdown (Accordion-style) -->
+        <div class="flex flex-col gap-1">
+          <button
+            (click)="toggleEmployees()"
+            class="flex w-full gap-3 p-3 rounded-lg hover:bg-gray-700 transition flex-nowrap"
+          >
+            <fa-icon [icon]="faManageEmp" class="w-5 h-5"></fa-icon>
+            <span>Manage Employees</span>
+          </button>
+
+          <!-- Dropdown Items -->
+          <div *ngIf="employeesOpen" class="flex flex-col pl-8 gap-1">
+            <a
+              routerLink="/employees/all"
+              class="flex gap-3 p-2 rounded-lg hover:bg-gray-700 transition text-gray-200"
+            >
+              <fa-icon [icon]="faList" class="w-4 h-4"></fa-icon>
+              All Employees
+            </a>
+            <a
+              routerLink="/employees/add"
+              class="flex gap-3 p-2 rounded-lg hover:bg-gray-700 transition text-gray-200"
+            >
+              <fa-icon [icon]="faAddEmp" class="w-4 h-4"></fa-icon>
+              Add Employee
+            </a>
+            
+          </div>
+        </div>
+
+        <!-- Admin Profile -->
+        <a
+          routerLink="/signup"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
+        >
+          <fa-icon [icon]="userTie" class="w-5 h-5"></fa-icon>
+          <span>Create Admin</span>
+        </a>
+
+        <!-- Settings -->
+        <a
+          routerLink="/settings"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
+        >
+          <fa-icon [icon]="faGear" class="w-5 h-5"></fa-icon>
+          <span>Settings</span>
+        </a>
+
+        <!-- Logout -->
+        <a
+          routerLink="/login"
+          class="flex items-center gap-3 mt-auto p-3 rounded-lg bg-red-600 hover:bg-red-700 transition"
+        >
+          <fa-icon [icon]="faLogout" class="w-5 h-5"></fa-icon>
+          <span>Logout</span>
+        </a>
+      </nav>
+    </div>
+  </body>
+</html>
