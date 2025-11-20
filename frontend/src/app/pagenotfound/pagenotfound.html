@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for aesthetics */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Ensures the background covers the full viewport height */
+        .min-h-screen {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <!-- Main Container: Centered, Full Height Layout -->
+    <div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+        <!-- Content Card -->
+        <div class="max-w-xl w-full bg-white shadow-2xl rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 transform hover:scale-[1.01] border border-gray-100">
+
+            <!-- 404 Header and Illustration -->
+            <div class="mb-8">
+                <h1 class="text-8xl sm:text-9xl font-extrabold text-red-500 mb-6 tracking-tight">
+                    404
+                </h1>
+
+                <!-- Placeholder Image (Lost Rocket Theme) -->
+                <img
+                    src="https://placehold.co/600x350/F87171/ffffff?text=Lost+In+Space"
+                    alt="Page Not Found Illustration - Object Lost in Space"
+                    class="w-full h-auto rounded-xl shadow-lg mx-auto transition duration-300 ease-in-out hover:shadow-xl"
+                    onerror="this.onerror=null; this.src='https://placehold.co/600x350/ef4444/ffffff?text=Error+Image+Unavailable';"
+                />
+            </div>
+
+            <!-- Message Content -->
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
+                Oops! Looks like you're lost.
+            </h2>
+
+            <p class="text-gray-500 mb-8 text-base sm:text-lg">
+                The page you're looking for doesn't exist or has been moved. Don't worry, even astronauts get lost sometimes.
+            </p>
+
+            <!-- Action Button -->
+            <a
+                routerLink="/login"
+                class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-lg font-semibold rounded-xl
+                       text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+                <!-- Home Icon (Lucide Icon, represented by inline SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Take Me Home
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
