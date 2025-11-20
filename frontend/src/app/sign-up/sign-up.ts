@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'; // Import HttpClient
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,7 +13,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'; // Import 
   imports: [FormsModule, CommonModule, RouterLink]
 })
 export class SignUpComponent {
-  // Model to hold form data using [(ngModel)]
   userData = {
     name: '',
     email: '',
@@ -21,7 +21,7 @@ export class SignUpComponent {
     terms: false
   };
 
-  // URL points to the Node.js server and the signUp endpoint
+  // API URL
   private apiUrl = 'http://localhost:3003/api/auth/signUp';
 
   // --- STATE FOR UI AND ERROR HANDLING ---
@@ -29,7 +29,7 @@ export class SignUpComponent {
   loading: boolean = false; // Added: State for showing a loading spinner
   errorMessage: string | null = null; // Added: Variable to display backend errors
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient , private router : Router) { }
 
   /**
    * Checks if the password and confirm password fields match.
@@ -75,6 +75,9 @@ export class SignUpComponent {
         // NOTE: Use a custom modal instead of alert() in production Angular apps
         alert(`Registration successful! Welcome, ${response.user?.name || 'User'}! You are now logged in.`);
         // TODO: Implement Router navigation here: this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']);
+
+
       },
       error: (err: HttpErrorResponse) => {
         // ❌ ERROR: Handle backend failure messages

@@ -16,6 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,8 +39,18 @@ export class SidebarComponent {
   faUpdate = faUserPen;
   faManageEmp = faUsersGear;
 
+  constructor(private router: Router) {}
+  
   // Accordion state
   employeesOpen = false;
+
+  logout() {
+    // optional: clear local storage or auth token
+    localStorage.removeItem('token');
+
+    // navigate to login page
+    this.router.navigate(['/login']);
+  }
 
   toggleEmployees() {
     this.employeesOpen = !this.employeesOpen;

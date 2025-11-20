@@ -8,7 +8,7 @@
   <body>
     <div class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl">
       <!-- Logo -->
-      <div class="flex items-center gap-3 mb-10">
+      <div class="flex items-center justify-center gap-3 mb-10">
         <span class="text-3xl font-bold text-blue-400">EMS</span>
       </div>
 
@@ -17,6 +17,7 @@
         <!-- Home -->
         <a
           routerLink="/dashboard"
+          routerLinkActive="active-link"
           class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
         >
           <fa-icon [icon]="faHouse" class="w-5 h-5"></fa-icon>
@@ -49,7 +50,6 @@
               <fa-icon [icon]="faAddEmp" class="w-4 h-4"></fa-icon>
               Add Employee
             </a>
-            
           </div>
         </div>
 
@@ -72,14 +72,15 @@
         </a>
 
         <!-- Logout -->
-        <a
-          routerLink="/login"
-          class="flex items-center gap-3 mt-auto p-3 rounded-lg bg-red-600 hover:bg-red-700 transition"
+
+      </nav>
+      <button
+          class="gap-3 mt-auto  rounded-lg btn btn-dash btn-error hover:bg-red-500"
+          (click)="logout()"
         >
           <fa-icon [icon]="faLogout" class="w-5 h-5"></fa-icon>
           <span>Logout</span>
-        </a>
-      </nav>
+        </button>
     </div>
   </body>
 </html>
