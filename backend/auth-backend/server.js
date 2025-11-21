@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -20,7 +20,7 @@ app.use(cors({
 }));
 
 // Routes /api/auth/signUp
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", adminRoutes);
 
 const PORT = process.env.PORT || 5000;
 

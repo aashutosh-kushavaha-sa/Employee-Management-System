@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 // Define User Schema
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
 });
 
 //  Password Confirmation Check and Hashing Logic 
-userSchema.pre("save", async function (next) {
+adminSchema.pre("save", async function (next) {
   // Only run if password is modified or new
   if (!this.isModified("password")) return next();
 
@@ -45,10 +45,10 @@ userSchema.pre("save", async function (next) {
 });
 
 // Compare entered password with stored (hashed) password
-userSchema.methods.correctPassword = async function (enteredPassword, storedPassword) {
+adminSchema.methods.correctPassword = async function (enteredPassword, storedPassword) {
   return await bcrypt.compare(enteredPassword, storedPassword);
 };
 
 // Create and export model
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+const Admin = mongoose.model("Admin", adminSchema);
+module.exports = Admin;
