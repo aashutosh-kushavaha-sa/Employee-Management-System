@@ -6,7 +6,7 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl">
+    <div class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl fixed top-0 left-0 overflow-y-auto">
       <!-- Logo -->
       <div class="flex items-center justify-center gap-3 mb-10">
         <span class="text-3xl font-bold text-blue-400">EMS</span>
@@ -62,17 +62,7 @@
           <span>Create Admin</span>
         </a>
 
-        <!-- Settings -->
-        <a
-          routerLink="/settings"
-          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
-        >
-          <fa-icon [icon]="faGear" class="w-5 h-5"></fa-icon>
-          <span>Settings</span>
-        </a>
-
         <!-- Logout -->
-
       </nav>
       <button
           class="gap-3 mt-auto  rounded-lg btn btn-dash btn-error hover:bg-red-500"

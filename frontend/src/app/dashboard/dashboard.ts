@@ -11,14 +11,29 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
-  activeEmployees = 38;
 
   http = inject(HttpClient);
+
+  // -------------------------
+  // Existing
+  // -------------------------
   employeeList: any[] = [];
   totalEmployees = 0;
-  allDepartments : any[] = [];
-  uniqueDepartments : any[] = [];
+  allDepartments: any[] = [];
+  uniqueDepartments: any[] = [];
   departments = 0;
+
+  // -------------------------
+  // New Dashboard Variables
+  // -------------------------
+  recentEmployees: any[] = [];
+  genderCount = { male: 0, female: 0, other: 0 };
+
+  avgSalary = 0;
+  highestSalary = 0;
+  lowestSalary = 0;
+
+  deptWiseCount: any[] = [];
 
   ngOnInit(): void {
     this.getEmployee();
@@ -34,16 +49,50 @@ export class DashboardComponent implements OnInit {
     this.http
       .get('http://localhost:3000/api/employee/getall', { headers })
       .subscribe((res: any) => {
+
+        // Save full list
         this.employeeList = res;
-        this.totalEmployees = this.employeeList.length;
-        console.log('Employee List:', this.totalEmployees);
+        this.totalEmployees = res.length;
 
-        // fetch Department from employeeList
-        this.allDepartments = this.employeeList.map((emp) => emp.department);
-        // Get Unique Departmnet
+        // -------------------------
+        // Unique Department Count
+        // -------------------------
+        this.allDepartments = res.map((emp: any) => emp.department);
         this.uniqueDepartments = [...new Set(this.allDepartments)];
-
         this.departments = this.uniqueDepartments.length;
+
+        // -------------------------
+        // Recent Employees (Last 5)
+        // -------------------------
+        this.recentEmployees = [...res].slice(-5).reverse();
+
+        // -------------------------
+        // Gender Count
+        // -------------------------
+        this.genderCount = { male: 0, female: 0, other: 0 };
+        res.forEach((emp: any) => {
+          if (emp.gender.toLowerCase() === 'male') this.genderCount.male++;
+          else if (emp.gender.toLowerCase() === 'female') this.genderCount.female++;
+          else this.genderCount.other++;
+        });
+
+        // -------------------------
+        // Salary Analytics
+        // -------------------------
+        const salaries = res.map((e: any) => e.salary);
+
+        this.avgSalary = Math.round(salaries.reduce((a: any, b: any) => a + b, 0) / salaries.length);
+        this.highestSalary = Math.max(...salaries);
+        this.lowestSalary = Math.min(...salaries);
+
+        // -------------------------
+        // Department-wise Employee Count
+        // -------------------------
+        this.deptWiseCount = [];
+        this.uniqueDepartments.forEach((dept) => {
+          const count = res.filter((e: any) => e.department === dept).length;
+          this.deptWiseCount.push({ department: dept, count });
+        });
       });
   }
 }

@@ -6,121 +6,129 @@
     <title>Sign Up</title>
   </head>
   <body>
-    <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div class="sm:mx-auto sm:w-full sm:max-w-lg">
-        <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900">
-          <span class="text-blue-700">EMS</span> Registration
-        </h2>
-        <p class="mt-2 text-center text-base text-gray-600">
-          Register another admin to collaborate in managing employees.
-        </p>
-      </div>
+    <div class="flex">
+      <app-sidebar />
 
-      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
-        <div
-          class="bg-white py-10 px-6 shadow-2xl sm:rounded-lg sm:px-12 border-t-8 border-blue-700"
-        >
-          <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="space-y-6">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-              <div class="mt-1">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  [(ngModel)]="userData.name"
-                  #name="ngModel"
-                  placeholder="e.g., Jane Doe"
-                  class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  [ngClass]="{ 'border-red-500': submitted && name.invalid }"
-                />
-              </div>
-              <div *ngIf="submitted && name.invalid" class="text-sm text-red-500 mt-1">
-                Full Name is required.
-              </div>
-            </div>
+      <div class="flex-1 ml-64">
+        <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+          <div class="sm:mx-auto sm:w-full sm:max-w-lg">
+            <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900">
+              <span class="text-blue-700">EMS</span> Registration
+            </h2>
+            <p class="mt-2 text-center text-base text-gray-600">
+              Register another admin to collaborate in managing employees.
+            </p>
+          </div>
 
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700"
-                >Email Address</label
-              >
-              <div class="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  email
-                  [(ngModel)]="userData.email"
-                  #email="ngModel"
-                  placeholder="e.g., jane.doe@company.com"
-                  class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  [ngClass]="{ 'border-red-500': submitted && email.invalid }"
-                />
-              </div>
-              <div *ngIf="submitted && email.errors" class="text-sm text-red-500 mt-1">
-                <div *ngIf="email.errors['required']">Email is required.</div>
-                <div *ngIf="email.errors['email']">Email must be a valid email address.</div>
-              </div>
-            </div>
-
-            <div>
-              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-              <div class="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  minlength="8"
-                  [(ngModel)]="userData.password"
-                  #password="ngModel"
-                  placeholder="•••••••• (Min 8 characters)"
-                  class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  [ngClass]="{
-                    'border-red-500': submitted && (password.invalid || !passwordsMatch())
-                  }"
-                />
-              </div>
-              <div *ngIf="submitted && password.errors" class="text-sm text-red-500 mt-1">
-                <div *ngIf="password.errors['required']">Password is required.</div>
-                <div *ngIf="password.errors['minlength']">
-                  Password must be at least 8 characters.
+          <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
+            <div
+              class="bg-white py-10 px-6 shadow-2xl sm:rounded-lg sm:px-12 border-t-8 border-blue-700"
+            >
+              <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="space-y-6">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-gray-700"
+                    >Full Name</label
+                  >
+                  <div class="mt-1">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      [(ngModel)]="userData.name"
+                      #name="ngModel"
+                      placeholder="e.g., Jane Doe"
+                      class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                      [ngClass]="{ 'border-red-500': submitted && name.invalid }"
+                    />
+                  </div>
+                  <div *ngIf="submitted && name.invalid" class="text-sm text-red-500 mt-1">
+                    Full Name is required.
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div>
-              <label for="confirm-password" class="block text-sm font-medium text-gray-700"
-                >Confirm Password</label
-              >
-              <div class="mt-1">
-                <input
-                  id="confirm-password"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  [(ngModel)]="userData.confirmPassword"
-                  #cpass="ngModel"
-                  placeholder="Re-enter password"
-                  class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                  [ngClass]="{
-                    'border-red-500': submitted && (cpass.invalid || !passwordsMatch())
-                  }"
-                />
-              </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700"
+                    >Email Address</label
+                  >
+                  <div class="mt-1">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      email
+                      [(ngModel)]="userData.email"
+                      #email="ngModel"
+                      placeholder="e.g., jane.doe@company.com"
+                      class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                      [ngClass]="{ 'border-red-500': submitted && email.invalid }"
+                    />
+                  </div>
+                  <div *ngIf="submitted && email.errors" class="text-sm text-red-500 mt-1">
+                    <div *ngIf="email.errors['required']">Email is required.</div>
+                    <div *ngIf="email.errors['email']">Email must be a valid email address.</div>
+                  </div>
+                </div>
 
-              <div
-                *ngIf="submitted && !passwordsMatch()"
-                class="text-sm text-red-600 mt-2 p-2 bg-red-50 rounded-md border border-red-200"
-              >
-                <p class="font-medium">Password Error:</p>
-                <p>Password and Confirm Password must match.</p>
-              </div>
-            </div>
+                <div>
+                  <label for="password" class="block text-sm font-medium text-gray-700"
+                    >Password</label
+                  >
+                  <div class="mt-1">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      required
+                      minlength="8"
+                      [(ngModel)]="userData.password"
+                      #password="ngModel"
+                      placeholder="•••••••• (Min 8 characters)"
+                      class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                      [ngClass]="{
+                        'border-red-500': submitted && (password.invalid || !passwordsMatch())
+                      }"
+                    />
+                  </div>
+                  <div *ngIf="submitted && password.errors" class="text-sm text-red-500 mt-1">
+                    <div *ngIf="password.errors['required']">Password is required.</div>
+                    <div *ngIf="password.errors['minlength']">
+                      Password must be at least 8 characters.
+                    </div>
+                  </div>
+                </div>
 
-            <!-- <div class="flex items-start">
+                <div>
+                  <label for="confirm-password" class="block text-sm font-medium text-gray-700"
+                    >Confirm Password</label
+                  >
+                  <div class="mt-1">
+                    <input
+                      id="confirm-password"
+                      name="confirmPassword"
+                      type="password"
+                      required
+                      [(ngModel)]="userData.confirmPassword"
+                      #cpass="ngModel"
+                      placeholder="Re-enter password"
+                      class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                      [ngClass]="{
+                        'border-red-500': submitted && (cpass.invalid || !passwordsMatch())
+                      }"
+                    />
+                  </div>
+
+                  <div
+                    *ngIf="submitted && !passwordsMatch()"
+                    class="text-sm text-red-600 mt-2 p-2 bg-red-50 rounded-md border border-red-200"
+                  >
+                    <p class="font-medium">Password Error:</p>
+                    <p>Password and Confirm Password must match.</p>
+                  </div>
+                </div>
+
+                <!-- <div class="flex items-start">
               <div class="flex items-center h-5">
                 <input
                   id="terms"
@@ -144,23 +152,25 @@
               </div>
             </div> -->
 
-            <div>
-              <button
-                type="submit"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-[1.01]"
-              >
-                Create Account
-              </button>
-            </div>
-          </form>
+                <div>
+                  <button
+                    type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-[1.01]"
+                  >
+                    Create Account
+                  </button>
+                </div>
+              </form>
 
-          <div class="mt-6">
-            <p class="text-center text-sm text-gray-500">
-              Already have an account?
-              <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-800">
-                Sign in here
-              </a>
-            </p>
+              <div class="mt-6">
+                <p class="text-center text-sm text-gray-500">
+                  Already have an account?
+                  <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-800">
+                    Sign in here
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
