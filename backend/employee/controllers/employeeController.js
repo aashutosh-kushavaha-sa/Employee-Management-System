@@ -3,7 +3,7 @@ const Employee = require("../models/employeeModel");
 // Add New Employee
 exports.addEmployee = async (req, res) => {
   try {
-    const { name, email, position, department, salary } = req.body;
+    const { name,age , gender , email, position, department, salary } = req.body;
 
     // Check if employee already exists
     const existing = await Employee.findOne({ email });
@@ -13,6 +13,8 @@ exports.addEmployee = async (req, res) => {
 
     const employee = await Employee.create({
       name,
+      age,
+      gender,
       email,
       position,
       department,
@@ -83,16 +85,6 @@ exports.deleteEmployee = async (req, res) => {
     }
 
     res.status(200).json({ message: "Employee deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// 6️ Dashboard – Total Employees
-exports.dashboard = async (req, res) => {
-  try {
-    const totalEmployees = await Employee.countDocuments();
-    res.status(200).json({ totalEmployees });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

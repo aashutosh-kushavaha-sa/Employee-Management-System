@@ -10,7 +10,6 @@ const {
   getEmployeeById,
   updateEmployee,
   deleteEmployee,
-  dashboard
 } = require("../controllers/employeeController");
 
 // Proper REST API routes
@@ -19,6 +18,5 @@ routes.get("/getall", authMiddleware , getAllEmployees);               // READ (
 routes.get("/getone/:id", authMiddleware , getEmployeeById);           // READ (one)
 routes.put("/update/:id", authMiddleware , updateEmployee);            // UPDATE
 routes.delete("/delete/:id", authMiddleware , deleteEmployee);         // DELETE
-routes.get("/dashboard", authMiddleware , dashboard);                  // STATISTICS
 
 module.exports = routes;

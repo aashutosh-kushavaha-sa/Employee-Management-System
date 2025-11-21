@@ -4,6 +4,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { SidebarComponent } from '../../sidebar/sidebar';
 import { Router } from '@angular/router';
+import { ModalService } from '../../modal/alertModel/modal.service';
 
 @Component({
   selector: 'app-employee-add',
@@ -41,7 +42,12 @@ export class Add implements OnInit {
     'Data Analyst',
   ];
 
-  constructor(private fb: FormBuilder, private http: HttpClient,private router:Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private modal: ModalService
+  ) {}
 
   ngOnInit(): void {
     this.empForm = this.fb.group({
@@ -71,13 +77,15 @@ export class Add implements OnInit {
     this.http.post('http://localhost:3000/api/employee/add', empData, { headers }).subscribe({
       next: (res) => {
         console.log('Employee added:', res);
-        alert('Employee added successfully!');
-
-        this.router.navigate(["/employees/all"])
+        this.modal.show('Employee added successfully!', 'success', () => {
+          this.router.navigate(['/employees/all']);
+        });
       },
       error: (err) => {
         console.error('Error:', err);
-        alert('Failed to add employee');
+        // this.modal.show('Failed to add employee!');
+        this.modal.show('Failed to add employee!', 'error'
+        );
       },
     });
   }
