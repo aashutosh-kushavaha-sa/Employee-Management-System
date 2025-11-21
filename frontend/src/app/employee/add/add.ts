@@ -1,27 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
-import { SidebarComponent } from "../../sidebar/sidebar";
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { SidebarComponent } from '../../sidebar/sidebar';
 
 @Component({
   selector: 'app-employee-add',
   standalone: true,
   imports: [
-    ReactiveFormsModule, // 👈 required for Reactive Forms
-    NgClass, // 👈 required for [ngClass]
-    NgIf // 👈 required for *ngIf
-    ,
-    SidebarComponent
-],
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    SidebarComponent,
+    HttpClientModule, // ⭐ Important for API call
+  ],
   templateUrl: './add.html',
   styleUrls: ['./add.css'],
 })
 export class Add implements OnInit {
-
   empForm!: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder) {}
+  department = [
+    'Engineering',
+    'QA',
+    'IT Support',
+    'HR',
+    'Finance',
+    'Sales',
+    'Marketing',
+    'Data Science',
+  ];
+  position = [
+    'Software Engineer',
+    'Java Developer',
+    'QA Engineer',
+    'Network Engineer',
+    'HR Executive',
+    'Data Analyst',
+  ];
+
+  constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.empForm = this.fb.group({
@@ -40,9 +59,23 @@ export class Add implements OnInit {
 
     if (this.empForm.invalid) return;
 
-    console.log("Employee form submitted:", this.empForm.value);
-  }
+    const empData = this.empForm.value;
 
-  department = ["Engineering","QA","IT Support","HR","Finance","Sales","Marketing","Data Science"];
-  position = ["Software Engineer","Java Developer","QA Engineer","Network Engineer","HR Executive","Data Analyst"];
+    const token = localStorage.getItem('token'); // get token
+
+    const headers = new HttpHeaders({
+      Authorization: token ?? '',
+    });
+
+    this.http.post('http://localhost:3000/api/employee/add', empData, { headers }).subscribe({
+      next: (res) => {
+        console.log('Employee added:', res);
+        alert('Employee added successfully!');
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        alert('Failed to add employee');
+      },
+    });
+  }
 }
