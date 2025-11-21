@@ -40,4 +40,30 @@ export class All implements OnInit {
       console.log(this.allData);
     })
   }
+
+  // delete employee on buton click
+  deleteEmployee(id: string) {
+  if (!confirm("Are you sure want to delete this employee?")) return;
+
+  const token = localStorage.getItem("token");
+
+  const headers = new HttpHeaders({
+    Authorization: token ?? ''
+  });
+
+  this.http.delete(`http://localhost:3000/api/employee/delete/${id}`, { headers })
+    .subscribe({
+      next: (res) => {
+        alert("Employee deleted successfully!");
+
+        // Remove row from UI without reloading page
+        this.allData = this.allData.filter(emp => emp._id !== id);
+      },
+      error: (err) => {
+        console.error("Delete error:", err);
+        alert("Failed to delete employee");
+      }
+    });
+}
+
 }

@@ -60,10 +60,10 @@
                   {{ emp.salary }}
                 </td>
                 <th>
-                  <button class="btn btn-ghost hover:bg-blue-700 btn-xs">Update</button>
+                  <button class="btn btn-ghost hover:bg-green-700 btn-xs" >Update</button>
                 </th>
                 <th>
-                  <button class="btn btn-ghost  hover:bg-blue-700 btn-xs">Delete</button>
+                  <button class="btn btn-ghost  hover:bg-red-700 btn-xs" (click)="deleteEmployee(emp._id)">Delete</button>
                 </th>
               </tr>
               }
