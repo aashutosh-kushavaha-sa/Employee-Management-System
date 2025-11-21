@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { NgClass, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { SidebarComponent } from '../../sidebar/sidebar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-add',
@@ -40,7 +41,7 @@ export class Add implements OnInit {
     'Data Analyst',
   ];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient,private router:Router) {}
 
   ngOnInit(): void {
     this.empForm = this.fb.group({
@@ -71,6 +72,8 @@ export class Add implements OnInit {
       next: (res) => {
         console.log('Employee added:', res);
         alert('Employee added successfully!');
+
+        this.router.navigate(["/employees/all"])
       },
       error: (err) => {
         console.error('Error:', err);
