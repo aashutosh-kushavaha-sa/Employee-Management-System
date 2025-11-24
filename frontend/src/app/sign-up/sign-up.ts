@@ -56,9 +56,6 @@ export class SignUpComponent {
         this.loading = false;
         console.log('Registration successful!', response);
 
-        // ❌ REMOVE THIS (important fix)
-        // localStorage.setItem('token', response.token);
-
         // ✔️ Show modal, navigate when OK clicked
         this.modal.show(
           `Admin Created Successfully!`,

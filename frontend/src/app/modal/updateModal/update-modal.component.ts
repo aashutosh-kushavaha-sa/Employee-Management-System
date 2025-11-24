@@ -17,7 +17,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   visible = false;
   employee: any = null;
 
-  // form model (copy of employee fields so editing won't mutate original until success)
+  // form model 
   formModel: any = {
     name: '',
     age: null,
@@ -31,7 +31,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   loading = false;
   private sub!: Subscription;
 
-  // API base (adjust if different)
+  // API base 
   private baseUrl = 'http://localhost:3000/api/employee';
 
   constructor(
@@ -102,10 +102,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     this.http.put(`${this.baseUrl}/update/${this.employee._id}`, updatePayload, { headers }).subscribe({
       next: (res: any) => {
         this.loading = false;
-        // Assume backend returns updated employee object; if not, we will merge manually.
         const updatedEmployee = res && res._id ? res : { ...this.employee, ...updatePayload };
-
-        // resolve promise so caller (All component) can update UI
         this.updateModalService.confirm(updatedEmployee);
 
         // success message

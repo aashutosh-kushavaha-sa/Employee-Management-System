@@ -9,9 +9,7 @@
     <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-2">
       <span class="text-blue-700">EMS</span> Update Employee
     </h2>
-    <p class="text-center text-base text-gray-600 mb-6">
-      Update employee details
-    </p>
+    <p class="text-center text-base text-gray-600 mb-6">Update employee details</p>
 
     <!-- CLOSE BUTTON (TOP RIGHT) -->
     <button
@@ -58,8 +56,10 @@
           <select
             name="gender"
             [(ngModel)]="formModel.gender"
-            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
+            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-100 text-gray-500   focus:border-blue-500 cursor-not-allowed"
             required
+            disabled
+            readonly
           >
             <option value="">Select gender</option>
             <option value="Male">Male</option>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <!-- EMAIL -->
+      <!-- EMAIL (READ ONLY) -->
       <div>
         <label class="block text-sm font-medium text-gray-700">Email</label>
         <input
@@ -77,8 +77,9 @@
           name="email"
           [(ngModel)]="formModel.email"
           placeholder="e.g., employee@company.com"
-          class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-          required
+          class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+          disabled
+          readonly
         />
       </div>
 
