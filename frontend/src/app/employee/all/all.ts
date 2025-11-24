@@ -2,14 +2,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SidebarComponent } from "../../sidebar/sidebar";
 import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.service';
+import { UpdateModalService } from '../../modal/updateModal/update-modal.service';
+import { UpdateModalComponent } from '../../modal/updateModal/update-modal.component';
+import { CommonModule } from '@angular/common';
+import { UpdateModalComponent as UMC } from '../../modal/updateModal/update-modal.component';
 
 @Component({
   selector: 'app-all',
-  imports: [SidebarComponent],
+  imports: [SidebarComponent, UpdateModalComponent],
   templateUrl: './all.html',
   styleUrl: './all.css',
 })
-
 export class All implements OnInit {
 
   id = '';
@@ -25,7 +28,7 @@ export class All implements OnInit {
 
   http = inject(HttpClient);
 
-  constructor(private confirmModal: ConfirmModalService) {}
+  constructor(private confirmModal: ConfirmModalService, private updateModalService: UpdateModalService) {}
 
   ngOnInit(): void {
     this.getEmployee();
@@ -76,5 +79,31 @@ export class All implements OnInit {
           console.error("Delete failed:", err);
         }
       });
+  }
+
+  // ----------------------------------------------------
+  // OPEN UPDATE MODAL → user clicked the Edit button
+  // ----------------------------------------------------
+  openUpdate(emp: any) {
+    // Show update modal and wait for result (promise)
+    this.updateModalService.show(emp).then((updatedEmployee) => {
+      if (!updatedEmployee) {
+        // user cancelled
+        return;
+      }
+
+      // updatedEmployee should be the updated object returned by backend (or merged object)
+      // Replace old item in allData with updated one
+      const idx = this.allData.findIndex(e => e._id === updatedEmployee._id);
+      if (idx !== -1) {
+        this.allData[idx] = { ...this.allData[idx], ...updatedEmployee };
+      } else {
+        // fallback: find by id if field named differently
+        const idx2 = this.allData.findIndex(e => e._id === emp._id);
+        if (idx2 !== -1) {
+          this.allData[idx2] = { ...this.allData[idx2], ...updatedEmployee };
+        }
+      }
+    });
   }
 }

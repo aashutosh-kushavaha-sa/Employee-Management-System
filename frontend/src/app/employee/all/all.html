@@ -10,6 +10,7 @@
       <app-sidebar />
 
       <div class="flex-1 ml-64">
+        <app-update-modal></app-update-modal>
         <div class="overflow-auto p-5 h-full max-h-230">
           <table class="table">
             <!-- head -->
@@ -60,7 +61,7 @@
                   {{ emp.salary }}
                 </td>
                 <th>
-                  <button class="btn btn-ghost hover:bg-green-700 btn-xs" >Update</button>
+                  <button class="btn btn-ghost hover:bg-green-700 btn-xs" (click)="openUpdate(emp)">Update</button>
                 </th>
                 <th>
                   <button class="btn btn-ghost  hover:bg-red-700 btn-xs" (click)="deleteEmployee(emp._id)">Delete</button>
