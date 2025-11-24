@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard';
 import { Pagenotfound } from './pagenotfound/pagenotfound';
 import { All } from './employee/all/all';
 import { Add } from './employee/add/add';
+import { AuthGuard } from './guard/auth-guard';
 
 export const routes: Routes = [
   {
@@ -18,19 +19,23 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    component: SignUpComponent
+    component: SignUpComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'employees/all',
-    component : All
+    component : All,
+    canActivate: [AuthGuard]
   },
   {
     path:'employees/add',
-    component : Add
+    component : Add,
+    canActivate: [AuthGuard]
   },
   {
     path: '**',

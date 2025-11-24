@@ -14,25 +14,16 @@ export class DashboardComponent implements OnInit {
 
   http = inject(HttpClient);
 
-  // -------------------------
-  // Existing
-  // -------------------------
   employeeList: any[] = [];
   totalEmployees = 0;
   allDepartments: any[] = [];
   uniqueDepartments: any[] = [];
   departments = 0;
-
-  // -------------------------
-  // New Dashboard Variables
-  // -------------------------
   recentEmployees: any[] = [];
   genderCount = { male: 0, female: 0, other: 0 };
-
   avgSalary = 0;
   highestSalary = 0;
   lowestSalary = 0;
-
   deptWiseCount: any[] = [];
 
   ngOnInit(): void {
@@ -54,21 +45,15 @@ export class DashboardComponent implements OnInit {
         this.employeeList = res;
         this.totalEmployees = res.length;
 
-        // -------------------------
         // Unique Department Count
-        // -------------------------
         this.allDepartments = res.map((emp: any) => emp.department);
         this.uniqueDepartments = [...new Set(this.allDepartments)];
         this.departments = this.uniqueDepartments.length;
 
-        // -------------------------
         // Recent Employees (Last 5)
-        // -------------------------
         this.recentEmployees = [...res].slice(-5).reverse();
 
-        // -------------------------
         // Gender Count
-        // -------------------------
         this.genderCount = { male: 0, female: 0, other: 0 };
         res.forEach((emp: any) => {
           if (emp.gender.toLowerCase() === 'male') this.genderCount.male++;
@@ -76,18 +61,14 @@ export class DashboardComponent implements OnInit {
           else this.genderCount.other++;
         });
 
-        // -------------------------
         // Salary Analytics
-        // -------------------------
         const salaries = res.map((e: any) => e.salary);
 
         this.avgSalary = Math.round(salaries.reduce((a: any, b: any) => a + b, 0) / salaries.length);
         this.highestSalary = Math.max(...salaries);
         this.lowestSalary = Math.min(...salaries);
 
-        // -------------------------
         // Department-wise Employee Count
-        // -------------------------
         this.deptWiseCount = [];
         this.uniqueDepartments.forEach((dept) => {
           const count = res.filter((e: any) => e.department === dept).length;
