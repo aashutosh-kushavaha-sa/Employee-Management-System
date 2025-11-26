@@ -1,0 +1,80 @@
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Input + dropdown shared style */
+.input {
+  width: 100%;
+  padding: 10px 12px; /* FIXED */
+  height: 48px;       /* IMPORTANT */
+  color: #fff;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  outline: none;
+  transition: all 0.25s ease;
+  appearance: none;
+}
+
+/* FIX FOR DROPDOWN TEXT CUTTING */
+.input-select {
+  padding-top: 8px;   /* FIX */
+  padding-bottom: 8px;
+  line-height: normal;
+  height: 48px;       /* FIX */
+}
+
+/* Input Focus */
+.input:focus {
+  border-color: #60a5fa;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+}
+
+/* Input Error */
+.input-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 5px rgba(239, 68, 68, 0.6);
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 17px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  transition: all 0.25s ease;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.55);
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+/* Option styling (Make options readable) */
+select option {
+  background: #1f2937;
+  color: white !important;
+  padding: 10px;
+  font-size: 15px;
+}

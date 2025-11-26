@@ -1,197 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="flex">
-      <app-sidebar />
+<div class="flex">
+  <app-sidebar />
 
-      <div class="flex-1 ml-64">
-        <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-          <div class="sm:mx-auto sm:w-full sm:max-w-xl">
-            <h2 class="mt-6 text-center text-4xl font-extrabold text-gray-900">
-              <span class="text-blue-700">EMS</span> Add Employee
-            </h2>
-            <p class="mt-2 text-center text-base text-gray-600">Add a new employee to the system</p>
+  <div class="flex-1 ml-64">
+    <div
+      class="min-h-screen flex items-center justify-center px-6 py-12"
+      style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)"
+    >
+      <!-- GLASS FORM CARD -->
+      <div class="glass-card max-w-xl w-full p-10 rounded-2xl shadow-2xl border border-white/10">
+        <!-- TITLE -->
+        <h2 class="text-center text-4xl font-extrabold text-white drop-shadow-lg">
+          <span class="text-yellow-300">EMS</span> Add Employee
+        </h2>
+        <p class="mt-2 text-center text-slate-300">Add a new employee to your organization</p>
+
+        <!-- FORM -->
+        <form [formGroup]="empForm" (ngSubmit)="onSubmit()" class="space-y-6 mt-10">
+          <!-- FULL NAME -->
+          <div class="field">
+            <label class="label">Full Name</label>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Enter full name"
+              class="input"
+              [ngClass]="{ 'input-error': submitted && empForm.controls['name'].invalid }"
+            />
+            <p class="error" *ngIf="submitted && empForm.controls['name'].invalid">
+              Name is required.
+            </p>
           </div>
 
-          <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-xl">
-            <div
-              class="bg-white py-10 px-6 shadow-2xl sm:rounded-lg sm:px-12 border-t-8 border-blue-700"
-            >
-              <form [formGroup]="empForm" (ngSubmit)="onSubmit()" class="space-y-6">
-                <!-- NAME -->
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Full Name</label>
-                  <input
-                    type="text"
-                    formControlName="name"
-                    placeholder="Enter full name"
-                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-                    [ngClass]="{ 'border-red-500': submitted && empForm.controls['name'].invalid }"
-                  />
-                  <div
-                    class="text-sm text-red-500"
-                    *ngIf="submitted && empForm.controls['name'].invalid"
-                  >
-                    Name is required.
-                  </div>
-                </div>
+          <!-- AGE + GENDER -->
+          <div class="grid grid-cols-2 gap-6">
+            <!-- AGE -->
+            <div class="field">
+              <label class="label">Age</label>
+              <input
+                type="number"
+                formControlName="age"
+                placeholder="Enter age"
+                class="input"
+                [ngClass]="{ 'input-error': submitted && empForm.controls['age'].invalid }"
+              />
+              <p class="error" *ngIf="submitted && empForm.controls['age'].invalid">
+                Age must be between 18–70.
+              </p>
+            </div>
 
-                <!-- age and gender  -->
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <!-- AGE -->
+            <!-- GENDER -->
+            <div class="field">
+              <label class="label">Gender</label>
+              <select
+                formControlName="gender"
+                class="input leading-normal h-12"
+                [ngClass]="{ 'input-error': submitted && empForm.controls['gender'].invalid }"
+              >
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
 
-                    <label class="block text-sm font-medium text-gray-700">Age</label>
-                    <input
-                      type="number"
-                      formControlName="age"
-                      placeholder="Enter age"
-                      class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-                      [ngClass]="{
-                        'border-red-500': submitted && empForm.controls['age'].invalid
-                      }"
-                    />
-                    <div
-                      class="text-sm text-red-500"
-                      *ngIf="submitted && empForm.controls['age'].invalid"
-                    >
-                      Age is required and must be valid.
-                    </div>
-                  </div>
-
-                  <div>
-                    <!-- GENDER -->
-
-                    <label class="block text-sm font-medium text-gray-700">Gender</label>
-                    <select
-                      formControlName="gender"
-                      class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-                      [ngClass]="{
-                        'border-red-500': submitted && empForm.controls['gender'].invalid
-                      }"
-                    >
-                      <option value="">Select gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <div
-                      class="text-sm text-red-500"
-                      *ngIf="submitted && empForm.controls['gender'].invalid"
-                    >
-                      Gender is required.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- EMAIL -->
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Email</label>
-                  <input
-                    type="email"
-                    formControlName="email"
-                    placeholder="e.g., employee@company.com"
-                    class="block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-                    [ngClass]="{ 'border-red-500': submitted && empForm.controls['email'].invalid }"
-                  />
-
-                  <div
-                    class="text-sm text-red-500"
-                    *ngIf="submitted && empForm.controls['email'].invalid"
-                  >
-                    Enter a valid email.
-                  </div>
-                </div>
-
-
-                <!-- department and position  -->
-                <div class="grid grid-cols-2 gap-4">
-                  <!-- DEPARTMENT -->
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700">Department</label>
-
-                    <select
-                      formControlName="department"
-                      class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-                      [ngClass]="{
-                        'border-red-500': submitted && empForm.controls['department'].invalid
-                      }"
-                    >
-                      <option value="">Select Department</option>
-                      @for (dept of department; track $index) {
-                      <option value="{{ dept }}">{{ dept }}</option>
-                      }
-                    </select>
-                    <div
-                      class="text-sm text-red-500"
-                      *ngIf="submitted && empForm.controls['position'].invalid"
-                    >
-                      Department is required.
-                    </div>
-                  </div>
-
-                  <!-- POSITION -->
-                  <div class="">
-                    <label class="block text-sm font-medium text-gray-700">Position</label>
-
-                    <select
-                      formControlName="position"
-                      class="block w-full px-4 py-3 border overflow-auto border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-                      [ngClass]="{
-                        'border-red-500': submitted && empForm.controls['position'].invalid
-                      }"
-                    >
-                      <option value="">Select Position</option>
-                      @for (posi of position; track $index) {
-                      <option value="{{ posi }}">{{ posi }}</option>
-                      }
-                    </select>
-                    <div
-                      class="text-sm text-red-500"
-                      *ngIf="submitted && empForm.controls['position'].invalid"
-                    >
-                      Position is required.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- SALARY -->
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Salary</label>
-                  <input
-                    type="number"
-                    formControlName="salary"
-                    placeholder="e.g., 45000"
-                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-                    [ngClass]="{
-                      'border-red-500': submitted && empForm.controls['salary'].invalid
-                    }"
-                  />
-                  <div
-                    class="text-sm text-red-500"
-                    *ngIf="submitted && empForm.controls['salary'].invalid"
-                  >
-                    Salary is required and must be valid.
-                  </div>
-                </div>
-
-                <!-- SUBMIT BUTTON -->
-                <button
-                  type="submit"
-                  class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-[1.02]"
-                >
-                  Add Employee
-                </button>
-              </form>
+              <p class="error" *ngIf="submitted && empForm.controls['gender'].invalid">
+                Gender is required.
+              </p>
             </div>
           </div>
-        </div>
+
+          <!-- EMAIL -->
+          <div class="field">
+            <label class="label">Email</label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="employee@company.com"
+              class="input"
+              [ngClass]="{ 'input-error': submitted && empForm.controls['email'].invalid }"
+            />
+            <p class="error" *ngIf="submitted && empForm.controls['email'].invalid">
+              Enter a valid email.
+            </p>
+          </div>
+
+          <!-- DEPARTMENT + POSITION -->
+          <div class="grid grid-cols-2 gap-6">
+            <!-- DEPARTMENT -->
+            <div class="field">
+              <label class="label">Department</label>
+              <select
+                formControlName="department"
+                class="input"
+                [ngClass]="{ 'input-error': submitted && empForm.controls['department'].invalid }"
+              >
+                <option value="">Select Department</option>
+                @for (dept of department; track $index) {
+                <option value="{{ dept }}">{{ dept }}</option>
+                }
+              </select>
+              <p class="error" *ngIf="submitted && empForm.controls['department'].invalid">
+                Department is required.
+              </p>
+            </div>
+
+            <!-- POSITION -->
+            <div class="field">
+              <label class="label">Position</label>
+              <select
+                formControlName="position"
+                class="input"
+                [ngClass]="{ 'input-error': submitted && empForm.controls['position'].invalid }"
+              >
+                <option value="">Select Position</option>
+                @for (pos of position; track $index) {
+                <option value="{{ pos }}">{{ pos }}</option>
+                }
+              </select>
+              <p class="error" *ngIf="submitted && empForm.controls['position'].invalid">
+                Position is required.
+              </p>
+            </div>
+          </div>
+
+          <!-- SALARY -->
+          <div class="field">
+            <label class="label">Salary</label>
+            <input
+              type="number"
+              formControlName="salary"
+              placeholder="e.g., 45000"
+              class="input"
+              [ngClass]="{ 'input-error': submitted && empForm.controls['salary'].invalid }"
+            />
+            <p class="error" *ngIf="submitted && empForm.controls['salary'].invalid">
+              Salary is required.
+            </p>
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <button type="submit" class="btn-submit">Add Employee</button>
+        </form>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+</div>
