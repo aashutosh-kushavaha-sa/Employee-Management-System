@@ -1,12 +1,47 @@
-/* Optional custom animations */
-.section-card {
-  transition: 0.3s ease;
+/* subtle floating for cards */
+.card-glass {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(6px);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
-.section-card:hover {
-  transform: translateY(-3px);
+.card-glass:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(2,6,23,0.55);
 }
 
-.table-row:hover {
-  background-color: #eef6ff;
+/* small circular icon bubble on stat cards */
+.icon-bubble {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: white;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.35);
+}
+
+/* table row hover subtle */
+table tr.group:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .icon-bubble { width: 44px; height: 44px; border-radius: 10px; }
+  .card-glass { padding: 16px; border-radius: 12px; }
+}
+
+/* improved scrollbar for overflow containers */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
 }
