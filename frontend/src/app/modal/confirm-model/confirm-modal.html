@@ -1,39 +1,52 @@
 <dialog id="confirmModal" class="modal">
-  <div class="modal-box rounded-xl border-t-8 bg-white shadow-xl border-red-600">
 
-    <!-- Header -->
-    <div class="flex items-center gap-3 mb-3">
-      <fa-icon [icon]="warning" class="w-7 h-7 text-red-600"></fa-icon>
+  <div
+    class="modal-box glass-modal-container animate-modal rounded-2xl border-t-8 shadow-2xl"
+    style="border-color: #f87171"
+  >
 
-      <h3 class="text-xl font-bold text-red-600">
+    <!-- HEADER -->
+    <div class="flex items-center gap-4 mb-4">
+      <fa-icon
+        [icon]="warning"
+        class="w-8 h-8 text-red-400 drop-shadow-lg"
+      ></fa-icon>
+
+      <h3 class="text-2xl font-bold text-red-400 drop-shadow-sm tracking-wide">
         Confirmation Required
       </h3>
     </div>
 
-    <!-- Message -->
-    <p class="text-gray-700 leading-relaxed mb-6">
+    <!-- MESSAGE -->
+    <p class="text-gray-200 text-lg leading-relaxed mb-8">
       {{ modal.message }}
     </p>
 
-    <!-- Buttons -->
-    <div class="flex justify-end gap-3">
+    <!-- BUTTONS -->
+    <div class="flex justify-end gap-4">
+      
+      <!-- CONFIRM -->
       <button
-        class="px-5 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 shadow transition"
-        (click)="modal.confirm()">
-        Yes, Confirm
+        class="btn-danger"
+        (click)="modal.confirm()"
+      >
+        Yes, Delete
       </button>
 
+      <!-- CANCEL -->
       <button
-        class="px-5 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 shadow transition"
-        (click)="modal.cancel()">
+        class="btn-secondary"
+        (click)="modal.cancel()"
+      >
         Cancel
       </button>
+
     </div>
 
   </div>
 
-  <!-- Backdrop clickable close -->
-  <form method="dialog" class="modal-backdrop bg-black/40 backdrop-blur-sm">
+  <!-- BACKDROP -->
+  <form method="dialog" class="modal-backdrop glass-backdrop">
     <button></button>
   </form>
 </dialog>

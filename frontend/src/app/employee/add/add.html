@@ -53,7 +53,7 @@
               <label class="label">Gender</label>
               <select
                 formControlName="gender"
-                class="input leading-normal h-12"
+                class="input select-input"
                 [ngClass]="{ 'input-error': submitted && empForm.controls['gender'].invalid }"
               >
                 <option value="">Select gender</option>
@@ -90,7 +90,7 @@
               <label class="label">Department</label>
               <select
                 formControlName="department"
-                class="input"
+                class="input select-input"
                 [ngClass]="{ 'input-error': submitted && empForm.controls['department'].invalid }"
               >
                 <option value="">Select Department</option>
@@ -98,6 +98,7 @@
                 <option value="{{ dept }}">{{ dept }}</option>
                 }
               </select>
+
               <p class="error" *ngIf="submitted && empForm.controls['department'].invalid">
                 Department is required.
               </p>
@@ -108,7 +109,7 @@
               <label class="label">Position</label>
               <select
                 formControlName="position"
-                class="input"
+                class="input select-input"
                 [ngClass]="{ 'input-error': submitted && empForm.controls['position'].invalid }"
               >
                 <option value="">Select Position</option>
@@ -116,6 +117,7 @@
                 <option value="{{ pos }}">{{ pos }}</option>
                 }
               </select>
+
               <p class="error" *ngIf="submitted && empForm.controls['position'].invalid">
                 Position is required.
               </p>

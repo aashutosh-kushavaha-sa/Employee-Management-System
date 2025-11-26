@@ -1,0 +1,95 @@
+/* Glass Table Container */
+.glass-table-container {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 20px;
+}
+
+/* Table Header */
+.th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Table Cell */
+.td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 15px;
+}
+
+/* Table Rows */
+.row {
+  transition: 0.25s ease;
+}
+
+.row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.row:hover {
+  background: rgba(96, 165, 250, 0.12);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+/* Search Input */
+.search-input {
+  padding: 10px 14px 10px 38px;
+  width: 270px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  color: white;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+}
+
+/* Search Icon */
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #cbd5e1;
+  width: 16px;
+  height: 16px;
+}
+
+/* Buttons */
+.btn-update {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 8px;
+  color: white;
+  transition: 0.25s ease;
+}
+
+.btn-update:hover {
+  transform: scale(1.07);
+  background: linear-gradient(135deg, #16a34a, #14532d);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 8px;
+  color: white;
+  transition: 0.25s ease;
+}
+
+.btn-delete:hover {
+  transform: scale(1.07);
+  background: linear-gradient(135deg, #dc2626, #7f1d1d);
+}
