@@ -14,9 +14,9 @@ const app = express();
 
 app.use(express.json());
 
-// 1. Enable CORS for all origins (for development)
+// 1. Enable CORS for all origins 
 app.use(cors({
-    origin: 'http://localhost:4200' // Change this to your Angular dev server port
+    origin: 'http://localhost:4200' 
 }));
 
 // Routes /api/auth/signUp
