@@ -1,0 +1,12 @@
+/* Optional custom animations */
+.section-card {
+  transition: 0.3s ease;
+}
+
+.section-card:hover {
+  transform: translateY(-3px);
+}
+
+.table-row:hover {
+  background-color: #eef6ff;
+}

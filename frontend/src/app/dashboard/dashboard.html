@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="flex">
+<div class="flex">
   <app-sidebar />
 
   <div class="flex-1 ml-64">
-    <div class="p-8 bg-gray-100 min-h-screen">
+    <div class="p-8 bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen">
 
       <!-- Page Title -->
-      <h1 class="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
+      <h1 class="text-4xl font-extrabold mb-8 text-gray-800 tracking-wide">
+        Admin Dashboard
+      </h1>
 
       <!-- Cards Row -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        
+
         <!-- Total Employees -->
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
           <h2 class="text-lg font-semibold text-gray-500">Total Employees</h2>
           <p class="text-4xl font-bold mt-3 text-blue-600">{{ totalEmployees }}</p>
         </div>
 
         <!-- Departments -->
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
           <h2 class="text-lg font-semibold text-gray-500">Departments</h2>
           <p class="text-4xl font-bold mt-3 text-purple-600">{{ departments }}</p>
         </div>
 
         <!-- Average Salary -->
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
           <h2 class="text-lg font-semibold text-gray-500">Average Salary</h2>
           <p class="text-3xl font-bold mt-3 text-green-600">₹{{ avgSalary }}</p>
         </div>
 
         <!-- Highest Salary -->
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
           <h2 class="text-lg font-semibold text-gray-500">Highest Salary</h2>
           <p class="text-3xl font-bold mt-3 text-red-600">₹{{ highestSalary }}</p>
         </div>
@@ -45,57 +39,61 @@
 
       <!-- Gender Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
-          <h2 class="text-lg text-gray-500">Male Employees</h2>
-          <p class="text-3xl font-bold text-blue-700">{{ genderCount.male }}</p>
+
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+          <h2 class="text-lg font-semibold text-gray-500">Male Employees</h2>
+          <p class="text-4xl font-bold text-blue-700 mt-3">{{ genderCount.male }}</p>
         </div>
 
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition" >
-          <h2 class="text-lg text-gray-500">Female Employees</h2>
-          <p class="text-3xl font-bold text-pink-600">{{ genderCount.female }}</p>
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+          <h2 class="text-lg font-semibold text-gray-500">Female Employees</h2>
+          <p class="text-4xl font-bold text-pink-600 mt-3">{{ genderCount.female }}</p>
         </div>
 
-        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition">
-          <h2 class="text-lg text-gray-500">Other</h2>
-          <p class="text-3xl font-bold text-gray-600">{{ genderCount.other }}</p>
+        <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+          <h2 class="text-lg font-semibold text-gray-500">Other</h2>
+          <p class="text-4xl font-bold text-gray-600 mt-3">{{ genderCount.other }}</p>
         </div>
       </div>
 
       <!-- Recent Employees Table -->
-      <div class="mt-10 bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition">
-        <h2 class="text-xl font-semibold  text-gray-500 mb-4">Recent Employees (Last 5)</h2>
-        
-        <table class="table w-full">
-          <thead>
-            <tr class="text-gray-600">
-              <th>Name</th>
-              <th>Email</th>
-              <th>Department</th>
-              <th>Salary</th>
-            </tr>
-          </thead>
+      <div class="mt-10 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Recent Employees (Last 5)</h2>
 
-          <tbody>
-            @for (emp of recentEmployees; track $index) {
-            <tr class=" text-blue-700">
-              <td>{{ emp.name }}</td>
-              <td>{{ emp.email }}</td>
-              <td>{{ emp.department }}</td>
-              <td>₹{{ emp.salary }}</td>
-            </tr>
-            }
-          </tbody>
-        </table>
+        <div class="overflow-x-auto">
+          <table class="table-auto w-full border-collapse rounded-lg">
+            <thead class="bg-gray-200 text-gray-700">
+              <tr>
+                <th class="px-4 py-3 text-left font-semibold border-b border-gray-300">Name</th>
+                <th class="px-4 py-3 text-left font-semibold border-b border-gray-300">Email</th>
+                <th class="px-4 py-3 text-left font-semibold border-b border-gray-300">Department</th>
+                <th class="px-4 py-3 text-left font-semibold border-b border-gray-300">Salary</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (emp of recentEmployees; track $index) {
+              <tr class="text-gray-700 hover:bg-blue-50 transition cursor-pointer">
+                <td class="px-4 py-3 border-b border-gray-200">{{ emp.name }}</td>
+                <td class="px-4 py-3 border-b border-gray-200">{{ emp.email }}</td>
+                <td class="px-4 py-3 border-b border-gray-200">{{ emp.department }}</td>
+                <td class="px-4 py-3 border-b border-gray-200">₹{{ emp.salary }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- Department Wise Employee Count -->
-      <div class="mt-10 bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition">
-        <h2 class="text-xl font-semibold  text-gray-500 mb-4">Department Wise Count</h2>
+      <!-- Department Wise Count -->
+      <div class="mt-10 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Department Wise Count</h2>
 
-        <ul>
+        <ul class="space-y-2">
           @for (d of deptWiseCount; track $index) {
-          <li class="text-gray-700 text-lg mb-2">
-            <span class="font-bold">{{ d.department }}</span> : {{ d.count }}
+          <li class="flex justify-between p-3 bg-gray-50 rounded-lg border hover:bg-gray-100 transition">
+            <span class="font-semibold text-gray-700">{{ d.department }}</span>
+            <span class="font-bold text-blue-700">{{ d.count }}</span>
           </li>
           }
         </ul>
@@ -104,6 +102,3 @@
     </div>
   </div>
 </div>
-
-  </body>
-</html>
