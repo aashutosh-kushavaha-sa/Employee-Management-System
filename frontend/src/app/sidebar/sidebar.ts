@@ -5,12 +5,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import {
   faHouse,
-  faUsers,
-  faGear,
   faRightFromBracket,
   faUserTie,
   faList,
-  faPlus,
   faCircleArrowDown,
   faPersonCirclePlus,
   faPersonCircleMinus,
@@ -26,21 +23,18 @@ import {
   imports: [CommonModule, RouterModule, FontAwesomeModule],
 })
 export class SidebarComponent {
+
   // Icons
   faHouse = faHouse;
-  faUsers = faUsers;
-  faGear = faGear;
   faLogout = faRightFromBracket;
   userTie = faUserTie;
   faList = faList;
-  faPlus = faPlus;
   faArrowDown = faCircleArrowDown;
   faAddEmp = faPersonCirclePlus;
   faDeleteEmp = faPersonCircleMinus;
   faUpdate = faUserPen;
   faManageEmp = faUsersGear;
 
-  // Accordion state
   employeesOpen = false;
 
   constructor(private router: Router) {}

@@ -1,80 +1,70 @@
 <div
-  class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl fixed top-0 left-0 overflow-y-auto border-r border-gray-700"
+  class="h-screen w-64 fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl"
+  style="background: linear-gradient(160deg, rgba(15,23,42,0.95), rgba(30,41,59,0.85));
+         backdrop-filter: blur(12px);"
 >
 
   <!-- Logo -->
-  <div class="flex items-center justify-center gap-3 mb-10">
-    <span class="text-3xl font-extrabold text-blue-400 tracking-wide">EMS</span>
+  <div class="flex items-center justify-center mb-10">
+    <span class="text-3xl font-extrabold tracking-wide text-yellow-300 drop-shadow-lg">
+      EMS
+    </span>
   </div>
 
-  <!-- Navigation Menu -->
+  <!-- NAV MENU -->
   <nav class="flex flex-col gap-2">
 
-    <!-- Home -->
+    <!-- HOME -->
     <a
       routerLink="/dashboard"
       routerLinkActive="active-link"
-      class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
+      class="nav-item"
     >
-      <fa-icon [icon]="faHouse" class="w-5 h-5"></fa-icon>
-      <span class="text-sm font-medium">Home</span>
+      <fa-icon [icon]="faHouse" class="nav-icon"></fa-icon>
+      <span>Dashboard</span>
     </a>
 
-    <!-- Manage Employees Accordion -->
-    <div class="flex flex-col">
-      <button
-        (click)="toggleEmployees()"
-        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
-      >
-        <fa-icon [icon]="faManageEmp" class="w-5 h-5"></fa-icon>
-        <span class="text-sm font-medium whitespace-nowrap">Manage Employees</span>
+    <!-- MANAGE EMPLOYEES -->
+    <button
+      class="nav-item"
+      (click)="toggleEmployees()"
+    >
+      <fa-icon [icon]="faManageEmp" class="nav-icon"></fa-icon>
+      <span>Manage Employees</span>
 
-        <fa-icon
-          [icon]="faArrowDown"
-          class="w-4 h-4 ml-auto transition-transform"
-          [ngClass]="{ 'rotate-180': employeesOpen }"
-        ></fa-icon>
-      </button>
+      <fa-icon
+        [icon]="faArrowDown"
+        class="ml-auto transition-transform w-4"
+        [ngClass]="{ 'rotate-180': employeesOpen }"
+      ></fa-icon>
+    </button>
 
-      <!-- Dropdown Content -->
-      <div
-        *ngIf="employeesOpen"
-        class="flex flex-col pl-8 gap-2 mt-1 animate-slide-down"
-      >
-        <a
-          routerLink="/employees/all"
-          class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition cursor-pointer text-sm"
-        >
-          <fa-icon [icon]="faList" class="w-4 h-4"></fa-icon>
-          All Employees
-        </a>
+    <!-- DROPDOWN -->
+    <div *ngIf="employeesOpen" class="dropdown">
+      <a routerLink="/employees/all" class="dropdown-item">
+        <fa-icon [icon]="faList" class="text-yellow-300 w-4"></fa-icon>
+        All Employees
+      </a>
 
-        <a
-          routerLink="/employees/add"
-          class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition cursor-pointer text-sm"
-        >
-          <fa-icon [icon]="faAddEmp" class="w-4 h-4"></fa-icon>
-          Add Employee
-        </a>
-      </div>
+      <a routerLink="/employees/add" class="dropdown-item">
+        <fa-icon [icon]="faAddEmp" class="text-yellow-300 w-4"></fa-icon>
+        Add Employee
+      </a>
     </div>
 
-    <!-- Create Admin -->
-    <a
-      routerLink="/signup"
-      class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
-    >
-      <fa-icon [icon]="userTie" class="w-5 h-5"></fa-icon>
-      <span class="text-sm font-medium">Create Admin</span>
+    <!-- CREATE ADMIN -->
+    <a routerLink="/signup" class="nav-item">
+      <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
+      <span>Create Admin</span>
     </a>
   </nav>
 
-  <!-- Logout -->
+  <!-- LOGOUT -->
   <button
     (click)="logout()"
-    class="flex items-center gap-3 p-3 rounded-lg mt-auto bg-red-600 hover:bg-red-700 text-white transition-all duration-150 shadow-md text-sm font-medium"
+    class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg"
   >
-    <fa-icon [icon]="faLogout" class="w-5 h-5"></fa-icon>
+    <fa-icon [icon]="faLogout" class="nav-icon"></fa-icon>
     Logout
   </button>
 </div>

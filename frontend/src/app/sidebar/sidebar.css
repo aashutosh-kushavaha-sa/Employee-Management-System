@@ -1,15 +1,65 @@
-:host {
-  display: block;
-}
+/* Container adjusts using Tailwind in HTML */
 
+/* ACTIVE LINK STYLE */
 .active-link {
-  background-color: #374151 !important;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
   font-weight: 600;
+  border-left: 4px solid #FACC15;
 }
 
-/* Smooth accordion animation */
-@keyframes slide-down {
+/* NAV ITEM */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s;
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+/* NAV ICON */
+.nav-icon {
+  width: 20px;
+  color: #FACC15;
+  opacity: 0.9;
+}
+
+/* DROPDOWN MENU */
+.dropdown {
+  padding-left: 18px;
+  margin-top: 6px;
+  animation: fadeSlideDown 0.25s ease-out;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: 0.25s;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: white;
+}
+
+/* ANIMATION */
+@keyframes fadeSlideDown {
   from {
     opacity: 0;
     transform: translateY(-6px);
@@ -18,8 +68,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.2s ease-out;
 }
