@@ -1,0 +1,9 @@
+/* Optional smooth fade-in */
+*:not(html) {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.2; }
+  to   { opacity: 1; }
+}
