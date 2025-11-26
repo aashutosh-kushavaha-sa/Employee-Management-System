@@ -1,76 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl fixed top-0 left-0 overflow-y-auto">
-      <!-- Logo -->
-      <div class="flex items-center justify-center gap-3 mb-10">
-        <span class="text-3xl font-bold text-blue-400">EMS</span>
-      </div>
+<div
+  class="h-screen w-64 bg-gray-900 text-gray-200 p-5 flex flex-col shadow-xl fixed top-0 left-0 overflow-y-auto border-r border-gray-700"
+>
 
-      <!-- Menu Items -->
-      <nav class="flex flex-col gap-2">
-        <!-- Home -->
-        <a
-          routerLink="/dashboard"
-          routerLinkActive="active-link"
-          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
-        >
-          <fa-icon [icon]="faHouse" class="w-5 h-5"></fa-icon>
-          <span>Home</span>
-        </a>
+  <!-- Logo -->
+  <div class="flex items-center justify-center gap-3 mb-10">
+    <span class="text-3xl font-extrabold text-blue-400 tracking-wide">EMS</span>
+  </div>
 
-        <!-- Employees Dropdown (Accordion-style) -->
-        <div class="flex flex-col gap-1">
-          <button
-            (click)="toggleEmployees()"
-            class="flex w-full gap-3 p-3 rounded-lg hover:bg-gray-700 transition flex-nowrap"
-          >
-            <fa-icon [icon]="faManageEmp" class="w-5 h-5"></fa-icon>
-            <span>Manage Employees</span>
-          </button>
+  <!-- Navigation Menu -->
+  <nav class="flex flex-col gap-2">
 
-          <!-- Dropdown Items -->
-          <div *ngIf="employeesOpen" class="flex flex-col pl-8 gap-1">
-            <a
-              routerLink="/employees/all"
-              class="flex gap-3 p-2 rounded-lg hover:bg-gray-700 transition text-gray-200"
-            >
-              <fa-icon [icon]="faList" class="w-4 h-4"></fa-icon>
-              All Employees
-            </a>
-            <a
-              routerLink="/employees/add"
-              class="flex gap-3 p-2 rounded-lg hover:bg-gray-700 transition text-gray-200"
-            >
-              <fa-icon [icon]="faAddEmp" class="w-4 h-4"></fa-icon>
-              Add Employee
-            </a>
-          </div>
-        </div>
+    <!-- Home -->
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active-link"
+      class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
+    >
+      <fa-icon [icon]="faHouse" class="w-5 h-5"></fa-icon>
+      <span class="text-sm font-medium">Home</span>
+    </a>
 
-        <!-- Admin Profile -->
-        <a
-          routerLink="/signup"
-          class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition"
-        >
-          <fa-icon [icon]="userTie" class="w-5 h-5"></fa-icon>
-          <span>Create Admin</span>
-        </a>
-
-        <!-- Logout -->
-      </nav>
+    <!-- Manage Employees Accordion -->
+    <div class="flex flex-col">
       <button
-          class="gap-3 mt-auto  rounded-lg btn btn-dash btn-error hover:bg-red-500"
-          (click)="logout()"
+        (click)="toggleEmployees()"
+        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
+      >
+        <fa-icon [icon]="faManageEmp" class="w-5 h-5"></fa-icon>
+        <span class="text-sm font-medium whitespace-nowrap">Manage Employees</span>
+
+        <fa-icon
+          [icon]="faArrowDown"
+          class="w-4 h-4 ml-auto transition-transform"
+          [ngClass]="{ 'rotate-180': employeesOpen }"
+        ></fa-icon>
+      </button>
+
+      <!-- Dropdown Content -->
+      <div
+        *ngIf="employeesOpen"
+        class="flex flex-col pl-8 gap-2 mt-1 animate-slide-down"
+      >
+        <a
+          routerLink="/employees/all"
+          class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition cursor-pointer text-sm"
         >
-          <fa-icon [icon]="faLogout" class="w-5 h-5"></fa-icon>
-          <span>Logout</span>
-        </button>
+          <fa-icon [icon]="faList" class="w-4 h-4"></fa-icon>
+          All Employees
+        </a>
+
+        <a
+          routerLink="/employees/add"
+          class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 transition cursor-pointer text-sm"
+        >
+          <fa-icon [icon]="faAddEmp" class="w-4 h-4"></fa-icon>
+          Add Employee
+        </a>
+      </div>
     </div>
-  </body>
-</html>
+
+    <!-- Create Admin -->
+    <a
+      routerLink="/signup"
+      class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-150 cursor-pointer"
+    >
+      <fa-icon [icon]="userTie" class="w-5 h-5"></fa-icon>
+      <span class="text-sm font-medium">Create Admin</span>
+    </a>
+  </nav>
+
+  <!-- Logout -->
+  <button
+    (click)="logout()"
+    class="flex items-center gap-3 p-3 rounded-lg mt-auto bg-red-600 hover:bg-red-700 text-white transition-all duration-150 shadow-md text-sm font-medium"
+  >
+    <fa-icon [icon]="faLogout" class="w-5 h-5"></fa-icon>
+    Logout
+  </button>
+</div>

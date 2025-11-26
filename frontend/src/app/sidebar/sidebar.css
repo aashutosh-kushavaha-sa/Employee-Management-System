@@ -1,10 +1,25 @@
-/* Optional custom styling */
 :host {
   display: block;
 }
 
 .active-link {
-  background-color: #374151 !important; /* Dark gray */
+  background-color: #374151 !important;
   color: #ffffff !important;
   font-weight: 600;
+}
+
+/* Smooth accordion animation */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out;
 }

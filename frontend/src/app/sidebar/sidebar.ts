@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import {
   faHouse,
   faUsers,
@@ -8,24 +11,22 @@ import {
   faUserTie,
   faList,
   faPlus,
-  faArrowDown,
+  faCircleArrowDown,
   faPersonCirclePlus,
   faPersonCircleMinus,
   faUserPen,
   faUsersGear
 } from '@fortawesome/free-solid-svg-icons';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule, FontAwesomeModule],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css'],
+  imports: [CommonModule, RouterModule, FontAwesomeModule],
 })
 export class SidebarComponent {
+  // Icons
   faHouse = faHouse;
   faUsers = faUsers;
   faGear = faGear;
@@ -33,26 +34,23 @@ export class SidebarComponent {
   userTie = faUserTie;
   faList = faList;
   faPlus = faPlus;
-  faArrowDown = faArrowDown;
+  faArrowDown = faCircleArrowDown;
   faAddEmp = faPersonCirclePlus;
   faDeleteEmp = faPersonCircleMinus;
   faUpdate = faUserPen;
   faManageEmp = faUsersGear;
 
-  constructor(private router: Router) {}
-  
   // Accordion state
   employeesOpen = false;
 
-  logout() {
-    // optional: clear local storage or auth token
-    localStorage.removeItem('token');
-
-    // navigate to login page
-    this.router.navigate(['/login']);
-  }
+  constructor(private router: Router) {}
 
   toggleEmployees() {
     this.employeesOpen = !this.employeesOpen;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }
