@@ -11,30 +11,28 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white py-10 px-6 shadow-2xl sm:rounded-lg sm:px-12 border-t-8 border-blue-700">
 
-      <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="space-y-6">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
         <!-- EMAIL -->
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
           <div class="mt-1">
             <input
-              id="email"
-              name="email"
               type="email"
-              required
-              email
-              [(ngModel)]="userData.email"
-              #email="ngModel"
+              id="email"
+              formControlName="email"
               placeholder="e.g., john.doe@company.com"
-              class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-              [ngClass]="{ 'border-red-500': submitted && email.invalid }"
+              class="block w-full px-4 py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none text-gray-900"
+              [ngClass]="{
+                'border-gray-300': !submitted || loginForm.get('email')?.valid,
+                'border-red-500': submitted && loginForm.get('email')?.invalid
+              }"
             />
           </div>
 
-          <!-- EMAIL ERRORS -->
-          <div *ngIf="submitted && email.invalid" class="text-sm text-red-500 mt-1">
-            <div *ngIf="email.errors?.['required']">Email is required.</div>
-            <div *ngIf="email.errors?.['email']">Enter a valid email address.</div>
+          <div *ngIf="submitted && loginForm.get('email')?.invalid" class="text-sm text-red-500 mt-1">
+            <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</div>
           </div>
         </div>
 
@@ -43,23 +41,23 @@
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
           <div class="mt-1">
             <input
-              id="password"
-              name="password"
               type="password"
-              required
-              minlength="8"
-              [(ngModel)]="userData.password"
-              #password="ngModel"
+              id="password"
+              formControlName="password"
               placeholder="••••••••"
-              class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-              [ngClass]="{ 'border-red-500': submitted && password.invalid }"
+              class="block w-full px-4 py-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none text-gray-900"
+              [ngClass]="{
+                'border-gray-300': !submitted || loginForm.get('password')?.valid,
+                'border-red-500': submitted && loginForm.get('password')?.invalid
+              }"
             />
           </div>
 
-          <!-- PASSWORD ERRORS -->
-          <div *ngIf="submitted && password.invalid" class="text-sm text-red-500 mt-1">
-            <div *ngIf="password.errors?.['required']">Password is required.</div>
-            <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
+          <div *ngIf="submitted && loginForm.get('password')?.invalid" class="text-sm text-red-500 mt-1">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Password must be at least 8 characters.
+            </div>
           </div>
         </div>
 
@@ -67,9 +65,11 @@
         <div>
           <button
             type="submit"
-            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-[1.01]"
+            [disabled]="loading"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed transition transform hover:scale-[1.01]"
           >
-            Sign in
+            <span *ngIf="!loading">Sign in</span>
+            <span *ngIf="loading">Processing...</span>
           </button>
         </div>
       </form>
@@ -77,9 +77,7 @@
       <div class="mt-6">
         <p class="text-center text-sm text-gray-500">
           Not registered?
-          <a href="#" class="font-medium text-blue-600 hover:text-blue-800">
-            Contact your administrator
-          </a>
+          <a href="#" class="font-medium text-blue-600 hover:text-blue-800">Contact your administrator</a>
         </p>
       </div>
 
