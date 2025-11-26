@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { UpdateModalService } from './update-modal.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ModalService } from '../alertModel/modal.service'; // your existing alert modal service
+
+import { UpdateModalService } from './update-modal.service';
+import { ModalService } from '../alertModel/modal.service';
 
 @Component({
   selector: 'app-update-modal',
@@ -17,7 +18,6 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   visible = false;
   employee: any = null;
 
-  // form model 
   formModel: any = {
     name: '',
     age: null,
@@ -31,8 +31,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   loading = false;
   private sub!: Subscription;
 
-  // API base 
-  private baseUrl = 'http://localhost:3000/api/employee';
+  baseUrl = 'http://localhost:3000/api/employee';
 
   constructor(
     private updateModalService: UpdateModalService,
@@ -43,20 +42,10 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.updateModalService.state.subscribe((s) => {
       this.visible = s.visible;
+
       if (s.employee) {
         this.employee = s.employee;
-        // copy fields into formModel
-        this.formModel = {
-          name: s.employee.name ?? '',
-          age: s.employee.age ?? null,
-          gender: s.employee.gender ?? '',
-          email: s.employee.email ?? '',
-          position: s.employee.position ?? '',
-          department: s.employee.department ?? '',
-          salary: s.employee.salary ?? null,
-        };
-      } else {
-        this.employee = null;
+        this.formModel = { ...s.employee };
       }
     });
   }
@@ -65,21 +54,13 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  // CANCEL pressed
   onCancel() {
     this.updateModalService.cancel();
   }
 
-  // UPDATE pressed: validate and call API
   onUpdate(form: NgForm) {
     if (form.invalid) {
-      // show error using existing ModalService
-      this.modal.show('Please fix validation errors before updating.', 'error');
-      return;
-    }
-
-    if (!this.employee?._id) {
-      this.modal.show('Invalid employee selected.', 'error');
+      this.modal.show('Please fix validation errors.', 'error');
       return;
     }
 
@@ -88,32 +69,22 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     const token = localStorage.getItem('token') ?? '';
     const headers = new HttpHeaders({ Authorization: token });
 
-    const updatePayload = {
-      name: this.formModel.name,
-      age: this.formModel.age,
-      gender: this.formModel.gender,
-      email: this.formModel.email,
-      position: this.formModel.position,
-      department: this.formModel.department,
-      salary: this.formModel.salary,
-    };
+    const payload = { ...this.formModel };
 
-    // PUT to your route: /update/:id
-    this.http.put(`${this.baseUrl}/update/${this.employee._id}`, updatePayload, { headers }).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        const updatedEmployee = res && res._id ? res : { ...this.employee, ...updatePayload };
-        this.updateModalService.confirm(updatedEmployee);
+    this.http.put(`${this.baseUrl}/update/${this.employee._id}`, payload, { headers })
+      .subscribe({
+        next: (res: any) => {
+          this.loading = false;
 
-        // success message
-        this.modal.show('Employee updated successfully!', 'success');
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error('Update failed:', err);
-        const msg = err?.error?.message || 'Failed to update employee.';
-        this.modal.show(msg, 'error');
-      },
-    });
+          const updated = res?._id ? res : { ...this.employee, ...payload };
+          
+          this.updateModalService.confirm(updated);
+          this.modal.show('Employee updated successfully!', 'success');
+        },
+        error: (err) => {
+          this.loading = false;
+          this.modal.show(err.error?.message || 'Update failed.', 'error');
+        }
+      });
   }
 }

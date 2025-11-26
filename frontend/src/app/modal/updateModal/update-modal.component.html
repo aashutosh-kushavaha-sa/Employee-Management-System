@@ -1,17 +1,19 @@
 <div
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity"
   *ngIf="visible"
 >
   <div
-    class="bg-white w-full max-w-xl mx-auto rounded-lg shadow-2xl border-t-8 border-blue-700 p-8 relative"
+    class="bg-white w-full max-w-xl mx-4 rounded-2xl shadow-2xl border-t-8 border-blue-700 p-8 relative transform transition-all scale-100"
   >
     <!-- TITLE -->
     <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-2">
       <span class="text-blue-700">EMS</span> Update Employee
     </h2>
-    <p class="text-center text-base text-gray-600 mb-6">Update employee details</p>
+    <p class="text-center text-base text-gray-600 mb-6">
+      Update employee details
+    </p>
 
-    <!-- CLOSE BUTTON (TOP RIGHT) -->
+    <!-- CLOSE BUTTON -->
     <button
       class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl"
       (click)="onCancel()"
@@ -21,6 +23,7 @@
 
     <!-- UPDATE FORM -->
     <form #f="ngForm" (ngSubmit)="onUpdate(f)" class="space-y-6">
+
       <!-- NAME -->
       <div>
         <label class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -29,7 +32,7 @@
           name="name"
           [(ngModel)]="formModel.name"
           placeholder="Enter full name"
-          class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
+          class="form-input"
           required
         />
       </div>
@@ -43,43 +46,34 @@
             type="number"
             name="age"
             [(ngModel)]="formModel.age"
-            placeholder="Enter age"
-            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 text-gray-900"
-            required
+            class="form-input"
             min="18"
+            required
           />
         </div>
 
-        <!-- GENDER -->
+        <!-- GENDER (READONLY) -->
         <div>
           <label class="block text-sm font-medium text-gray-700">Gender</label>
-          <select
+          <input
+            type="text"
             name="gender"
             [(ngModel)]="formModel.gender"
-            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-100 text-gray-500   focus:border-blue-500 cursor-not-allowed"
-            required
+            class="form-input bg-gray-100 text-gray-500 cursor-not-allowed"
             disabled
-            readonly
-          >
-            <option value="">Select gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+          />
         </div>
       </div>
 
-      <!-- EMAIL (READ ONLY) -->
+      <!-- EMAIL -->
       <div>
         <label class="block text-sm font-medium text-gray-700">Email</label>
         <input
           type="email"
           name="email"
           [(ngModel)]="formModel.email"
-          placeholder="e.g., employee@company.com"
-          class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+          class="form-input bg-gray-100 text-gray-500 cursor-not-allowed"
           disabled
-          readonly
         />
       </div>
 
@@ -91,10 +85,10 @@
           <select
             name="department"
             [(ngModel)]="formModel.department"
-            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
+            class="form-input"
             required
           >
-            <option value="">Select Department</option>
+            <option value="">Select</option>
             <option>Engineering</option>
             <option>QA</option>
             <option>IT Support</option>
@@ -112,10 +106,10 @@
           <select
             name="position"
             [(ngModel)]="formModel.position"
-            class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
+            class="form-input"
             required
           >
-            <option value="">Select Position</option>
+            <option value="">Select</option>
             <option>Software Engineer</option>
             <option>Java Developer</option>
             <option>QA Engineer</option>
@@ -133,10 +127,9 @@
           type="number"
           name="salary"
           [(ngModel)]="formModel.salary"
-          placeholder="e.g., 45000"
-          class="block w-full px-4 py-3 border border-gray-300 rounded-lg placeholder-gray-400 shadow-sm focus:outline-none focus:border-blue-500 text-gray-900"
-          required
+          class="form-input"
           min="0"
+          required
         />
       </div>
 
@@ -145,7 +138,7 @@
         <!-- CANCEL -->
         <button
           type="button"
-          class="px-6 py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
+          class="btn-cancel"
           (click)="onCancel()"
         >
           Cancel
@@ -154,7 +147,7 @@
         <!-- UPDATE -->
         <button
           type="submit"
-          class="px-8 py-3 bg-blue-700 text-white rounded-lg shadow-lg font-semibold hover:bg-blue-800 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-[1.02]"
+          class="btn-update"
           [disabled]="loading"
         >
           <span *ngIf="loading">Updating...</span>
