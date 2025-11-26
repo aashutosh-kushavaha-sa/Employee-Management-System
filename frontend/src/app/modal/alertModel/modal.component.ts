@@ -2,13 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from './modal.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import {
-  faCircleCheck,faBug,faTriangleExclamation
+  faCircleCheck,
+  faBug,
+  faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [CommonModule,FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './modal.component.html',
 })
 export class ModalComponent {
@@ -17,5 +21,4 @@ export class ModalComponent {
   sucess = faCircleCheck;
   error = faBug;
   warning = faTriangleExclamation;
-
 }
