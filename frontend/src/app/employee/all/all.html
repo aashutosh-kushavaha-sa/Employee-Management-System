@@ -8,30 +8,52 @@
       class="min-h-screen p-10"
       style="background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a)"
     >
-
-      <!-- HEADER + SEARCH -->
-      <div class="flex justify-between items-center mb-10">
+      <!-- HEADER + SEARCH + FILTERS -->
+      <div
+        class="flex justify-between items-center mb-10 max-md:flex-col max-md:items-start max-md:gap-4"
+      >
+        <!-- TITLE -->
         <h1 class="text-4xl font-extrabold text-white drop-shadow-lg">All Employees</h1>
 
-        <div class="relative">
-          <input
-            type="text"
-            placeholder="Search employees..."
-            class="search-input"
-            (input)="search($event)"
-          />
-          <fa-icon
-            [icon]="faSearch"
-            class="search-icon"
-          ></fa-icon>
+        <!-- SEARCH + FILTERS WRAPPER -->
+        <div class="flex gap-4 max-md:flex-wrap">
+          <!-- SEARCH BAR -->
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Search employees..."
+              class="w-64 h-11 pl-9 pr-4 bg-white/10 border border-white/18 rounded-xl text-white placeholder-gray-300 outline-none transition-all duration-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 backdrop-blur-xl leading-none"
+              (input)="search($event)"
+            />
+            <fa-icon
+              [icon]="faSearch"
+              class="absolute left-3 top-3 w-4 h-4 text-gray-300 pointer-events-none"
+            ></fa-icon>
+          </div>
+
+          <!-- DEPARTMENT FILTER -->
+          <select class="filter-select" (change)="filterDepartment($event)">
+            <option value="">All Departments</option>
+            <option *ngFor="let dep of departmentList" [value]="dep">
+              {{ dep }}
+            </option>
+          </select>
+
+          <!-- GENDER FILTER -->
+          <select class="filter-select" (change)="filterGender($event)">
+            <option value="">All Genders</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
         </div>
       </div>
 
       <!-- TABLE CONTAINER -->
-      <div class="glass-table-container rounded-2xl shadow-2xl border border-white/10 overflow-auto">
-
+      <div
+        class="glass-table-container rounded-2xl shadow-2xl border border-white/10 overflow-auto"
+      >
         <table class="table-auto w-full rounded-xl overflow-hidden">
-
           <!-- TABLE HEAD -->
           <thead class="bg-gray-900 text-white text-sm uppercase tracking-wide">
             <tr>
@@ -62,20 +84,15 @@
               <td class="td text-green-400 font-semibold">₹{{ emp.salary }}</td>
 
               <td class="td text-center">
-                <button class="btn-update" (click)="openUpdate(emp)">
-                  Update
-                </button>
+                <button class="btn-update" (click)="openUpdate(emp)">Update</button>
               </td>
 
               <td class="td text-center">
-                <button class="btn-delete" (click)="deleteEmployee(emp._id)">
-                  Delete
-                </button>
+                <button class="btn-delete" (click)="deleteEmployee(emp._id)">Delete</button>
               </td>
             </tr>
             }
           </tbody>
-
         </table>
       </div>
     </div>

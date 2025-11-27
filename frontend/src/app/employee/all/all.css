@@ -25,11 +25,9 @@
 .row {
   transition: 0.25s ease;
 }
-
 .row:nth-child(even) {
   background: rgba(255, 255, 255, 0.05);
 }
-
 .row:hover {
   background: rgba(96, 165, 250, 0.12);
   backdrop-filter: blur(4px);
@@ -48,21 +46,49 @@
   outline: none;
   transition: 0.3s ease;
 }
-
 .search-input:focus {
   border-color: #60a5fa;
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
 }
-
-/* Search Icon */
 .search-icon {
   position: absolute;
-  left: 10px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: #cbd5e1;
   width: 16px;
   height: 16px;
+  pointer-events: none;
+}
+
+
+/* FILTER SELECT */
+.filter-select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white;
+  outline: none;
+  width: 180px;
+  height: 42px;
+  transition: 0.3s ease;
+}
+.filter-select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+}
+
+/* Force dark background for dropdown options */
+.filter-select option {
+  background-color: #1e293b !important; /* dark blue/gray */
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .filter-select {
+    width: 100%;
+  }
 }
 
 /* Buttons */
@@ -74,7 +100,6 @@
   color: white;
   transition: 0.25s ease;
 }
-
 .btn-update:hover {
   transform: scale(1.07);
   background: linear-gradient(135deg, #16a34a, #14532d);
@@ -88,7 +113,6 @@
   color: white;
   transition: 0.25s ease;
 }
-
 .btn-delete:hover {
   transform: scale(1.07);
   background: linear-gradient(135deg, #dc2626, #7f1d1d);

@@ -7,26 +7,31 @@ import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.ser
 import { UpdateModalService } from '../../modal/updateModal/update-modal.service';
 import { UpdateModalComponent } from '../../modal/updateModal/update-modal.component';
 
-// FontAwesome Icon
+// icons
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-all',
   standalone: true,
-  imports: [CommonModule, SidebarComponent, UpdateModalComponent,FontAwesomeModule],
+  imports: [CommonModule, SidebarComponent, UpdateModalComponent, FontAwesomeModule],
   templateUrl: './all.html',
   styleUrl: './all.css',
 })
 export class All implements OnInit {
 
-  // FontAwesome Icon
+  // icons
   faSearch = faSearch;
 
-  // Employee Data Arrays
+  // data arrays
   allData: any[] = [];
-  filteredData: any[] = [];  // used for search
+  filteredData: any[] = [];
 
-  // Inject HttpClient
+  // filter values
+  departmentList: any[] = [];
+  selectedDepartment = "";
+  selectedGender = "";
+  searchValue = "";
+
   http = inject(HttpClient);
 
   constructor(
@@ -34,16 +39,11 @@ export class All implements OnInit {
     private updateModalService: UpdateModalService
   ) {}
 
-  // ----------------------------------------
-  // 🔥 On component load → fetch all employees
-  // ----------------------------------------
   ngOnInit(): void {
     this.getEmployee();
   }
 
-  // ----------------------------------------
-  // 🔥 Fetch all employees from API
-  // ----------------------------------------
+  // fetch all employee data
   getEmployee() {
     const token = localStorage.getItem("token");
 
@@ -53,34 +53,56 @@ export class All implements OnInit {
 
     this.http.get("http://localhost:3000/api/employee/getall", { headers })
       .subscribe((res: any) => {
+
         this.allData = res;
-        this.filteredData = res;  // initial view = full list
-        console.log("Employees Loaded:", this.allData);
+        this.filteredData = res;
+
+        // extract unique department list
+        this.departmentList = [...new Set(res.map((e: any) => e.department))];
       });
   }
 
-  // ----------------------------------------
-  // 🔎 Search employees (UI only)
-  // ----------------------------------------
+  // search filter
   search(event: any) {
-    const value = event.target.value.toLowerCase();
-
-    if (!value.trim()) {
-      this.filteredData = [...this.allData];
-      return;
-    }
-
-    this.filteredData = this.allData.filter((emp) =>
-      emp.name.toLowerCase().includes(value) ||
-      emp.email.toLowerCase().includes(value) ||
-      emp.department.toLowerCase().includes(value) ||
-      emp.position.toLowerCase().includes(value)
-    );
+    this.searchValue = event.target.value.toLowerCase();
+    this.applyFilters();
   }
 
-  // ----------------------------------------
-  // 🗑 Delete Employee → Confirmation Popup
-  // ----------------------------------------
+  // department filter
+  filterDepartment(event: any) {
+    this.selectedDepartment = event.target.value.toLowerCase();
+    this.applyFilters();
+  }
+
+  // gender filter
+  filterGender(event: any) {
+    this.selectedGender = event.target.value.toLowerCase();
+    this.applyFilters();
+  }
+
+  // master filter (search + gender + department)
+  applyFilters() {
+    this.filteredData = this.allData.filter((emp) => {
+
+      const matchSearch =
+        emp.name.toLowerCase().includes(this.searchValue) ||
+        emp.email.toLowerCase().includes(this.searchValue) ||
+        emp.department.toLowerCase().includes(this.searchValue) ||
+        emp.position.toLowerCase().includes(this.searchValue);
+
+      const matchDepartment =
+        !this.selectedDepartment ||
+        emp.department.toLowerCase() === this.selectedDepartment;
+
+      const matchGender =
+        !this.selectedGender ||
+        emp.gender.toLowerCase() === this.selectedGender;
+
+      return matchSearch && matchDepartment && matchGender;
+    });
+  }
+
+  // delete confirmation modal
   deleteEmployee(id: string) {
     this.confirmModal.show(
       "Are you sure you want to delete this employee?",
@@ -88,9 +110,7 @@ export class All implements OnInit {
     );
   }
 
-  // ----------------------------------------
-  // 🗑 Final Delete Logic
-  // ----------------------------------------
+  // delete final
   deleteNow(id: string) {
     const token = localStorage.getItem("token");
 
@@ -101,40 +121,24 @@ export class All implements OnInit {
     this.http.delete(`http://localhost:3000/api/employee/delete/${id}`, { headers })
       .subscribe({
         next: () => {
-          // Remove instantly from UI
           this.allData = this.allData.filter(emp => emp._id !== id);
-          this.filteredData = this.filteredData.filter(emp => emp._id !== id);
-
-          console.log("Employee deleted:", id);
-        },
-        error: (err) => {
-          console.error("Delete failed:", err);
+          this.applyFilters();
         }
       });
   }
 
-  // ----------------------------------------
-  // ✏️ Update Employee → Opens modal
-  // ----------------------------------------
+  // update modal
   openUpdate(emp: any) {
     this.updateModalService.show(emp).then((updatedEmployee) => {
-      if (!updatedEmployee) return; // user clicked cancel
+      if (!updatedEmployee) return;
 
-      // Find index in allData
       const index = this.allData.findIndex(e => e._id === updatedEmployee._id);
 
       if (index !== -1) {
-        // Update original list
         this.allData[index] = { ...this.allData[index], ...updatedEmployee };
       }
 
-      // Update filtered list (for search results)
-      const i2 = this.filteredData.findIndex(e => e._id === updatedEmployee._id);
-      if (i2 !== -1) {
-        this.filteredData[i2] = { ...this.filteredData[i2], ...updatedEmployee };
-      }
-
-      console.log("Employee updated:", updatedEmployee);
+      this.applyFilters();
     });
   }
 }
