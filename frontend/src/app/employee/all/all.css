@@ -41,7 +41,7 @@
   height: 42px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   color: white;
   outline: none;
   transition: 0.3s ease;
@@ -61,12 +61,11 @@
   pointer-events: none;
 }
 
-
 /* FILTER SELECT */
 .filter-select {
   padding: 10px 14px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: white;
   outline: none;
@@ -79,8 +78,31 @@
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
 }
 
+/* Enhanced Sorting Styles */
+.sort-arrow {
+  font-size: 10px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  opacity: 0.5;
+}
+
+.sort-active {
+  color: #facc15;
+  opacity: 1;
+  font-weight: bold;
+}
+
+.th:hover .sort-arrow {
+  opacity: 0.8;
+}
+
 /* Force dark background for dropdown options */
 .filter-select option {
+  background-color: #1e293b !important; /* dark blue/gray */
+  color: white !important;
+}
+/* Force dark background for dropdown options */
+.page-select option {
   background-color: #1e293b !important; /* dark blue/gray */
   color: white !important;
 }

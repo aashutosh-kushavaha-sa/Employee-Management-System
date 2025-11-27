@@ -58,13 +58,107 @@
           <thead class="bg-gray-900 text-white text-sm uppercase tracking-wide">
             <tr>
               <th class="th">ID</th>
-              <th class="th">Name</th>
-              <th class="th">Age</th>
+
+              <!-- NAME SORT -->
+              <th
+                class="th cursor-pointer select-none hover:bg-gray-800 transition-colors"
+                (click)="sortData('name')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Name</span>
+                  <div class="flex flex-col ml-2">
+                    <span
+                      class="sort-arrow"
+                      [class.sort-active]="sortColumn === 'name' && sortDirection === 'asc'"
+                      [class.text-gray-400]="sortColumn !== 'name'"
+                      >▲</span
+                    >
+                    <span
+                      class="sort-arrow -mt-1"
+                      [class.sort-active]="sortColumn === 'name' && sortDirection === 'desc'"
+                      [class.text-gray-400]="sortColumn !== 'name'"
+                      >▼</span
+                    >
+                  </div>
+                </div>
+              </th>
+
+              <!-- AGE SORT -->
+              <th
+                class="th cursor-pointer select-none hover:bg-gray-800 transition-colors"
+                (click)="sortData('age')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Age</span>
+                  <div class="flex flex-col ml-2">
+                    <span
+                      class="sort-arrow"
+                      [class.sort-active]="sortColumn === 'age' && sortDirection === 'asc'"
+                      [class.text-gray-400]="sortColumn !== 'age'"
+                      >▲</span
+                    >
+                    <span
+                      class="sort-arrow -mt-1"
+                      [class.sort-active]="sortColumn === 'age' && sortDirection === 'desc'"
+                      [class.text-gray-400]="sortColumn !== 'age'"
+                      >▼</span
+                    >
+                  </div>
+                </div>
+              </th>
+
               <th class="th">Gender</th>
               <th class="th">Email</th>
               <th class="th">Position</th>
-              <th class="th">Department</th>
-              <th class="th">Salary</th>
+
+              <!-- DEPARTMENT SORT -->
+              <th
+                class="th cursor-pointer select-none hover:bg-gray-800 transition-colors"
+                (click)="sortData('department')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Department</span>
+                  <div class="flex flex-col ml-2">
+                    <span
+                      class="sort-arrow"
+                      [class.sort-active]="sortColumn === 'department' && sortDirection === 'asc'"
+                      [class.text-gray-400]="sortColumn !== 'department'"
+                      >▲</span
+                    >
+                    <span
+                      class="sort-arrow -mt-1"
+                      [class.sort-active]="sortColumn === 'department' && sortDirection === 'desc'"
+                      [class.text-gray-400]="sortColumn !== 'department'"
+                      >▼</span
+                    >
+                  </div>
+                </div>
+              </th>
+
+              <!-- SALARY SORT -->
+              <th
+                class="th cursor-pointer select-none hover:bg-gray-800 transition-colors"
+                (click)="sortData('salary')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Salary</span>
+                  <div class="flex flex-col ml-2">
+                    <span
+                      class="sort-arrow"
+                      [class.sort-active]="sortColumn === 'salary' && sortDirection === 'asc'"
+                      [class.text-gray-400]="sortColumn !== 'salary'"
+                      >▲</span
+                    >
+                    <span
+                      class="sort-arrow -mt-1"
+                      [class.sort-active]="sortColumn === 'salary' && sortDirection === 'desc'"
+                      [class.text-gray-400]="sortColumn !== 'salary'"
+                      >▼</span
+                    >
+                  </div>
+                </div>
+              </th>
+
               <th class="th text-center">Update</th>
               <th class="th text-center">Delete</th>
             </tr>
@@ -72,7 +166,7 @@
 
           <!-- TABLE BODY -->
           <tbody class="text-gray-200">
-            @for (emp of filteredData; track $index) {
+            @for (emp of pagedData; track $index) {
             <tr class="row">
               <td class="td text-gray-300">{{ emp._id }}</td>
               <td class="td">{{ emp.name }}</td>
@@ -94,6 +188,79 @@
             }
           </tbody>
         </table>
+      </div>
+
+      <!-- Add this after the table container, before closing the main div -->
+
+      <!-- PAGINATION SECTION -->
+      <div
+        class="flex justify-between items-center mt-6 px-4 py-3 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm"
+      >
+        <!-- Items count -->
+        <div class="text-gray-300 text-sm">
+          Showing {{ getStartIndex() + 1 }}-{{ getEndIndex() }} of
+          {{ filteredData.length }} employees
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="flex items-center gap-2">
+          <!-- Previous Button -->
+          <button
+            class="px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-gray-300 hover:bg-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+          >
+            Previous
+          </button>
+
+          <!-- Page Numbers -->
+          <div class="flex gap-1">
+            <button
+              *ngFor="let page of getPageNumbers()"
+              class="w-8 h-8 rounded-lg border transition-all duration-200"
+              [class]="
+                page === currentPage
+                  ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/30'
+                  : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white'
+              "
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+
+            <!-- Ellipsis for many pages -->
+            <span
+              *ngIf="getTotalPages() > 7 && currentPage < getTotalPages() - 3"
+              class="w-8 h-8 flex items-center justify-center text-gray-400"
+            >
+              ...
+            </span>
+          </div>
+
+          <!-- Next Button -->
+          <button
+            class="px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-gray-300 hover:bg-white/20 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+            (click)="nextPage()"
+            [disabled]="currentPage === getTotalPages()"
+          >
+            Next
+          </button>
+        </div>
+
+        <!-- Page Size Selector -->
+        <div class="flex items-center gap-2 text-gray-300 text-sm">
+          <span>Show:</span>
+          <select
+            class="bg-white/10 border border-white/20 rounded-lg px-2 py-1 text-gray-300 outline-none focus:border-blue-400 page-select"
+            (change)="onPageSizeChange($event) "
+          >
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+          <span>per page</span>
+        </div>
       </div>
     </div>
   </div>
