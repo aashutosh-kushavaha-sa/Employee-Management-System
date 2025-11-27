@@ -1,52 +1,71 @@
 <dialog id="confirmModal" class="modal">
-
-  <div
-    class="modal-box glass-modal-container animate-modal rounded-2xl border-t-8 shadow-2xl"
-    style="border-color: #f87171"
-  >
-
-    <!-- HEADER -->
-    <div class="flex items-center gap-4 mb-4">
-      <fa-icon
-        [icon]="warning"
-        class="w-8 h-8 text-red-400 drop-shadow-lg"
-      ></fa-icon>
-
-      <h3 class="text-2xl font-bold text-red-400 drop-shadow-sm tracking-wide">
-        Confirmation Required
-      </h3>
+  <div class="modal-box glass p-0 overflow-hidden border-t-8 border-red-400 animate-in zoom-in-95 duration-300 max-w-md mx-auto">
+    
+    <!-- Header Section -->
+    <div class="p-6 border-b border-white/10 bg-linear-to-r from-red-500/8 to-transparent">
+      <div class="flex items-center gap-4">
+        <div class="p-3 bg-red-500/20 rounded-xl border border-red-400/30 backdrop-blur-sm">
+          <fa-icon [icon]="warning" class="w-8 h-8 text-red-400"></fa-icon>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold text-red-400">{{ modal.title }}</h3>
+          <p class="text-red-300/80 text-sm mt-1">Dangerous Action</p>
+        </div>
+      </div>
     </div>
 
-    <!-- MESSAGE -->
-    <p class="text-gray-200 text-lg leading-relaxed mb-8">
-      {{ modal.message }}
-    </p>
-
-    <!-- BUTTONS -->
-    <div class="flex justify-end gap-4">
+    <!-- Message Section -->
+    <div class="p-6 bg-white/5">
+      <p class="text-gray-200 text-lg mb-4 leading-relaxed">
+        {{ modal.message }}
+      </p>
       
-      <!-- CONFIRM -->
-      <button
-        class="btn-danger"
-        (click)="modal.confirm()"
-      >
-        Yes, Delete
-      </button>
+      <!-- Verification Input -->
+      <div *ngIf="modal.requiresVerification" class="mt-4 p-4 bg-slate-900/40 rounded-lg border border-red-400/20">
+        <label class="block text-gray-200 text-sm font-medium mb-2">
+          Type <span class="text-red-400 font-mono bg-red-400/10 px-2 py-1 rounded border border-red-400/30">"DELETE"</span> to confirm:
+        </label>
+        <input 
+          type="text" 
+          class="w-full px-4 py-3 bg-slate-900/60 border border-gray-600 rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+          [(ngModel)]="confirmationText"
+          (input)="onConfirmationInput()"
+          placeholder="Type DELETE here..."
+          autocomplete="off"
+        >
+        <div *ngIf="showError" class="flex items-center mt-2 text-red-400 text-sm bg-red-400/10 border border-red-400/30 rounded-lg px-3 py-2 animate-pulse">
+          <fa-icon [icon]="errorIcon" class="w-4 h-4 mr-2"></fa-icon>
+          Please type "DELETE" exactly to confirm deletion
+        </div>
+      </div>
+    </div>
 
-      <!-- CANCEL -->
-      <button
-        class="btn-secondary"
-        (click)="modal.cancel()"
-      >
-        Cancel
-      </button>
+    <!-- Action Buttons -->
+    <div class="p-6 border-t border-white/10 bg-linear-to-t from-slate-900/50 to-transparent">
+      <div class="flex gap-3 justify-end">
+        <button
+          class="btn btn-outline btn-gray gap-2"
+          (click)="cancel()"
+        >
+          <fa-icon [icon]="cancelIcon" class="w-4 h-4"></fa-icon>
+          {{ modal.cancelText }}
+        </button>
 
+        <button
+          class="btn btn-error gap-2 transition-all duration-200 hover:scale-105"
+          (click)="confirm()"
+          [disabled]="isConfirmDisabled"
+        >
+          <fa-icon [icon]="deleteIcon" class="w-4 h-4"></fa-icon>
+          {{ modal.confirmText }}
+        </button>
+      </div>
     </div>
 
   </div>
 
-  <!-- BACKDROP -->
-  <form method="dialog" class="modal-backdrop glass-backdrop">
-    <button></button>
+  <!-- Backdrop -->
+  <form method="dialog" class="modal-backdrop bg-black/60 backdrop-blur-sm">
+    <button (click)="cancel()">close</button>
   </form>
 </dialog>
