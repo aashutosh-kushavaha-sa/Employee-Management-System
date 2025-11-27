@@ -1,63 +1,30 @@
-/* Glassmorphism Modal */
-.glass-modal-container {
-  background: rgba(255, 255, 255, 0.10);
-  border-radius: 20px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.20);
-  padding: 28px;
-  animation: fadeIn 0.25s ease-out;
+/* Add these to your existing glass.css file */
+
+/* Glass effect for message modal */
+.glass {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Backdrop Blur */
-.glass-backdrop {
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+/* Modal animations */
+.animate-in {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Button Base */
-.btn-modal {
-  padding: 10px 22px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.zoom-in-95 {
+  animation-name: zoomIn;
 }
 
-/* Success Button */
-.btn-success {
-  background: linear-gradient(135deg, #22c55e, #15803d);
-}
-.btn-success:hover {
-  transform: translateY(-2px) scale(1.03);
-}
-
-/* Error Button */
-.btn-error {
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-}
-.btn-error:hover {
-  transform: translateY(-2px) scale(1.03);
-}
-
-/* Warning Button */
-.btn-warning {
-  background: linear-gradient(135deg, #facc15, #ca8a04);
-}
-.btn-warning:hover {
-  transform: translateY(-2px) scale(1.03);
-}
-
-/* Modal Animation */
-@keyframes fadeIn {
+@keyframes zoomIn {
   from {
     opacity: 0;
-    transform: translateY(-15px) scale(0.95);
+    transform: scale(0.95) translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1) translateY(0);
   }
 }

@@ -1,69 +1,83 @@
 <dialog id="appModal" class="modal">
-
-  <div
-    class="modal-box glass-modal-container animate-modal rounded-2xl shadow-2xl border-t-8"
-    [ngClass]="{
-      'border-green-500': modal.type === 'success',
-      'border-red-500': modal.type === 'error',
-      'border-yellow-400': modal.type === 'warning'
-    }"
+  <div 
+    class="modal-box glass p-0 overflow-hidden border-t-8 shadow-2xl animate-in zoom-in-95 duration-300 max-w-md mx-auto"
+    [class]="modal.type === 'success' ? 'border-green-500' : modal.type === 'error' ? 'border-red-500' : 'border-yellow-400'"
   >
+    
+    <!-- Header Section -->
+    <div 
+      class="p-6 border-b border-white/10"
+      [class]="modal.type === 'success' ? 'bg-linear-to-r from-green-500/5 to-transparent' : 
+               modal.type === 'error' ? 'bg-linear-to-r from-red-500/5 to-transparent' : 
+               'bg-linear-to-r from-yellow-500/5 to-transparent'"
+    >
+      <div class="flex items-center gap-4">
+        <!-- Icon Container -->
+        <div 
+          class="p-3 rounded-xl border backdrop-blur-sm"
+          [class]="modal.type === 'success' ? 'bg-green-500/20 border-green-400/30' : 
+                   modal.type === 'error' ? 'bg-red-500/20 border-red-400/30' : 
+                   'bg-yellow-500/20 border-yellow-400/30'"
+        >
+          <fa-icon
+            [icon]="modal.type === 'success' ? successIcon : 
+                    modal.type === 'error' ? errorIcon : 
+                    warningIcon"
+            class="w-8 h-8"
+            [class]="modal.type === 'success' ? 'text-green-400' : 
+                     modal.type === 'error' ? 'text-red-400' : 
+                     'text-yellow-400'"
+          ></fa-icon>
+        </div>
 
-    <!-- ICON + TITLE -->
-    <div class="flex items-center gap-4 mb-4">
-      <fa-icon
-        [icon]="sucess"
-        *ngIf="modal.type === 'success'"
-        class="w-8 h-8 text-green-400 drop-shadow-lg"
-      ></fa-icon>
-
-      <fa-icon
-        [icon]="error"
-        *ngIf="modal.type === 'error'"
-        class="w-8 h-8 text-red-400 drop-shadow-lg"
-      ></fa-icon>
-
-      <fa-icon
-        [icon]="warning"
-        *ngIf="modal.type === 'warning'"
-        class="w-8 h-8 text-yellow-400 drop-shadow-lg"
-      ></fa-icon>
-
-      <h3
-        class="text-2xl font-bold tracking-wide drop-shadow-sm"
-        [ngClass]="{
-          'text-green-400': modal.type === 'success',
-          'text-red-400': modal.type === 'error',
-          'text-yellow-300': modal.type === 'warning'
-        }"
-      >
-        {{ modal.type | titlecase }}
-      </h3>
+        <!-- Title -->
+        <div>
+          <h3 
+            class="text-2xl font-bold tracking-wide"
+            [class]="modal.type === 'success' ? 'text-green-400' : 
+                     modal.type === 'error' ? 'text-red-400' : 
+                     'text-yellow-300'"
+          >
+            {{ modal.type | titlecase }}
+          </h3>
+          <p 
+            class="text-sm mt-1 opacity-80"
+            [class]="modal.type === 'success' ? 'text-green-300' : 
+                     modal.type === 'error' ? 'text-red-300' : 
+                     'text-yellow-300'"
+          >
+            {{ getSubtitle() }}
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- MESSAGE -->
-    <p class="text-gray-200 text-lg leading-relaxed mb-8">
-      {{ modal.message }}
-    </p>
-
-    <!-- OK BUTTON -->
-    <div class="text-right">
-      <button
-        class="btn-modal"
-        [ngClass]="{
-          'btn-success': modal.type === 'success',
-          'btn-error': modal.type === 'error',
-          'btn-warning': modal.type === 'warning'
-        }"
-        (click)="modal.close()"
-      >
-        OK
-      </button>
+    <!-- Message Section -->
+    <div class="p-6 bg-white/5">
+      <p class="text-gray-200 text-lg leading-relaxed">
+        {{ modal.message }}
+      </p>
     </div>
+
+    <!-- Action Button -->
+    <div class="p-6 border-t border-white/10 bg-linear-to-t from-slate-900/50 to-transparent">
+      <div class="text-right">
+        <button
+          class="btn gap-2 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105"
+          [class]="modal.type === 'success' ? 'btn-success' : 
+                   modal.type === 'error' ? 'btn-error' : 
+                   'btn-warning'"
+          (click)="closeModal()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- BACKDROP -->
-  <form method="dialog" class="modal-backdrop glass-backdrop">
-    <button></button>
+  <!-- Backdrop -->
+  <form method="dialog" class="modal-backdrop bg-black/60 backdrop-blur-sm">
+    <button (click)="closeModal()">close</button>
   </form>
 </dialog>
