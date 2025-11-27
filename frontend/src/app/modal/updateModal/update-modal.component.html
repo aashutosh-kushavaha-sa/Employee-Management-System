@@ -1,91 +1,86 @@
+<!-- BACKDROP -->
 <div
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity"
+  class="update-backdrop"
+  *ngIf="visible"
+></div>
+
+<!-- MODAL WRAPPER -->
+<div
+  class="update-modal-wrapper"
   *ngIf="visible"
 >
-  <div
-    class="bg-white w-full max-w-xl mx-4 rounded-2xl shadow-2xl border-t-8 border-blue-700 p-8 relative transform transition-all scale-100"
-  >
-    <!-- TITLE -->
-    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-2">
-      <span class="text-blue-700">EMS</span> Update Employee
-    </h2>
-    <p class="text-center text-base text-gray-600 mb-6">
-      Update employee details
-    </p>
+  <div class="update-modal glass-modal">
 
     <!-- CLOSE BUTTON -->
-    <button
-      class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl"
-      (click)="onCancel()"
-    >
-      ✕
-    </button>
+    <button class="close-btn" (click)="onCancel()">✕</button>
 
-    <!-- UPDATE FORM -->
-    <form #f="ngForm" (ngSubmit)="onUpdate(f)" class="space-y-6">
+    <!-- TITLE -->
+    <h2 class="title">
+      <span class="highlight">EMS</span> Update Employee
+    </h2>
+    <p class="subtitle">Update employee details</p>
+
+    <form #f="ngForm" (ngSubmit)="onUpdate(f)" class="form-space">
 
       <!-- NAME -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Full Name</label>
+      <div class="field">
+        <label class="label">Full Name</label>
         <input
           type="text"
           name="name"
           [(ngModel)]="formModel.name"
-          placeholder="Enter full name"
-          class="form-input"
+          class="input"
           required
         />
       </div>
 
       <!-- AGE + GENDER -->
-      <div class="grid grid-cols-2 gap-4">
-        <!-- AGE -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Age</label>
+      <div class="row-2">
+        <div class="field">
+          <label class="label">Age</label>
           <input
             type="number"
             name="age"
             [(ngModel)]="formModel.age"
-            class="form-input"
+            class="input"
             min="18"
             required
           />
         </div>
 
-        <!-- GENDER (READONLY) -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Gender</label>
+        <div class="field">
+          <label class="label">Gender</label>
           <input
             type="text"
             name="gender"
+            class="input disabled"
             [(ngModel)]="formModel.gender"
-            class="form-input bg-gray-100 text-gray-500 cursor-not-allowed"
             disabled
           />
         </div>
       </div>
 
       <!-- EMAIL -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Email</label>
+      <div class="field">
+        <label class="label">Email</label>
         <input
           type="email"
           name="email"
           [(ngModel)]="formModel.email"
-          class="form-input bg-gray-100 text-gray-500 cursor-not-allowed"
+          class="input disabled"
           disabled
         />
       </div>
 
       <!-- DEPARTMENT + POSITION -->
-      <div class="grid grid-cols-2 gap-4">
-        <!-- DEPARTMENT -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Department</label>
+      <div class="row-2">
+
+        <div class="field">
+          <label class="label">Department</label>
           <select
             name="department"
+            class="input"
             [(ngModel)]="formModel.department"
-            class="form-input"
             required
           >
             <option value="">Select</option>
@@ -100,60 +95,49 @@
           </select>
         </div>
 
-        <!-- POSITION -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Position</label>
+        <div class="field">
+          <label class="label">Position</label>
           <select
             name="position"
+            class="input"
             [(ngModel)]="formModel.position"
-            class="form-input"
             required
           >
             <option value="">Select</option>
             <option>Software Engineer</option>
             <option>Java Developer</option>
             <option>QA Engineer</option>
-            <option>Network Engineer</option>
             <option>HR Executive</option>
+            <option>Network Engineer</option>
             <option>Data Analyst</option>
           </select>
         </div>
       </div>
 
       <!-- SALARY -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Salary</label>
+      <div class="field">
+        <label class="label">Salary</label>
         <input
           type="number"
           name="salary"
           [(ngModel)]="formModel.salary"
-          class="form-input"
-          min="0"
+          class="input"
           required
         />
       </div>
 
       <!-- BUTTONS -->
-      <div class="flex items-center justify-between pt-4">
-        <!-- CANCEL -->
-        <button
-          type="button"
-          class="btn-cancel"
-          (click)="onCancel()"
-        >
+      <div class="actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()">
           Cancel
         </button>
 
-        <!-- UPDATE -->
-        <button
-          type="submit"
-          class="btn-update"
-          [disabled]="loading"
-        >
+        <button type="submit" class="btn-update" [disabled]="loading">
           <span *ngIf="loading">Updating...</span>
           <span *ngIf="!loading">Update</span>
         </button>
       </div>
+
     </form>
   </div>
 </div>
