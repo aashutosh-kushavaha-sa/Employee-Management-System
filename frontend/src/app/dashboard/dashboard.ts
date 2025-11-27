@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,9 +12,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
-
   http = inject(HttpClient);
-
+  adminName = '';
   employeeList: any[] = [];
   totalEmployees = 0;
   allDepartments: any[] = [];
@@ -27,6 +27,12 @@ export class DashboardComponent implements OnInit {
   deptWiseCount: any[] = [];
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.adminName = decoded?.name || 'Admin';
+    }
     this.getEmployee();
   }
 
@@ -40,7 +46,6 @@ export class DashboardComponent implements OnInit {
     this.http
       .get('http://localhost:3000/api/employee/getall', { headers })
       .subscribe((res: any) => {
-
         // Save full list
         this.employeeList = res;
         this.totalEmployees = res.length;
@@ -64,7 +69,9 @@ export class DashboardComponent implements OnInit {
         // Salary Analytics
         const salaries = res.map((e: any) => e.salary);
 
-        this.avgSalary = Math.round(salaries.reduce((a: any, b: any) => a + b, 0) / salaries.length);
+        this.avgSalary = Math.round(
+          salaries.reduce((a: any, b: any) => a + b, 0) / salaries.length
+        );
         this.highestSalary = Math.max(...salaries);
         this.lowestSalary = Math.min(...salaries);
 
