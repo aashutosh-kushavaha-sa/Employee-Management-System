@@ -1,7 +1,25 @@
+<!-- MOBILE TOGGLE BUTTON -->
+<button
+  class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-lg shadow-lg"
+  (click)="sidebarOpen = !sidebarOpen"
+>
+  <fa-icon [icon]="faBars"></fa-icon>
+</button>
+
+<!-- RESPONSIVE SIDEBAR -->
 <div
-  class="h-screen w-64 fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl"
-  style="background: linear-gradient(160deg, rgba(15,23,42,0.95), rgba(30,41,59,0.85));
-         backdrop-filter: blur(12px);"
+  class="
+    h-screen fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl
+    transition-all duration-300
+    z-40
+    bg-opacity-95
+    lg:w-64 w-64
+    "
+  [ngClass]="{
+    '-translate-x-full': !sidebarOpen,
+    'translate-x-0': sidebarOpen
+  }"
+  style="background: linear-gradient(160deg, rgba(15,23,42,0.95), rgba(30,41,59,0.85)); backdrop-filter: blur(12px);"
 >
 
   <!-- Logo -->
@@ -19,6 +37,7 @@
       routerLink="/dashboard"
       routerLinkActive="active-link"
       class="nav-item"
+      (click)="sidebarOpen = false"
     >
       <fa-icon [icon]="faHouse" class="nav-icon"></fa-icon>
       <span>Dashboard</span>
@@ -41,19 +60,19 @@
 
     <!-- DROPDOWN -->
     <div *ngIf="employeesOpen" class="dropdown">
-      <a routerLink="/employees/all" class="dropdown-item">
+      <a routerLink="/employees/all" class="dropdown-item" (click)="sidebarOpen = false">
         <fa-icon [icon]="faList" class="text-yellow-300 w-4"></fa-icon>
         All Employees
       </a>
 
-      <a routerLink="/employees/add" class="dropdown-item">
+      <a routerLink="/employees/add" class="dropdown-item" (click)="sidebarOpen = false">
         <fa-icon [icon]="faAddEmp" class="text-yellow-300 w-4"></fa-icon>
         Add Employee
       </a>
     </div>
 
     <!-- CREATE ADMIN -->
-    <a routerLink="/signup" class="nav-item">
+    <a routerLink="/signup" class="nav-item" (click)="sidebarOpen = false">
       <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
       <span>Create Admin</span>
     </a>
@@ -68,3 +87,10 @@
     Logout
   </button>
 </div>
+
+<!-- MOBILE SCREEN OVERLAY -->
+<div
+  class="fixed inset-0 bg-black/40 z-30 lg:hidden transition-opacity duration-300"
+  *ngIf="sidebarOpen"
+  (click)="sidebarOpen = false"
+></div>

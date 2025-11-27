@@ -12,6 +12,7 @@ import {
   faPersonCirclePlus,
   faPersonCircleMinus,
   faUserPen,
+  faBars,
   faUsersGear
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -34,8 +35,10 @@ export class SidebarComponent {
   faDeleteEmp = faPersonCircleMinus;
   faUpdate = faUserPen;
   faManageEmp = faUsersGear;
-
+  faBars = faBars;
   employeesOpen = false;
+  sidebarOpen = true; // default open on desktop
+
 
   constructor(private router: Router) {}
 

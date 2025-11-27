@@ -69,3 +69,20 @@
     transform: translateY(0);
   }
 }
+
+/* Sidebar Responsive Fix */
+@media (max-width: 1024px) {
+  div[fixed] {
+    width: 16rem !important;
+  }
+}
+
+/* Smooth Transition */
+[ngClass] {
+  transition: transform 0.3s ease;
+}
+
+/* Fix body overflow when sidebar open */
+body.sidebar-open {
+  overflow: hidden;
+}
