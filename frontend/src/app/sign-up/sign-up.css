@@ -1,0 +1,84 @@
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Labels */
+.label {
+  font-size: 14px;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.input:focus {
+  border-color: #60a5fa;
+  background: rgba(255,255,255,0.17);
+  box-shadow: 0 0 8px rgba(96,165,250,0.4);
+}
+
+/* Input Error */
+.input-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 5px rgba(239,68,68,0.5);
+}
+
+/* Validation text */
+.error {
+  font-size: 13px;
+  color: #fca5a5;
+  margin-top: 5px;
+}
+
+/* Custom error box for password mismatch */
+.error-box {
+  border: 1px solid #ef4444;
+  background: rgba(239,68,68,0.15);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+  color: #fecaca;
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+  transition: 0.25s ease;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: linear-gradient(135deg,#1d4ed8,#1e40af);
+}
+
+.btn-submit:active {
+  transform: scale(.97);
+}
