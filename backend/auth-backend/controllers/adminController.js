@@ -2,8 +2,8 @@ const Admin = require("../models/adminModel");
 const jwt = require("jsonwebtoken");
 
 // Generate JWT Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+const generateToken = (id,name) => {
+  return jwt.sign({ id , name}, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
 
 
@@ -36,7 +36,7 @@ exports.loginAdmin = async (req, res) => {
     }
 
     // 3. Send token
-    const token = generateToken(admin._id);
+    const token = generateToken(admin._id,admin.name);
     res.status(200).json({
       message: "Login successful",
       token,
