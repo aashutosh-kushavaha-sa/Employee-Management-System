@@ -6,6 +6,8 @@ import { Pagenotfound } from './pagenotfound/pagenotfound';
 import { All } from './employee/all/all';
 import { Add } from './employee/add/add';
 import { AuthGuard } from './guard/auth-guard';
+import { Chart } from 'chart.js';
+import { AnalyticsChartsComponent } from './simple-charts/simple-charts';
 
 export const routes: Routes = [
   {
@@ -35,6 +37,11 @@ export const routes: Routes = [
   {
     path:'employees/add',
     component : Add,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'chart',
+    component : AnalyticsChartsComponent,
     canActivate: [AuthGuard]
   },
   {
