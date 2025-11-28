@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -15,16 +15,18 @@ import {
   faUsersGear
 } from '@fortawesome/free-solid-svg-icons';
 
+import { LogoutModalComponent } from "../modal/logout-modal/logout-modal";
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css'],
-  imports: [CommonModule, RouterModule, FontAwesomeModule],
+  imports: [CommonModule, RouterModule, FontAwesomeModule, LogoutModalComponent],
 })
 export class SidebarComponent {
 
-  // Icons
+  // ICONS
   faHouse = faHouse;
   faLogout = faRightFromBracket;
   userTie = faUserTie;
@@ -36,22 +38,36 @@ export class SidebarComponent {
   faChartArea = faChartArea;
 
   employeesOpen = false;
-  sidebarOpen = true; // default open on desktop
+  sidebarOpen = true;
 
   constructor(private router: Router) {}
+
+  // Get reference to logout modal
+  @ViewChild(LogoutModalComponent) logoutModal!: LogoutModalComponent;
 
   toggleEmployees() {
     this.employeesOpen = !this.employeesOpen;
   }
 
   onNavClick() {
-    // Only close sidebar on mobile devices, not on desktop
     if (window.innerWidth < 1024) {
       this.sidebarOpen = false;
     }
   }
 
-  logout() {
+  // Open logout confirmation modal
+  openLogoutModal() {
+    if (this.logoutModal) {
+      this.logoutModal.show();
+      // Close sidebar on mobile when opening modal
+      if (window.innerWidth < 1024) {
+        this.sidebarOpen = false;
+      }
+    }
+  }
+
+  // Final logout logic called from modal
+  logoutNow() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
