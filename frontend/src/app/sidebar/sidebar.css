@@ -1,14 +1,18 @@
-/* Container adjusts using Tailwind in HTML */
-
-/* ACTIVE LINK STYLE */
+/* Active Link Style */
 .active-link {
-  background: rgba(255, 255, 255, 0.12) !important;
-  color: #fff !important;
+  background: rgba(59, 130, 246, 0.2) !important;
+  border-left: 4px solid #FACC15 !important;
+  color: #ffffff !important;
   font-weight: 600;
-  border-left: 4px solid #FACC15;
 }
 
-/* NAV ITEM */
+.active-dropdown-item {
+  background: rgba(251, 191, 36, 0.2) !important;
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Nav Item */
 .nav-item {
   display: flex;
   align-items: center;
@@ -18,24 +22,25 @@
   font-size: 0.9rem;
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.25s;
+  transition: all 0.25s ease;
   border: 1px solid transparent;
+  border-left: 4px solid transparent;
 }
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.10);
   border-color: rgba(255, 255, 255, 0.18);
-  color: #fff;
+  color: #ffffff;
 }
 
-/* NAV ICON */
+/* Nav Icon */
 .nav-icon {
   width: 20px;
   color: #FACC15;
   opacity: 0.9;
 }
 
-/* DROPDOWN MENU */
+/* Dropdown Menu */
 .dropdown {
   padding-left: 18px;
   margin-top: 6px;
@@ -50,15 +55,15 @@
   color: #cbd5e1;
   border-radius: 8px;
   font-size: 0.85rem;
-  transition: 0.25s;
+  transition: all 0.25s ease;
 }
 
 .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.10);
-  color: white;
+  color: #ffffff;
 }
 
-/* ANIMATION */
+/* Animation */
 @keyframes fadeSlideDown {
   from {
     opacity: 0;
@@ -70,19 +75,14 @@
   }
 }
 
-/* Sidebar Responsive Fix */
+/* Mobile Responsive */
 @media (max-width: 1024px) {
-  div[fixed] {
-    width: 16rem !important;
+  .sidebar-mobile {
+    width: 16rem;
   }
 }
 
-/* Smooth Transition */
-[ngClass] {
-  transition: transform 0.3s ease;
-}
-
-/* Fix body overflow when sidebar open */
-body.sidebar-open {
-  overflow: hidden;
+/* Smooth sidebar transitions */
+.sidebar-transition {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

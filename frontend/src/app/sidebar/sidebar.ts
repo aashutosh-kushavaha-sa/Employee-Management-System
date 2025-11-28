@@ -10,8 +10,6 @@ import {
   faList,
   faCircleArrowDown,
   faPersonCirclePlus,
-  faPersonCircleMinus,
-  faUserPen,
   faBars,
   faChartArea,
   faUsersGear
@@ -33,19 +31,24 @@ export class SidebarComponent {
   faList = faList;
   faArrowDown = faCircleArrowDown;
   faAddEmp = faPersonCirclePlus;
-  faDeleteEmp = faPersonCircleMinus;
-  faUpdate = faUserPen;
   faManageEmp = faUsersGear;
   faBars = faBars;
   faChartArea = faChartArea;
+
   employeesOpen = false;
   sidebarOpen = true; // default open on desktop
-
 
   constructor(private router: Router) {}
 
   toggleEmployees() {
     this.employeesOpen = !this.employeesOpen;
+  }
+
+  onNavClick() {
+    // Only close sidebar on mobile devices, not on desktop
+    if (window.innerWidth < 1024) {
+      this.sidebarOpen = false;
+    }
   }
 
   logout() {

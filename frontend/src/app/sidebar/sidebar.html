@@ -1,25 +1,16 @@
 <!-- MOBILE TOGGLE BUTTON -->
 <button
-  class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-lg shadow-lg"
+  class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200"
   (click)="sidebarOpen = !sidebarOpen"
 >
   <fa-icon [icon]="faBars"></fa-icon>
 </button>
 
-<!-- RESPONSIVE SIDEBAR -->
+<!-- SIDEBAR -->
 <div
-  class="
-    h-screen fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl
-    transition-all duration-300
-    z-40
-    bg-opacity-95
-    lg:w-64 w-64
-    "
-  [ngClass]="{
-    '-translate-x-full': !sidebarOpen,
-    'translate-x-0': sidebarOpen
-  }"
-  style="background: linear-gradient(160deg, rgba(15,23,42,0.95), rgba(30,41,59,0.85)); backdrop-filter: blur(12px);"
+  class="h-screen fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl transition-all duration-300 z-40 bg-gradient-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl w-64"
+  [class.-translate-x-full]="!sidebarOpen"
+  [class.translate-x-0]="sidebarOpen"
 >
 
   <!-- Logo -->
@@ -30,14 +21,14 @@
   </div>
 
   <!-- NAV MENU -->
-  <nav class="flex flex-col gap-2">
+  <nav class="flex flex-col gap-2 flex-1">
 
-    <!-- HOME -->
+    <!-- DASHBOARD -->
     <a
       routerLink="/dashboard"
       routerLinkActive="active-link"
       class="nav-item"
-      (click)="sidebarOpen = false"
+      (click)="onNavClick()"
     >
       <fa-icon [icon]="faHouse" class="nav-icon"></fa-icon>
       <span>Dashboard</span>
@@ -54,50 +45,68 @@
       <fa-icon
         [icon]="faArrowDown"
         class="ml-auto transition-transform w-4"
-        [ngClass]="{ 'rotate-180': employeesOpen }"
+        [class.rotate-180]="employeesOpen"
       ></fa-icon>
     </button>
 
-    <!-- DROPDOWN -->
+    <!-- EMPLOYEES DROPDOWN -->
     <div *ngIf="employeesOpen" class="dropdown">
-      <a routerLink="/employees/all" class="dropdown-item" (click)="sidebarOpen = false">
+      <a 
+        routerLink="/employees/all" 
+        class="dropdown-item" 
+        (click)="onNavClick()"
+        routerLinkActive="active-dropdown-item"
+      >
         <fa-icon [icon]="faList" class="text-yellow-300 w-4"></fa-icon>
         All Employees
       </a>
 
-      <a routerLink="/employees/add" class="dropdown-item" (click)="sidebarOpen = false">
+      <a 
+        routerLink="/employees/add" 
+        class="dropdown-item" 
+        (click)="onNavClick()"
+        routerLinkActive="active-dropdown-item"
+      >
         <fa-icon [icon]="faAddEmp" class="text-yellow-300 w-4"></fa-icon>
         Add Employee
       </a>
     </div>
 
-
-     <!--Analytics-->
-    <a routerLink="/chart" class="nav-item" (click)="sidebarOpen = false">
+    <!-- ANALYTICS -->
+    <a 
+      routerLink="/chart" 
+      routerLinkActive="active-link"
+      class="nav-item" 
+      (click)="onNavClick()"
+    >
       <fa-icon [icon]="faChartArea" class="nav-icon"></fa-icon>
       <span>Analytics</span>
     </a>
     
     <!-- CREATE ADMIN -->
-    <a routerLink="/signup" class="nav-item" (click)="sidebarOpen = false">
+    <a 
+      routerLink="/signup" 
+      routerLinkActive="active-link"
+      class="nav-item" 
+      (click)="onNavClick()"
+    >
       <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
       <span>Create Admin</span>
     </a>
-
     
   </nav>
 
   <!-- LOGOUT -->
   <button
     (click)="logout()"
-    class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg"
+    class="nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg mt-auto"
   >
     <fa-icon [icon]="faLogout" class="nav-icon"></fa-icon>
-    Logout
+    <span>Logout</span>
   </button>
 </div>
 
-<!-- MOBILE SCREEN OVERLAY -->
+<!-- MOBILE OVERLAY -->
 <div
   class="fixed inset-0 bg-black/40 z-30 lg:hidden transition-opacity duration-300"
   *ngIf="sidebarOpen"
