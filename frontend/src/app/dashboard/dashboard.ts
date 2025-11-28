@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.http
-      .get('http://localhost:3000/api/employee/getall', { headers })
+      .get(`${environment.apiUrl}/api/employee/getall`, { headers })
       .subscribe((res: any) => {
         // Save full list
         this.employeeList = res;

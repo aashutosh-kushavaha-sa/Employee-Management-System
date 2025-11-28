@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { UpdateModalService } from './update-modal.service';
 import { ModalService } from '../alertModel/modal.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-update-modal',
@@ -31,7 +32,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
   loading = false;
   private sub!: Subscription;
 
-  baseUrl = 'http://localhost:3000/api/employee';
+  baseUrl = `${environment.apiUrl}/api/employee`;
 
   constructor(
     private updateModalService: UpdateModalService,

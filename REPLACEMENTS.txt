@@ -1,0 +1,9 @@
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/dashboard/dashboard.ts : http://localhost:3000/api/employee/getall -> ${environment.apiUrl}/api/employee/getall
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/employee/add/add.ts : http://localhost:3000/api/employee/add -> ${environment.apiUrl}/api/employee/add
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/employee/all/all.ts : http://localhost:3000/api/employee/getall -> ${environment.apiUrl}/api/employee/getall
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/employee/all/all.ts : http://localhost:3000/api/employee/delete/${id} -> ${environment.apiUrl}/api/employee/delete/${id}
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/login/login.ts : http://localhost:3003/api/auth/login -> ${environment.apiUrl}/api/auth/login
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/modal/updateModal/update-modal.component.ts : http://localhost:3000/api/employee -> ${environment.apiUrl}/api/employee
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/sign-up/sign-up.ts : http://localhost:3003/api/auth/signUp -> ${environment.apiUrl}/api/auth/signUp
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/app/simple-charts/simple-charts.ts : http://localhost:3000/api/employee/getall -> ${environment.apiUrl}/api/employee/getall
+/mnt/data/ems_final_unzip/Employee-Management-System-final/frontend/src/environments/environment.ts : http://localhost:8080 -> ${environment.apiUrl}

@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { ModalService } from '../modal/alertModel/modal.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,7 +24,7 @@ export class SignUpComponent {
     terms: false,
   };
 
-  private apiUrl = 'http://localhost:3003/api/auth/signUp';
+  private apiUrl = `${environment.apiUrl}/api/auth/signUp`;
 
   submitted: boolean = false;
   loading: boolean = false;

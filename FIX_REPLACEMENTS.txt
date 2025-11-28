@@ -1,0 +1,18 @@
+app/employee/all/all.ts:
+  - Replaced 1 quoted '${environment.apiUrl}' occurrences with backtick template
+
+app/modal/updateModal/update-modal.component.ts:
+  - Replaced 1 quoted '${environment.apiUrl}' occurrences with backtick template
+  - Inserted import: import { environment } from '../../../environments/environment';
+
+app/simple-charts/simple-charts.ts:
+  - Replaced 1 quoted '${environment.apiUrl}' occurrences with backtick template
+  - Inserted import: import { environment } from '../../environments/environment';
+
+environments/environment.ts:
+  - Replaced 1 quoted '${environment.apiUrl}' occurrences with backtick template
+  - Inserted import: import { environment } from './environment';
+
+environments/environment.prod.ts:
+  - Inserted import: import { environment } from './environment';
+

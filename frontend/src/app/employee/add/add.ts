@@ -5,6 +5,8 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { SidebarComponent } from '../../sidebar/sidebar';
 import { Router } from '@angular/router';
 import { ModalService } from '../../modal/alertModel/modal.service';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-employee-add',
@@ -74,7 +76,7 @@ export class Add implements OnInit {
       Authorization: token ?? '',
     });
 
-    this.http.post('http://localhost:3000/api/employee/add', empData, { headers }).subscribe({
+    this.http.post(`${environment.apiUrl}/api/employee/add`, empData, { headers }).subscribe({
       next: (res) => {
         console.log('Employee added:', res);
         this.modal.show('Employee added successfully!', 'success', () => {

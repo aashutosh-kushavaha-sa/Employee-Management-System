@@ -1,0 +1,15 @@
+FIX: Corrected environment files to remove self-imports and ensure valid exports.
+- frontend/src/environments/environment.ts
+- frontend/src/environments/environment.prod.ts
+
+The environment files MUST export a plain object named `environment`.
+After deployment, update production apiUrl in environment.prod.ts.
+
+Now run:
+  cd backend/merged-backend
+  npm install
+  npm start
+
+  cd frontend
+  npm install
+  ng serve -o

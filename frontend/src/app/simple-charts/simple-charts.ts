@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import { SidebarComponent } from "../sidebar/sidebar";
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-analytics-charts',
@@ -46,7 +47,7 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
       Authorization: token || ''
     });
 
-    this.http.get('http://localhost:3000/api/employee/getall', { headers })
+    this.http.get(`${environment.apiUrl}/api/employee/getall`, { headers })
       .subscribe({
         next: (res: any) => {
           this.employees = res;

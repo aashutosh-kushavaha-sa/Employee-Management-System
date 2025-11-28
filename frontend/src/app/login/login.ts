@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalService } from '../modal/alertModel/modal.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class Login {
   loading = false;
   errorMessage: string | null = null;
 
-  private apiUrl = 'http://localhost:3003/api/auth/login';
+  private apiUrl = `${environment.apiUrl}/api/auth/login`;
 
   constructor(
     private fb: FormBuilder,

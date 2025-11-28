@@ -9,6 +9,8 @@ import { UpdateModalComponent } from '../../modal/updateModal/update-modal.compo
 
 // icons
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-all',
@@ -61,7 +63,7 @@ export class All implements OnInit {
     });
 
     this.http
-      .get('http://localhost:3000/api/employee/getall', { headers })
+      .get(`${environment.apiUrl}/api/employee/getall`, { headers })
       .subscribe((res: any) => {
         this.allData = res;
         this.filteredData = res;
@@ -236,7 +238,7 @@ export class All implements OnInit {
       Authorization: token ?? '',
     });
 
-    this.http.delete(`http://localhost:3000/api/employee/delete/${id}`, { headers }).subscribe({
+    this.http.delete(`${environment.apiUrl}/api/employee/delete/${id}`, { headers }).subscribe({
       next: () => {
         this.allData = this.allData.filter((emp) => emp._id !== id);
         this.applyFilters();

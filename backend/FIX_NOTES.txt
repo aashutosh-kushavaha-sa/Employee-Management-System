@@ -1,0 +1,8 @@
+Existing route files: ['adminRoutes.js', 'employeeRoutes.js']
+Auth candidate: /mnt/data/ems_fix_unzip/Employee-Management-System-deploy/backend/merged-backend/controllers/adminController.js
+Employee candidate: /mnt/data/ems_fix_unzip/Employee-Management-System-deploy/backend/merged-backend/routes/employeeRoutes.js
+Created routes/auth.routes.js from candidate.
+Created routes/employee.routes.js from candidate.
+Renamed adminRoutes.js -> adminRoutes.js.bak to avoid conflicts.
+Renamed employeeRoutes.js -> employeeRoutes.js.bak to avoid conflicts.
+Ensured server.js references auth.routes and employee.routes.

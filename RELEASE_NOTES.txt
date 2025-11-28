@@ -1,0 +1,20 @@
+
+Release notes - automated changes applied:
+
+- Added frontend/src/environments/environment.ts (development) and environment.prod.ts (production)
+- Updated frontend/angular.json to add fileReplacements for production build
+- Replaced hard-coded API URLs found in TypeScript files with template usage of environment.apiUrl
+  (list of replacements saved in REPLACEMENTS.txt)
+- Added .gitignore
+- Removed node_modules folders
+
+Please review replaced locations in REPLACEMENTS.txt and run:
+  cd backend/merged-backend
+  npm install
+  npm start
+  cd frontend
+  npm install
+  ng serve
+  ng build --configuration production
+
+Remember to update environment.prod.ts apiUrl with your deployed backend URL.
