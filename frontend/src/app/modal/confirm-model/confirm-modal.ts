@@ -57,7 +57,6 @@ export class ConfirmModalComponent {
     this.isConfirmed = false;
   }
 
-  // Helper method to check if confirm button should be disabled
   get isConfirmDisabled(): boolean {
     return this.modal.requiresVerification && !this.isConfirmed;
   }

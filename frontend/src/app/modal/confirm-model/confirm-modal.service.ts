@@ -19,10 +19,10 @@ export class ConfirmModalService {
   confirmText = "Delete";
   cancelText = "Cancel";
   title = "Confirmation Required";
+  visible = false;
 
   show(config: ModalConfig | string, onConfirm?: () => void) {
     if (typeof config === 'string') {
-      // Backward compatibility with string message
       this.message = config;
       this.onConfirm = onConfirm || null;
       this.requiresVerification = false;
@@ -30,7 +30,6 @@ export class ConfirmModalService {
       this.cancelText = "Cancel";
       this.title = "Confirmation Required";
     } else {
-      // New configuration object
       this.message = config.message;
       this.onConfirm = config.onConfirm;
       this.requiresVerification = config.requiresVerification || false;
@@ -39,11 +38,11 @@ export class ConfirmModalService {
       this.title = config.title || "Confirmation Required";
     }
     
-    (document.getElementById('confirmModal') as any).showModal();
+    this.visible = true;
   }
 
   confirm() {
-    (document.getElementById('confirmModal') as any).close();
+    this.visible = false;
     this.resetVerification();
     if (this.onConfirm) {
       this.onConfirm();
@@ -51,7 +50,7 @@ export class ConfirmModalService {
   }
 
   cancel() {
-    (document.getElementById('confirmModal') as any).close();
+    this.visible = false;
     this.resetVerification();
   }
 
