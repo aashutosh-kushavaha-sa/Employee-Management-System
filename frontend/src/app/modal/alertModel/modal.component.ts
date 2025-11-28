@@ -5,8 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faCircleCheck,
   faBug,
-  faTriangleExclamation,
-  faTimes
+  faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -22,7 +21,6 @@ export class ModalComponent {
   successIcon = faCircleCheck;
   errorIcon = faBug;
   warningIcon = faTriangleExclamation;
-  closeIcon = faTimes;
 
   getSubtitle(): string {
     switch (this.modal.type) {

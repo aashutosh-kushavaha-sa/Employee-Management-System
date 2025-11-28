@@ -13,6 +13,7 @@ export class ModalService {
   message = "";
   type: 'success' | 'error' | 'warning' = 'success';
   onClose: (() => void) | null = null;
+  visible = false;
 
   // Method 1: Simple string with type
   show(
@@ -23,7 +24,7 @@ export class ModalService {
     this.message = msg;
     this.type = type;
     this.onClose = onClose ?? null;
-    (document.getElementById('appModal') as any).showModal();
+    this.visible = true;
   }
 
   // Method 2: Configuration object (more flexible)
@@ -31,11 +32,11 @@ export class ModalService {
     this.message = config.message;
     this.type = config.type;
     this.onClose = config.onClose ?? null;
-    (document.getElementById('appModal') as any).showModal();
+    this.visible = true;
   }
 
   close() {
-    (document.getElementById('appModal') as any).close();
+    this.visible = false;
     if (this.onClose) {
       this.onClose();
     }

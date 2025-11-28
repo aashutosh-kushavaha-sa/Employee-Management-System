@@ -1,83 +1,59 @@
-<dialog id="appModal" class="modal">
-  <div 
-    class="modal-box glass p-0 overflow-hidden border-t-8 shadow-2xl animate-in zoom-in-95 duration-300 max-w-md mx-auto"
-    [class]="modal.type === 'success' ? 'border-green-500' : modal.type === 'error' ? 'border-red-500' : 'border-yellow-400'"
-  >
+<div
+  *ngIf="modal.visible"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
+  <div class="bg-linear-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl p-8 rounded-2xl border border-white/20 shadow-2xl w-full max-w-md animate-scale-in">
     
-    <!-- Header Section -->
-    <div 
-      class="p-6 border-b border-white/10"
-      [class]="modal.type === 'success' ? 'bg-linear-to-r from-green-500/5 to-transparent' : 
-               modal.type === 'error' ? 'bg-linear-to-r from-red-500/5 to-transparent' : 
-               'bg-linear-to-r from-yellow-500/5 to-transparent'"
-    >
-      <div class="flex items-center gap-4">
-        <!-- Icon Container -->
-        <div 
-          class="p-3 rounded-xl border backdrop-blur-sm"
-          [class]="modal.type === 'success' ? 'bg-green-500/20 border-green-400/30' : 
-                   modal.type === 'error' ? 'bg-red-500/20 border-red-400/30' : 
-                   'bg-yellow-500/20 border-yellow-400/30'"
-        >
-          <fa-icon
-            [icon]="modal.type === 'success' ? successIcon : 
-                    modal.type === 'error' ? errorIcon : 
-                    warningIcon"
-            class="w-8 h-8"
-            [class]="modal.type === 'success' ? 'text-green-400' : 
-                     modal.type === 'error' ? 'text-red-400' : 
-                     'text-yellow-400'"
-          ></fa-icon>
-        </div>
-
-        <!-- Title -->
-        <div>
-          <h3 
-            class="text-2xl font-bold tracking-wide"
-            [class]="modal.type === 'success' ? 'text-green-400' : 
-                     modal.type === 'error' ? 'text-red-400' : 
-                     'text-yellow-300'"
-          >
-            {{ modal.type | titlecase }}
-          </h3>
-          <p 
-            class="text-sm mt-1 opacity-80"
-            [class]="modal.type === 'success' ? 'text-green-300' : 
-                     modal.type === 'error' ? 'text-red-300' : 
-                     'text-yellow-300'"
-          >
-            {{ getSubtitle() }}
-          </p>
-        </div>
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div 
+        class="w-16 h-16 mx-auto mb-4 rounded-2xl border flex items-center justify-center"
+        [class]="modal.type === 'success' ? 'bg-green-500/20 border-green-400/30' : 
+                 modal.type === 'error' ? 'bg-red-500/20 border-red-400/30' : 
+                 'bg-yellow-500/20 border-yellow-400/30'"
+      >
+        <fa-icon
+          [icon]="modal.type === 'success' ? successIcon : 
+                  modal.type === 'error' ? errorIcon : 
+                  warningIcon"
+          class="w-8 h-8"
+          [class]="modal.type === 'success' ? 'text-green-400' : 
+                   modal.type === 'error' ? 'text-red-400' : 
+                   'text-yellow-400'"
+        ></fa-icon>
       </div>
-    </div>
-
-    <!-- Message Section -->
-    <div class="p-6 bg-white/5">
-      <p class="text-gray-200 text-lg leading-relaxed">
-        {{ modal.message }}
+      <h2 
+        class="text-2xl font-bold mb-2"
+        [class]="modal.type === 'success' ? 'text-green-400' : 
+                 modal.type === 'error' ? 'text-red-400' : 
+                 'text-yellow-300'"
+      >
+        {{ modal.type | titlecase }}
+      </h2>
+      <p 
+        class="text-sm font-medium"
+        [class]="modal.type === 'success' ? 'text-green-300' : 
+                 modal.type === 'error' ? 'text-red-300' : 
+                 'text-yellow-300'"
+      >
+        {{ getSubtitle() }}
       </p>
     </div>
 
-    <!-- Action Button -->
-    <div class="p-6 border-t border-white/10 bg-linear-to-t from-slate-900/50 to-transparent">
-      <div class="text-right">
-        <button
-          class="btn gap-2 px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105"
-          [class]="modal.type === 'success' ? 'btn-success' : 
-                   modal.type === 'error' ? 'btn-error' : 
-                   'btn-warning'"
-          (click)="closeModal()"
-        >
-          OK
-        </button>
-      </div>
-    </div>
+    <!-- Message -->
+    <p class="text-gray-300 text-center mb-8 leading-relaxed">
+      {{ modal.message }}
+    </p>
 
+    <!-- Action -->
+    <button
+      class="w-full py-3 rounded-xl text-white font-semibold transition-all duration-200 hover:scale-105"
+      [class]="modal.type === 'success' ? 'bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg shadow-green-500/30' : 
+               modal.type === 'error' ? 'bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 shadow-lg shadow-red-500/30' : 
+               'bg-linear-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 shadow-lg shadow-yellow-500/30'"
+      (click)="closeModal()"
+    >
+      OK
+    </button>
   </div>
-
-  <!-- Backdrop -->
-  <form method="dialog" class="modal-backdrop bg-black/60 backdrop-blur-sm">
-    <button (click)="closeModal()">close</button>
-  </form>
-</dialog>
+</div>
