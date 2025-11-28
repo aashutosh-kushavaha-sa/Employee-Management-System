@@ -71,11 +71,20 @@
       </a>
     </div>
 
+
+     <!--Analytics-->
+    <a routerLink="/chart" class="nav-item" (click)="sidebarOpen = false">
+      <fa-icon [icon]="faChartArea" class="nav-icon"></fa-icon>
+      <span>Analytics</span>
+    </a>
+    
     <!-- CREATE ADMIN -->
     <a routerLink="/signup" class="nav-item" (click)="sidebarOpen = false">
       <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
       <span>Create Admin</span>
     </a>
+
+    
   </nav>
 
   <!-- LOGOUT -->
