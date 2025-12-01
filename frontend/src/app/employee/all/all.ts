@@ -7,10 +7,9 @@ import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.ser
 import { UpdateModalService } from '../../modal/updateModal/update-modal.service';
 import { UpdateModalComponent } from '../../modal/updateModal/update-modal.component';
 
-// icons
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
-
+import { Employee } from '../../interfaces/employee.interface';
 
 @Component({
   selector: 'app-all',
@@ -20,25 +19,25 @@ import { environment } from '../../../environments/environment';
   styleUrl: './all.css',
 })
 export class All implements OnInit {
-  // icons
+  // ICON
   faSearch = faSearch;
 
-  // data arrays
-  allData: any[] = [];
-  filteredData: any[] = [];
-  pagedData: any[] = [];
+  // DATA ARRAYS (TYPED)
+  allData: Employee[] = [];
+  filteredData: Employee[] = [];
+  pagedData: Employee[] = [];
 
-  // filter values
-  departmentList: any[] = [];
+  // FILTERS
+  departmentList: string[] = [];
   selectedDepartment = '';
   selectedGender = '';
   searchValue = '';
 
-  // sorting value
+  // SORTING
   sortColumn = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  // pagination values
+  // PAGINATION
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
@@ -54,45 +53,48 @@ export class All implements OnInit {
     this.getEmployee();
   }
 
-  // fetch all employee data
+  // FETCH ALL EMPLOYEE DATA
   getEmployee() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') ?? '';
 
     const headers = new HttpHeaders({
-      Authorization: token ?? '',
+      Authorization: token,
     });
 
     this.http
-      .get(`${environment.apiUrl}/api/employee/getall`, { headers })
-      .subscribe((res: any) => {
+      .get<Employee[]>(`${environment.apiUrl}/api/employee/getall`, { headers })
+      .subscribe((res) => {
         this.allData = res;
         this.filteredData = res;
         this.updatePagination();
 
-        // extract unique department list
-        this.departmentList = [...new Set(res.map((e: any) => e.department))];
+        // Unique departments
+        this.departmentList = [...new Set(res.map((e) => e.department))];
       });
   }
 
-  // search filter
-  search(event: any) {
-    this.searchValue = event.target.value.toLowerCase();
+  // SEARCH FILTER
+  search(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.searchValue = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // department filter
-  filterDepartment(event: any) {
-    this.selectedDepartment = event.target.value.toLowerCase();
+  // DEPARTMENT FILTER
+  filterDepartment(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedDepartment = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // gender filter
-  filterGender(event: any) {
-    this.selectedGender = event.target.value.toLowerCase();
+  // GENDER FILTER
+  filterGender(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedGender = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // master filter (search + gender + department)
+  // MASTER FILTER
   applyFilters() {
     let data = this.allData.filter((emp) => {
       const matchSearch =
@@ -110,9 +112,8 @@ export class All implements OnInit {
     });
 
     this.filteredData = data;
-    this.currentPage = 1; // Reset to first page when filters change
+    this.currentPage = 1;
 
-    // sort again after filtering
     if (this.sortColumn) {
       this.sortData(this.sortColumn);
     } else {
@@ -120,9 +121,8 @@ export class All implements OnInit {
     }
   }
 
-  // SORTING LOGIC
-  sortData(column: string) {
-    // toggle direction when clicking same column
+  // SORTING
+  sortData(column: keyof Employee | string) {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -130,38 +130,35 @@ export class All implements OnInit {
       this.sortDirection = 'asc';
     }
 
-    // apply sorting to filteredData only
-    this.filteredData.sort((a: any, b: any) => {
-      let valA = a[column];
-      let valB = b[column];
+    this.filteredData.sort((a, b) => {
+      const valA = a[column as keyof Employee];
+      const valB = b[column as keyof Employee];
 
-      // handle string sorting (name, department)
-      if (typeof valA === 'string') {
-        valA = valA.toLowerCase();
-        valB = valB.toLowerCase();
-      }
+      let A: string | number = typeof valA === 'string' ? valA.toLowerCase() : valA ?? 0;
+
+      let B: string | number = typeof valB === 'string' ? valB.toLowerCase() : valB ?? 0;
 
       if (this.sortDirection === 'asc') {
-        return valA > valB ? 1 : -1;
+        return A > B ? 1 : -1;
       } else {
-        return valA < valB ? 1 : -1;
+        return A < B ? 1 : -1;
       }
     });
 
     this.updatePagination();
   }
 
-  // PAGINATION METHODS
+  // PAGINATION
   updatePagination() {
     this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-    
-    // Ensure current page is valid
+
     if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages || 1;
     }
 
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
+
     this.pagedData = this.filteredData.slice(startIndex, endIndex);
   }
 
@@ -180,7 +177,7 @@ export class All implements OnInit {
   getPageNumbers(): number[] {
     const total = this.totalPages;
     const current = this.currentPage;
-    
+
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
@@ -217,44 +214,46 @@ export class All implements OnInit {
     }
   }
 
-  onPageSizeChange(event: any) {
-    this.pageSize = parseInt(event.target.value);
+  onPageSizeChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.pageSize = parseInt(target.value);
     this.currentPage = 1;
     this.updatePagination();
   }
 
-  // delete confirmation modal
+  // DELETE CONFIRMATION MODAL
   deleteEmployee(id: string) {
     this.confirmModal.show('Are you sure you want to delete this employee?', () =>
       this.deleteNow(id)
     );
   }
 
-  // delete final
+  // FINAL DELETE
   deleteNow(id: string) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') ?? '';
 
-    const headers = new HttpHeaders({
-      Authorization: token ?? '',
-    });
+    const headers = new HttpHeaders({ Authorization: token });
 
-    this.http.delete(`${environment.apiUrl}/api/employee/delete/${id}`, { headers }).subscribe({
-      next: () => {
+    this.http
+      .delete(`${environment.apiUrl}/api/employee/delete/${id}`, { headers })
+      .subscribe(() => {
         this.allData = this.allData.filter((emp) => emp._id !== id);
         this.applyFilters();
-      },
-    });
+      });
   }
 
-  // update modal
-  openUpdate(emp: any) {
+  // UPDATE MODAL
+  openUpdate(emp: Employee) {
     this.updateModalService.show(emp).then((updatedEmployee) => {
       if (!updatedEmployee) return;
 
       const index = this.allData.findIndex((e) => e._id === updatedEmployee._id);
 
       if (index !== -1) {
-        this.allData[index] = { ...this.allData[index], ...updatedEmployee };
+        this.allData[index] = {
+          ...this.allData[index],
+          ...updatedEmployee,
+        };
       }
 
       this.applyFilters();
