@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfirmModalService } from './confirm-modal.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { 
   faTriangleExclamation, 
   faTrash, 
@@ -30,28 +31,29 @@ export class ConfirmModalComponent {
   showError: boolean = false;
   isConfirmed: boolean = false;
 
-  onConfirmationInput() {
+  onConfirmationInput(): void {
     if (this.modal.requiresVerification) {
       this.isConfirmed = this.confirmationText.trim() === 'DELETE';
       this.showError = !this.isConfirmed && this.confirmationText.length > 0;
     }
   }
 
-  confirm() {
+  confirm(): void {
     if (this.modal.requiresVerification && !this.isConfirmed) {
       this.showError = true;
       return;
     }
+
     this.modal.confirm();
     this.resetVerification();
   }
 
-  cancel() {
+  cancel(): void {
     this.modal.cancel();
     this.resetVerification();
   }
 
-  private resetVerification() {
+  private resetVerification(): void {
     this.confirmationText = '';
     this.showError = false;
     this.isConfirmed = false;

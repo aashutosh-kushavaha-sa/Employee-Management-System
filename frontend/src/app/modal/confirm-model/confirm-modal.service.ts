@@ -13,48 +13,48 @@ export interface ModalConfig {
   providedIn: 'root'
 })
 export class ConfirmModalService {
-  message = "";
+  message: string = "";
   onConfirm: (() => void) | null = null;
-  requiresVerification = false;
-  confirmText = "Delete";
-  cancelText = "Cancel";
-  title = "Confirmation Required";
-  visible = false;
+  requiresVerification: boolean = false;
+  confirmText: string = "Delete";
+  cancelText: string = "Cancel";
+  title: string = "Confirmation Required";
+  visible: boolean = false;
 
-  show(config: ModalConfig | string, onConfirm?: () => void) {
+  show(config: ModalConfig | string, onConfirm?: () => void): void {
     if (typeof config === 'string') {
       this.message = config;
-      this.onConfirm = onConfirm || null;
+      this.onConfirm = onConfirm ?? null;
+
       this.requiresVerification = false;
       this.confirmText = "Delete";
       this.cancelText = "Cancel";
       this.title = "Confirmation Required";
+
     } else {
       this.message = config.message;
       this.onConfirm = config.onConfirm;
-      this.requiresVerification = config.requiresVerification || false;
-      this.confirmText = config.confirmText || "Delete";
-      this.cancelText = config.cancelText || "Cancel";
-      this.title = config.title || "Confirmation Required";
+      this.requiresVerification = config.requiresVerification ?? false;
+      this.confirmText = config.confirmText ?? "Delete";
+      this.cancelText = config.cancelText ?? "Cancel";
+      this.title = config.title ?? "Confirmation Required";
     }
-    
+
     this.visible = true;
   }
 
-  confirm() {
+  confirm(): void {
     this.visible = false;
     this.resetVerification();
-    if (this.onConfirm) {
-      this.onConfirm();
-    }
+    this.onConfirm?.();
   }
 
-  cancel() {
+  cancel(): void {
     this.visible = false;
     this.resetVerification();
   }
 
-  private resetVerification() {
+  private resetVerification(): void {
     this.requiresVerification = false;
   }
 }
