@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { SidebarComponent } from '../../sidebar/sidebar';
 import { Router } from '@angular/router';
 import { ModalService } from '../../modal/alertModel/modal.service';
 import { environment } from '../../../environments/environment';
 
+import { EmployeeCreateRequest } from '../../interfaces/employee-create.interface';
 
 @Component({
   selector: 'app-employee-add',
@@ -16,16 +17,18 @@ import { environment } from '../../../environments/environment';
     NgClass,
     NgIf,
     SidebarComponent,
-    HttpClientModule, // ⭐ Important for API call
+    HttpClientModule,
   ],
   templateUrl: './add.html',
   styleUrls: ['./add.css'],
 })
 export class Add implements OnInit {
+  
   empForm!: FormGroup;
   submitted = false;
 
-  department = [
+  // Typed option lists
+  department: string[] = [
     'Engineering',
     'QA',
     'IT Support',
@@ -35,7 +38,8 @@ export class Add implements OnInit {
     'Marketing',
     'Data Science',
   ];
-  position = [
+
+  position: string[] = [
     'Software Engineer',
     'Java Developer',
     'QA Engineer',
@@ -54,12 +58,12 @@ export class Add implements OnInit {
   ngOnInit(): void {
     this.empForm = this.fb.group({
       name: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(18), Validators.max(70)]],
+      age: [null, [Validators.required, Validators.min(18), Validators.max(70)]],
       gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       position: ['', Validators.required],
       department: ['', Validators.required],
-      salary: ['', [Validators.required, Validators.min(1000)]],
+      salary: [null, [Validators.required, Validators.min(1000)]],
     });
   }
 
@@ -68,27 +72,27 @@ export class Add implements OnInit {
 
     if (this.empForm.invalid) return;
 
-    const empData = this.empForm.value;
+    // ✔ TS typed employee data
+    const empData: EmployeeCreateRequest = this.empForm.value;
 
-    const token = localStorage.getItem('token'); // get token
+    const token = localStorage.getItem('token') ?? '';
 
     const headers = new HttpHeaders({
-      Authorization: token ?? '',
+      Authorization: token,
     });
 
-    this.http.post(`${environment.apiUrl}/api/employee/add`, empData, { headers }).subscribe({
-      next: (res) => {
-        console.log('Employee added:', res);
-        this.modal.show('Employee added successfully!', 'success', () => {
-          this.router.navigate(['/employees/all']);
-        });
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        // this.modal.show('Failed to add employee!');
-        this.modal.show('Failed to add employee!', 'error'
-        );
-      },
-    });
+    this.http.post(`${environment.apiUrl}/api/employee/add`, empData, { headers })
+      .subscribe({
+        next: () => {
+          this.modal.show('Employee added successfully!', 'success', () => {
+            this.router.navigate(['/employees/all']);
+          });
+        },
+
+        error: (err: HttpErrorResponse) => {
+          console.error('Error:', err);
+          this.modal.show('Failed to add employee!', 'error');
+        }
+      });
   }
 }
