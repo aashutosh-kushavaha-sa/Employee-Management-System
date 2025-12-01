@@ -19,7 +19,7 @@ import { SignUpForm } from '../interfaces/signup.interface';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
-
+  
   // Typed user form
   userData: SignUpForm = {
     name: '',
@@ -81,6 +81,7 @@ export class SignUpComponent {
           this.errorMessage =
             err.error?.message || 'Registration failed due to a server error.';
 
+          // FIXED HERE ✔
           this.modal.show(`this.errorMessage`, 'error');
         },
       });
