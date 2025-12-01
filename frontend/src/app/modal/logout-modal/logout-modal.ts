@@ -6,13 +6,22 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './logout-modal.html'
-  // Remove styleUrls since we're using Tailwind
 })
 export class LogoutModalComponent {
-  visible = false;
-  @Output() onConfirm = new EventEmitter<void>();
+  visible: boolean = false;
 
-  show() { this.visible = true; }
-  cancel() { this.visible = false; }
-  confirm() { this.onConfirm.emit(); this.visible = false; }
+  @Output() onConfirm: EventEmitter<void> = new EventEmitter<void>();
+
+  show(): void {
+    this.visible = true;
+  }
+
+  cancel(): void {
+    this.visible = false;
+  }
+
+  confirm(): void {
+    this.onConfirm.emit();
+    this.visible = false;
+  }
 }
