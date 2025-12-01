@@ -1,14 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from '../../sidebar/sidebar';
 import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.service';
 import { UpdateModalService } from '../../modal/updateModal/update-modal.service';
 import { UpdateModalComponent } from '../../modal/updateModal/update-modal.component';
-
-// icons
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
+import { Employee } from '../../../app/interfaces/employee.interface';
+import { EmployeeUpdate } from '../../../app/interfaces/employee-update.interface';
 
 @Component({
   selector: 'app-all',
@@ -22,18 +23,18 @@ export class All implements OnInit {
   faSearch = faSearch;
 
   // data arrays
-  allData: any[] = [];
-  filteredData: any[] = [];
-  pagedData: any[] = [];
+  allData: Employee[] = [];
+  filteredData: Employee[] = [];
+  pagedData: Employee[] = [];
 
   // filter values
-  departmentList: any[] = [];
+  departmentList: string[] = [];
   selectedDepartment = '';
   selectedGender = '';
   searchValue = '';
 
   // sorting value
-  sortColumn = '';
+  sortColumn: keyof Employee | '' = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   // pagination values
@@ -53,7 +54,7 @@ export class All implements OnInit {
   }
 
   // fetch all employee data
-  getEmployee() {
+  getEmployee(): void {
     const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
@@ -61,48 +62,61 @@ export class All implements OnInit {
     });
 
     this.http
-      .get('http://localhost:3000/api/employee/getall', { headers })
-      .subscribe((res: any) => {
-        this.allData = res;
-        this.filteredData = res;
-        this.updatePagination();
+      .get<Employee[]>('http://localhost:3000/api/employee/getall', { headers })
+      .subscribe({
+        next: (res: Employee[]) => {
+          this.allData = res;
+          this.filteredData = res;
+          this.updatePagination();
 
-        // extract unique department list
-        this.departmentList = [...new Set(res.map((e: any) => e.department))];
+          // extract unique department list
+          this.departmentList = [...new Set(res.map((e) => e.department))];
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Error fetching employees:', err);
+        },
       });
   }
 
   // search filter
-  search(event: any) {
-    this.searchValue = event.target.value.toLowerCase();
+  search(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchValue = input.value.toLowerCase();
     this.applyFilters();
   }
 
   // department filter
-  filterDepartment(event: any) {
-    this.selectedDepartment = event.target.value.toLowerCase();
+  filterDepartment(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedDepartment = select.value.toLowerCase();
     this.applyFilters();
   }
 
   // gender filter
-  filterGender(event: any) {
-    this.selectedGender = event.target.value.toLowerCase();
+  filterGender(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedGender = select.value.toLowerCase();
     this.applyFilters();
   }
 
   // master filter (search + gender + department)
-  applyFilters() {
-    let data = this.allData.filter((emp) => {
+  applyFilters(): void {
+    const search = this.searchValue;
+    const selectedDept = this.selectedDepartment;
+    const selectedGen = this.selectedGender;
+
+    const data = this.allData.filter((emp: Employee) => {
       const matchSearch =
-        emp.name.toLowerCase().includes(this.searchValue) ||
-        emp.email.toLowerCase().includes(this.searchValue) ||
-        emp.department.toLowerCase().includes(this.searchValue) ||
-        emp.position.toLowerCase().includes(this.searchValue);
+        emp.name.toLowerCase().includes(search) ||
+        emp.email.toLowerCase().includes(search) ||
+        emp.department.toLowerCase().includes(search) ||
+        (emp.position ?? '').toLowerCase().includes(search);
 
       const matchDepartment =
-        !this.selectedDepartment || emp.department.toLowerCase() === this.selectedDepartment;
+        !selectedDept || emp.department.toLowerCase() === selectedDept;
 
-      const matchGender = !this.selectedGender || emp.gender.toLowerCase() === this.selectedGender;
+      const matchGender =
+        !selectedGen || emp.gender.toLowerCase() === selectedGen;
 
       return matchSearch && matchDepartment && matchGender;
     });
@@ -112,14 +126,15 @@ export class All implements OnInit {
 
     // sort again after filtering
     if (this.sortColumn) {
-      this.sortData(this.sortColumn);
+      // cast is safe here because sortColumn is keyof Employee
+      this.sortData(this.sortColumn as keyof Employee);
     } else {
       this.updatePagination();
     }
   }
 
   // SORTING LOGIC
-  sortData(column: string) {
+  sortData(column: keyof Employee): void {
     // toggle direction when clicking same column
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -129,30 +144,32 @@ export class All implements OnInit {
     }
 
     // apply sorting to filteredData only
-    this.filteredData.sort((a: any, b: any) => {
-      let valA = a[column];
-      let valB = b[column];
+    this.filteredData.sort((a: Employee, b: Employee) => {
+      // get values in a safe, typed manner
+      const valA = a[column] as unknown;
+      const valB = b[column] as unknown;
 
-      // handle string sorting (name, department)
-      if (typeof valA === 'string') {
-        valA = valA.toLowerCase();
-        valB = valB.toLowerCase();
+      // If both are numbers -> numeric compare
+      if (typeof valA === 'number' && typeof valB === 'number') {
+        return this.sortDirection === 'asc' ? (valA - (valB as number)) : ((valB as number) - valA);
       }
 
-      if (this.sortDirection === 'asc') {
-        return valA > valB ? 1 : -1;
-      } else {
-        return valA < valB ? 1 : -1;
-      }
+      // Otherwise compare as strings (safe guard with String())
+      const strA = String(valA ?? '').toLowerCase();
+      const strB = String(valB ?? '').toLowerCase();
+
+      if (strA === strB) return 0;
+      if (this.sortDirection === 'asc') return strA > strB ? 1 : -1;
+      return strA < strB ? 1 : -1;
     });
 
     this.updatePagination();
   }
 
   // PAGINATION METHODS
-  updatePagination() {
-    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-    
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize) || 1;
+
     // Ensure current page is valid
     if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages || 1;
@@ -178,7 +195,7 @@ export class All implements OnInit {
   getPageNumbers(): number[] {
     const total = this.totalPages;
     const current = this.currentPage;
-    
+
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
@@ -194,42 +211,48 @@ export class All implements OnInit {
     return [1, 0, current - 1, current, current + 1, 0, total];
   }
 
-  goToPage(page: number) {
+  goToPage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePagination();
     }
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updatePagination();
     }
   }
 
-  previousPage() {
+  previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePagination();
     }
   }
 
-  onPageSizeChange(event: any) {
-    this.pageSize = parseInt(event.target.value);
+  onPageSizeChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const parsed = parseInt(select.value, 10);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      this.pageSize = parsed;
+    } else {
+      this.pageSize = 10;
+    }
     this.currentPage = 1;
     this.updatePagination();
   }
 
   // delete confirmation modal
-  deleteEmployee(id: string) {
+  deleteEmployee(id: string): void {
     this.confirmModal.show('Are you sure you want to delete this employee?', () =>
       this.deleteNow(id)
     );
   }
 
   // delete final
-  deleteNow(id: string) {
+  deleteNow(id: string): void {
     const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
@@ -241,18 +264,22 @@ export class All implements OnInit {
         this.allData = this.allData.filter((emp) => emp._id !== id);
         this.applyFilters();
       },
+      error: (err: HttpErrorResponse) => {
+        console.error('Delete error:', err);
+      },
     });
   }
 
   // update modal
-  openUpdate(emp: any) {
-    this.updateModalService.show(emp).then((updatedEmployee) => {
+  openUpdate(emp: Employee): void {
+    this.updateModalService.show(emp).then((updatedEmployee: EmployeeUpdate | null) => {
       if (!updatedEmployee) return;
 
       const index = this.allData.findIndex((e) => e._id === updatedEmployee._id);
 
       if (index !== -1) {
-        this.allData[index] = { ...this.allData[index], ...updatedEmployee };
+        // Merge partial update safely (EmployeeUpdate is a Partial-like type)
+        this.allData[index] = { ...this.allData[index], ...updatedEmployee } as Employee;
       }
 
       this.applyFilters();
