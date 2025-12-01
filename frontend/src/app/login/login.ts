@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalService } from '../modal/alertModel/modal.service';
+import { LoginResponse } from '../../app/interfaces/login-response.interface';
 
 @Component({
   selector: 'app-login',
@@ -30,16 +31,16 @@ export class Login {
     this.createForm();
   }
 
-  // ✅ Initialize FormGroup
-  createForm() {
+  // ✔ Initialize FormGroup
+  private createForm(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
-  // ✅ Submit form + API call
-  onSubmit() {
+  // ✔ Submit form + API call (fully typed)
+  onSubmit(): void {
     this.submitted = true;
     this.errorMessage = null;
 
@@ -51,9 +52,9 @@ export class Login {
     this.loading = true;
 
     this.http
-      .post<{ token: string; user: any }>(this.apiUrl, this.loginForm.value)
+      .post<LoginResponse>(this.apiUrl, this.loginForm.value)
       .subscribe({
-        next: (response) => {
+        next: (response: LoginResponse) => {
           this.loading = false;
           console.log('Login Successful!', response);
 
@@ -67,7 +68,7 @@ export class Login {
           console.error('Login error:', err);
 
           this.errorMessage = err.error?.message || 'Login failed due to a server error.';
-          this.modal.show('Login failed due to a server error.', 'error');
+          this.modal.show(`this.errorMessage`, 'error');
         }
       });
   }
