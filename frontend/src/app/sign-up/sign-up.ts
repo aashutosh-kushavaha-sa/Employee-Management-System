@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { ModalService } from '../modal/alertModel/modal.service';
 
+import { SignupResponse } from '../../app/interfaces/signup-response.interface';
+import { SignupRequest } from '../../app/interfaces/signup-request.interface';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.html',
@@ -15,12 +18,13 @@ import { ModalService } from '../modal/alertModel/modal.service';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
-  userData = {
+
+  userData: SignupRequest & { confirmPassword: string; terms: boolean } = {
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    terms: false,
+    terms: false
   };
 
   private apiUrl = 'http://localhost:3003/api/auth/signUp';
@@ -29,16 +33,20 @@ export class SignUpComponent {
   loading: boolean = false;
   errorMessage: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router, private modal: ModalService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private modal: ModalService
+  ) {}
 
   passwordsMatch(): boolean {
-    if (!this.userData.password || !this.userData.confirmPassword) {
-      return true;
-    }
-    return this.userData.password === this.userData.confirmPassword;
+    const { password, confirmPassword } = this.userData;
+    if (!password || !confirmPassword) return true;
+
+    return password === confirmPassword;
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit(form: NgForm): void {
     this.submitted = true;
     this.errorMessage = null;
 
@@ -49,20 +57,21 @@ export class SignUpComponent {
 
     this.loading = true;
 
-    const { name, email, password } = this.userData;
+    const requestBody: SignupRequest = {
+      name: this.userData.name,
+      email: this.userData.email,
+      password: this.userData.password
+    };
 
-    this.http.post<{ token: string; user: any }>(this.apiUrl, { name, email, password }).subscribe({
-      next: (response) => {
+    this.http.post<SignupResponse>(this.apiUrl, requestBody).subscribe({
+      next: (response: SignupResponse) => {
         this.loading = false;
         console.log('Registration successful!', response);
 
-        // ✔️ Show modal, navigate when OK clicked
         this.modal.show(
           `Admin Created Successfully!`,
           'success',
-          () => {
-            this.router.navigate(['/dashboard']);
-          }
+          () => this.router.navigate(['/dashboard'])
         );
       },
 
@@ -72,8 +81,8 @@ export class SignUpComponent {
 
         this.errorMessage =
           err.error?.message || 'Registration failed due to a server error.';
-          
-        this.modal.show('Registration failed.', 'error');
+
+        this.modal.show(`this.errorMessage`, 'error');
       },
     });
   }
