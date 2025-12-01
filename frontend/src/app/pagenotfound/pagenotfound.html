@@ -1,70 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <!-- Load Tailwind CSS from CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom font import for aesthetics */
-        /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap'); */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Ensures the background covers the full viewport height */
-        .min-h-screen {
-            min-height: 100vh;
-        }
-    </style>
-</head>
-<body class="bg-gray-50 antialiased">
+<div class="min-h-screen relative overflow-hidden bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+  
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden">
+    <!-- Stars -->
+    <div class="absolute w-1 h-1 bg-white rounded-full top-1/4 left-1/4 animate-pulse"></div>
+    <div class="absolute w-2 h-2 bg-blue-400 rounded-full top-1/3 right-1/4 animate-pulse animation-delay-700"></div>
+    <div class="absolute w-1.5 h-1.5 bg-yellow-300 rounded-full top-2/3 left-1/3 animate-pulse animation-delay-300"></div>
+    <div class="absolute w-1 h-1 bg-purple-400 rounded-full bottom-1/4 right-1/3 animate-pulse animation-delay-1000"></div>
+    
+    <!-- Floating Planets -->
+    <div class="absolute w-64 h-64  bg-linear-to-br from-blue-500/10 to-purple-500/10 rounded-full -top-20 -right-20 blur-3xl"></div>
+    <div class="absolute w-96 h-96  bg-linear-to-br from-red-500/5 to-pink-500/5 rounded-full -bottom-40 -left-40 blur-3xl"></div>
+  </div>
 
-    <!-- Main Container: Centered, Full Height Layout -->
-    <div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
-
-        <!-- Content Card -->
-        <div class="max-w-xl w-full bg-white shadow-2xl rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 transform hover:scale-[1.01] border border-gray-100">
-
-            <!-- 404 Header and Illustration -->
-            <div class="mb-8">
-                <h1 class="text-8xl sm:text-9xl font-extrabold text-red-500 mb-6 tracking-tight">
-                    404
-                </h1>
-
-                <!-- Placeholder Image (Lost Rocket Theme) -->
-                <img
-                    src="https://placehold.co/600x350/F87171/ffffff?text=Lost+In+Space"
-                    alt="Page Not Found Illustration - Object Lost in Space"
-                    class="w-full h-auto rounded-xl shadow-lg mx-auto transition duration-300 ease-in-out hover:shadow-xl"
-                    onerror="this.onerror=null; this.src='https://placehold.co/600x350/ef4444/ffffff?text=Error+Image+Unavailable';"
-                />
-            </div>
-
-            <!-- Message Content -->
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
-                Oops! Looks like you're lost.
-            </h2>
-
-            <p class="text-gray-500 mb-8 text-base sm:text-lg">
-                The page you're looking for doesn't exist or has been moved. Don't worry, even astronauts get lost sometimes.
-            </p>
-
-            <!-- Action Button -->
-            <a
-                routerLink="/login"
-                class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-lg font-semibold rounded-xl
-                       text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-                <!-- Home Icon (Lucide Icon, represented by inline SVG) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                Take Me Home
-            </a>
-        </div>
+  <!-- Main Content -->
+  <div class="relative z-10 max-w-4xl w-full">
+    <!-- 404 Number -->
+    <div class="text-center mb-8">
+      <div class="relative inline-block">
+        <h1 class="text-[180px] md:text-[240px] font-black text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-purple-500 to-pink-500 leading-none tracking-tighter">
+          404
+        </h1>
+        <div class="absolute inset-0 bg-linear-to-r from-blue-400/20 via-purple-500/20 to-pink-500/20 blur-xl -z-10"></div>
+      </div>
+      <p class="text-lg text-gray-400 font-medium tracking-wider uppercase mt-4">
+        Lost in Space • Page Not Found
+      </p>
     </div>
 
-</body>
-</html>
+    <!-- Glass Card -->
+    <div class="glass-card mx-auto max-w-2xl p-8 md:p-12 rounded-3xl backdrop-blur-xl border border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]">
+      
+      <!-- Astronaut Illustration -->
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <div class="w-48 h-48 md:w-56 md:h-56  bg-linear-to-br from-blue-500/20 to-purple-600/20 rounded-full flex items-center justify-center border-2 border-white/20 animate-float">
+            <svg class="w-32 h-32 md:w-40 md:h-40 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          
+          <!-- Floating planets around astronaut -->
+          <div class="absolute -top-4 -left-4 w-12 h-12  bg-linear-to-br from-yellow-400/30 to-orange-500/30 rounded-full border border-yellow-400/30 animate-float-slow"></div>
+          <div class="absolute -top-2 -right-6 w-10 h-10  bg-linear-to-br from-blue-400/30 to-cyan-500/30 rounded-full border border-blue-400/30 animate-float-slower"></div>
+          <div class="absolute -bottom-6 -left-8 w-8 h-8  bg-linear-to-br from-purple-400/30 to-pink-500/30 rounded-full border border-purple-400/30 animate-float"></div>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="text-center mb-10">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Houston, We Have a Problem!
+        </h2>
+        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-6">
+          The page you're looking for has drifted into deep space. It might have been moved, deleted, or never existed in this galaxy.
+        </p>
+        <div class="inline-flex items-center gap-2 text-gray-400 text-sm px-4 py-2 bg-white/5 rounded-full border border-white/10">
+          <svg class="w-4 h-4 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+          </svg>
+          <span>Signal Lost • Error 404</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          routerLink="/login"
+          class="group flex-1 max-w-xs mx-auto sm:mx-0 px-8 py-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 flex items-center justify-center gap-3"
+        >
+          <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          <span class="text-lg">Return to Base</span>
+        </a>
+
+        <button
+          (click)="goBack()"
+          class="flex-1 max-w-xs mx-auto sm:mx-0 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 border border-white/20 hover:border-white/30 flex items-center justify-center gap-3"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span class="text-lg">Go Back</span>
+        </button>
+      </div>
+
+      <!-- Additional Help -->
+      <div class="mt-10 pt-6 border-t border-white/10">
+        <p class="text-gray-400 text-center text-sm">
+          Need help? 
+          <a href="#" class="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors ml-1">
+            Contact Mission Control
+          </a>
+          or try searching our galaxy
+        </p>
+      </div>
+    </div>
+
+    <!-- Floating Quote -->
+    <div class="mt-12 text-center">
+      <div class="inline-block px-6 py-3 bg-white/5 rounded-full border border-white/10">
+        <p class="text-gray-400 text-sm italic">
+          "Not all those who wander are lost" — J.R.R. Tolkien
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
