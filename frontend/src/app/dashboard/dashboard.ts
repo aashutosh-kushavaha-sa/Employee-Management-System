@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environment';
+import { Employee } from '../interfaces/employee.interface';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,19 +14,26 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
+
   http = inject(HttpClient);
+
   adminName = '';
-  employeeList: any[] = [];
+
+  // 🔥 Type improvements (no more any)
+  employeeList: Employee[] = [];
+  allDepartments: string[] = [];
+  uniqueDepartments: string[] = [];
+  recentEmployees: Employee[] = [];
+  deptWiseCount: { department: string; count: number }[] = [];
+
   totalEmployees = 0;
-  allDepartments: any[] = [];
-  uniqueDepartments: any[] = [];
   departments = 0;
-  recentEmployees: any[] = [];
+
   genderCount = { male: 0, female: 0, other: 0 };
+
   avgSalary = 0;
   highestSalary = 0;
   lowestSalary = 0;
-  deptWiseCount: any[] = [];
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -34,54 +42,61 @@ export class DashboardComponent implements OnInit {
       const decoded: any = jwtDecode(token);
       this.adminName = decoded?.name || 'Admin';
     }
+
     this.getEmployee();
   }
 
   getEmployee() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') ?? '';
 
     const headers = new HttpHeaders({
-      Authorization: token ?? '',
+      Authorization: token,
     });
 
-    this.http
-      .get(`${environment.apiUrl}/api/employee/getall`, { headers })
-      .subscribe((res: any) => {
-        // Save full list
-        this.employeeList = res;
-        this.totalEmployees = res.length;
+    this.http.get<Employee[]>(`${environment.apiUrl}/api/employee/getall`, { headers })
+      .subscribe({
+        next: (res: Employee[]) => {
 
-        // Unique Department Count
-        this.allDepartments = res.map((emp: any) => emp.department);
-        this.uniqueDepartments = [...new Set(this.allDepartments)];
-        this.departments = this.uniqueDepartments.length;
+          // Save full list
+          this.employeeList = res;
+          this.totalEmployees = res.length;
 
-        // Recent Employees (Last 5)
-        this.recentEmployees = [...res].slice(-5).reverse();
+          // Departments
+          this.allDepartments = res.map(emp => emp.department);
+          this.uniqueDepartments = [...new Set(this.allDepartments)];
+          this.departments = this.uniqueDepartments.length;
 
-        // Gender Count
-        this.genderCount = { male: 0, female: 0, other: 0 };
-        res.forEach((emp: any) => {
-          if (emp.gender.toLowerCase() === 'male') this.genderCount.male++;
-          else if (emp.gender.toLowerCase() === 'female') this.genderCount.female++;
-          else this.genderCount.other++;
-        });
+          // Recent Employees (Last 5)
+          this.recentEmployees = [...res].slice(-5).reverse();
 
-        // Salary Analytics
-        const salaries = res.map((e: any) => e.salary);
+          // Gender Count
+          this.genderCount = { male: 0, female: 0, other: 0 };
+          res.forEach(emp => {
+            const g = emp.gender.toLowerCase();
+            if (g === 'male') this.genderCount.male++;
+            else if (g === 'female') this.genderCount.female++;
+            else this.genderCount.other++;
+          });
 
-        this.avgSalary = Math.round(
-          salaries.reduce((a: any, b: any) => a + b, 0) / salaries.length
-        );
-        this.highestSalary = Math.max(...salaries);
-        this.lowestSalary = Math.min(...salaries);
+          // Salary Analytics
+          const salaries = res.map(e => e.salary);
 
-        // Department-wise Employee Count
-        this.deptWiseCount = [];
-        this.uniqueDepartments.forEach((dept) => {
-          const count = res.filter((e: any) => e.department === dept).length;
-          this.deptWiseCount.push({ department: dept, count });
-        });
+          this.avgSalary = Math.round(
+            salaries.reduce((a, b) => a + b, 0) / salaries.length
+          );
+          this.highestSalary = Math.max(...salaries);
+          this.lowestSalary = Math.min(...salaries);
+
+          // Department-wise Count
+          this.deptWiseCount = this.uniqueDepartments.map(dept => ({
+            department: dept,
+            count: res.filter(e => e.department === dept).length
+          }));
+        },
+
+        error: (err: HttpErrorResponse) => {
+          console.error("Error fetching employee data:", err);
+        }
       });
   }
 }
