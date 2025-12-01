@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
+export type ModalType = 'success' | 'error' | 'warning';
+
 export interface ModalConfig {
   message: string;
-  type: 'success' | 'error' | 'warning';
+  type: ModalType;
   onClose?: () => void;
 }
 
@@ -10,32 +12,32 @@ export interface ModalConfig {
   providedIn: 'root'
 })
 export class ModalService {
-  message = "";
-  type: 'success' | 'error' | 'warning' = 'success';
+  message: string = '';
+  type: ModalType = 'success';
   onClose: (() => void) | null = null;
-  visible = false;
+  visible: boolean = false;
 
-  // Method 1: Simple string with type
+  // Method 1: Simple usage
   show(
     msg: string,
-    type: 'success' | 'error' | 'warning' = 'success',
+    type: ModalType = 'success',
     onClose?: () => void
-  ) {
+  ): void {
     this.message = msg;
     this.type = type;
     this.onClose = onClose ?? null;
     this.visible = true;
   }
 
-  // Method 2: Configuration object (more flexible)
-  showWithConfig(config: ModalConfig) {
+  // Method 2: Full config
+  showWithConfig(config: ModalConfig): void {
     this.message = config.message;
     this.type = config.type;
     this.onClose = config.onClose ?? null;
     this.visible = true;
   }
 
-  close() {
+  close(): void {
     this.visible = false;
     if (this.onClose) {
       this.onClose();
