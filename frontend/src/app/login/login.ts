@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalService } from '../modal/alertModel/modal.service';
 import { environment } from '../../environments/environment';
+import { LoginResponse } from '../interfaces/auth.interface';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ export class Login {
     this.createForm();
   }
 
-  // ✅ Initialize FormGroup
+  // Initialize FormGroup
   createForm() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -39,24 +40,20 @@ export class Login {
     });
   }
 
-  // ✅ Submit form + API call
+  // Submit Login Form
   onSubmit() {
     this.submitted = true;
     this.errorMessage = null;
 
-    if (this.loginForm.invalid) {
-      console.log('Invalid form');
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     this.loading = true;
 
     this.http
-      .post<{ token: string; user: any }>(this.apiUrl, this.loginForm.value)
+      .post<LoginResponse>(this.apiUrl, this.loginForm.value)
       .subscribe({
         next: (response) => {
           this.loading = false;
-          console.log('Login Successful!', response);
 
           localStorage.setItem('token', response.token);
 
@@ -65,10 +62,9 @@ export class Login {
 
         error: (err: HttpErrorResponse) => {
           this.loading = false;
-          console.error('Login error:', err);
 
           this.errorMessage = err.error?.message || 'Login failed due to a server error.';
-          this.modal.show('Login failed due to a server error.', 'error');
+          this.modal.show(`this.errorMessage`, 'error');
         }
       });
   }
