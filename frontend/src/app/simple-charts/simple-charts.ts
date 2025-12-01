@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import { SidebarComponent } from "../sidebar/sidebar";
-import { environment } from '../../environments/environment';
+import { Employee } from '../../app/interfaces/employee.interface';
 
 @Component({
   selector: 'app-analytics-charts',
@@ -14,14 +14,13 @@ import { environment } from '../../environments/environment';
 })
 export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  employees: any[] = [];
-  isLoading: boolean = false;
-  hasError: boolean = false;
+  employees: Employee[] = [];
+  isLoading = false;
+  hasError = false;
 
-  // Chart instances
-  genderChart: any;
-  departmentChart: any;
-  salaryChart: any;
+  genderChart: Chart | null = null;
+  departmentChart: Chart | null = null;
+  salaryChart: Chart | null = null;
 
   private http = inject(HttpClient);
 
@@ -29,32 +28,35 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
     this.loadEmployeeData();
   }
 
-  ngAfterViewInit() {
-    // Charts will be built when data loads
-  }
+  ngAfterViewInit() {}
 
   ngOnDestroy() {
     this.destroyCharts();
   }
 
-  // Load employee data from API
+  // ========================
+  // Load employee data
+  // ========================
   loadEmployeeData() {
     this.isLoading = true;
     this.hasError = false;
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || '';
+
     const headers = new HttpHeaders({
-      Authorization: token || ''
+      Authorization: token
     });
 
-    this.http.get(`${environment.apiUrl}/api/employee/getall`, { headers })
+    this.http.get<Employee[]>('http://localhost:3000/api/employee/getall', { headers })
       .subscribe({
-        next: (res: any) => {
+        next: (res: Employee[]) => {
           this.employees = res;
           this.isLoading = false;
-          setTimeout(() => this.buildCharts(), 100); // Small delay to ensure DOM is ready
+
+          // build charts after view ready
+          setTimeout(() => this.buildCharts(), 100);
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Error fetching employee data:', error);
           this.isLoading = false;
           this.hasError = true;
@@ -63,11 +65,12 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
       });
   }
 
-  // Build all charts
+  // ========================
+  // Chart Builders
+  // ========================
   buildCharts() {
     if (this.employees.length === 0) return;
 
-    // Destroy old charts
     this.destroyCharts();
 
     this.buildGenderChart();
@@ -75,11 +78,11 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
     this.buildSalaryChart();
   }
 
-  // Gender Pie Chart
+  // GENDER PIE CHART
   private buildGenderChart() {
-    const male = this.employees.filter(e => e.gender?.toLowerCase() === 'male').length;
-    const female = this.employees.filter(e => e.gender?.toLowerCase() === 'female').length;
-    const other = this.employees.filter(e => e.gender?.toLowerCase() === 'other').length;
+    const male = this.getGenderCount('male');
+    const female = this.getGenderCount('female');
+    const other = this.getGenderCount('other');
 
     this.genderChart = new Chart("genderChartCanvas", {
       type: 'pie',
@@ -87,11 +90,7 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
         labels: ['Male', 'Female', 'Other'],
         datasets: [{
           data: [male, female, other],
-          backgroundColor: [
-            '#3B82F6', // Blue
-            '#EC4899', // Pink
-            '#8B5CF6'  // Purple
-          ],
+          backgroundColor: ['#3B82F6', '#EC4899', '#8B5CF6'],
           borderColor: 'rgba(255, 255, 255, 0.2)',
           borderWidth: 2,
           hoverOffset: 15
@@ -105,28 +104,19 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
             position: 'bottom',
             labels: {
               color: '#E2E8F0',
-              font: {
-                size: 12,
-                // weight: '500'
-              },
+              font: { size: 12 },
               padding: 20
             }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleColor: '#F1F5F9',
-            bodyColor: '#E2E8F9',
-            borderColor: 'rgba(255, 255, 255, 0.1)',
-            borderWidth: 1
           }
         }
       }
     });
   }
 
-  // Department Bar Chart
+  // DEPARTMENT BAR CHART
   private buildDepartmentChart() {
-    const deptMap: { [key: string]: number } = {};
+    const deptMap: Record<string, number> = {};
+
     this.employees.forEach(emp => {
       const dept = emp.department || 'Unknown';
       deptMap[dept] = (deptMap[dept] || 0) + 1;
@@ -145,60 +135,39 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
           backgroundColor: 'rgba(34, 197, 94, 0.7)',
           borderColor: '#22C55E',
           borderWidth: 2,
-          borderRadius: 8,
-          hoverBackgroundColor: 'rgba(34, 197, 94, 0.9)'
+          borderRadius: 8
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: true,
         plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleColor: '#F1F5F9',
-            bodyColor: '#E2E8F9'
-          }
+          legend: { display: false }
         },
         scales: {
           x: {
             ticks: {
               color: '#E2E8F0',
-              font: {
-                size: 11
-              }
+              font: { size: 11 }
             },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
-            }
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
           },
           y: {
             beginAtZero: true,
-            ticks: {
-              color: '#E2E8F0',
-              stepSize: 1
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
-            }
+            ticks: { color: '#E2E8F0', stepSize: 1 },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
           }
         }
       }
     });
   }
 
-  // Salary Distribution Line Chart
+  // SALARY DISTRIBUTION CHART (salary = number)
   private buildSalaryChart() {
-    const salaries = this.employees.map(e => {
-      if (typeof e.salary === 'string') {
-        return parseInt(e.salary.replace('₹', '').replace(/,/g, '')) || 0;
-      }
-      return e.salary || 0;
-    }).filter(salary => salary > 0);
+    const salaries = this.employees
+      .map(e => Number(e.salary) || 0)
+      .filter(salary => salary > 0);
 
-    // Create salary ranges
     const ranges = ['0-20k', '20k-40k', '40k-60k', '60k-80k', '80k-100k', '100k+'];
     const rangeCounts = [0, 0, 0, 0, 0, 0];
 
@@ -235,63 +204,40 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
         maintainAspectRatio: true,
         plugins: {
           legend: {
-            labels: {
-              color: '#E2E8F0'
-            }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleColor: '#F1F5F9',
-            bodyColor: '#E2E8F9'
+            labels: { color: '#E2E8F0' }
           }
         },
         scales: {
           x: {
-            ticks: {
-              color: '#E2E8F0'
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
-            }
+            ticks: { color: '#E2E8F0' },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
           },
           y: {
             beginAtZero: true,
-            ticks: {
-              color: '#E2E8F0',
-              stepSize: 1
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)'
-            }
+            ticks: { color: '#E2E8F0', stepSize: 1 },
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
           }
         }
       }
     });
   }
 
-  // Helper methods
+  // ========================
+  // Helpers
+  // ========================
   getGenderCount(gender: string): number {
-    return this.employees.filter(e => e.gender?.toLowerCase() === gender.toLowerCase()).length;
+    return this.employees.filter(e =>
+      e.gender?.toLowerCase() === gender.toLowerCase()
+    ).length;
   }
 
   getUniqueDepartments(): string[] {
-    const departments = new Set(this.employees.map(emp => emp.department));
-    return Array.from(departments).filter(dept => dept);
+    return Array.from(new Set(this.employees.map(emp => emp.department))).filter(Boolean);
   }
 
-  // Destroy charts to prevent memory leaks
   private destroyCharts() {
-    if (this.genderChart) {
-      this.genderChart.destroy();
-      this.genderChart = null;
-    }
-    if (this.departmentChart) {
-      this.departmentChart.destroy();
-      this.departmentChart = null;
-    }
-    if (this.salaryChart) {
-      this.salaryChart.destroy();
-      this.salaryChart = null;
-    }
+    if (this.genderChart) { this.genderChart.destroy(); this.genderChart = null; }
+    if (this.departmentChart) { this.departmentChart.destroy(); this.departmentChart = null; }
+    if (this.salaryChart) { this.salaryChart.destroy(); this.salaryChart = null; }
   }
 }
