@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { UpdateModalService } from './update-modal.service';
 import { ModalService } from '../alertModel/modal.service';
+import { Employee } from '../../interfaces/employee.interface';
+import { EmployeeUpdate } from '../../interfaces/employee-update.interface';
 
 @Component({
   selector: 'app-update-modal',
@@ -15,20 +17,22 @@ import { ModalService } from '../alertModel/modal.service';
   styleUrls: ['./update-modal.component.css'],
 })
 export class UpdateModalComponent implements OnInit, OnDestroy {
-  visible = false;
-  employee: any = null;
 
-  formModel: any = {
+  visible: boolean = false;
+  employee: Employee | null = null;
+
+  formModel: EmployeeUpdate = {
+    _id: '',
     name: '',
-    age: null,
+    age: undefined,
     gender: '',
     email: '',
     position: '',
     department: '',
-    salary: null,
+    salary: undefined
   };
 
-  loading = false;
+  loading: boolean = false;
   private sub!: Subscription;
 
   baseUrl = 'http://localhost:3000/api/employee';
@@ -54,37 +58,40 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  onCancel() {
+  onCancel(): void {
     this.updateModalService.cancel();
   }
 
-  onUpdate(form: NgForm) {
+  onUpdate(form: NgForm): void {
     if (form.invalid) {
       this.modal.show('Please fix validation errors.', 'error');
       return;
     }
+
+    if (!this.employee) return;
 
     this.loading = true;
 
     const token = localStorage.getItem('token') ?? '';
     const headers = new HttpHeaders({ Authorization: token });
 
-    const payload = { ...this.formModel };
+    const payload: EmployeeUpdate = { ...this.formModel };
 
-    this.http.put(`${this.baseUrl}/update/${this.employee._id}`, payload, { headers })
+    this.http
+      .put<EmployeeUpdate>(`${this.baseUrl}/update/${this.employee._id}`, payload, { headers })
       .subscribe({
-        next: (res: any) => {
+        next: (res: EmployeeUpdate) => {
           this.loading = false;
 
-          const updated = res?._id ? res : { ...this.employee, ...payload };
-          
+          const updated = res?._id ? res : { ...this.employee!, ...payload };
+
           this.updateModalService.confirm(updated);
           this.modal.show('Employee updated successfully!', 'success');
         },
-        error: (err) => {
+        error: (err: HttpErrorResponse) => {
           this.loading = false;
           this.modal.show(err.error?.message || 'Update failed.', 'error');
-        }
+        },
       });
   }
 }
