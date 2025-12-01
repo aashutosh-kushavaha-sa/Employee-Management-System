@@ -6,3 +6,13 @@ export interface LoginResponse {
     email: string;
   };
 }
+
+
+export interface SignUpResponse {
+  token: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+}
