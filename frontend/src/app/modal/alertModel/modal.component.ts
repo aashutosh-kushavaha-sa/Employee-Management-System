@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from './modal.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import {
   faCircleCheck,
   faBug,
@@ -17,7 +18,7 @@ import {
 export class ModalComponent {
   constructor(public modal: ModalService) {}
 
-  // Icons for different modal types
+  // Icons based on modal type
   successIcon = faCircleCheck;
   errorIcon = faBug;
   warningIcon = faTriangleExclamation;
@@ -31,7 +32,7 @@ export class ModalComponent {
     }
   }
 
-  closeModal() {
+  closeModal(): void {
     this.modal.close();
   }
 }
