@@ -1,13 +1,5 @@
 import { Routes } from '@angular/router';
-import { Login } from './login/login';
-import { SignUpComponent } from './sign-up/sign-up';
-import { DashboardComponent } from './dashboard/dashboard';
-import { Pagenotfound } from './pagenotfound/pagenotfound';
-import { All } from './employee/all/all';
-import { Add } from './employee/add/add';
 import { AuthGuard } from './guard/auth-guard';
-import { Chart } from 'chart.js';
-import { AnalyticsChartsComponent } from './simple-charts/simple-charts';
 
 export const routes: Routes = [
   {
@@ -15,38 +7,55 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
   {
     path: 'login',
-    component: Login
+    loadComponent: () =>
+      import('./login/login').then(m => m.Login)
   },
+
   {
     path: 'signup',
-    component: SignUpComponent,
+    loadComponent: () =>
+      import('./sign-up/sign-up').then(m => m.SignUpComponent),
     canActivate: [AuthGuard]
   },
+
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    loadComponent: () =>
+      import('./dashboard/dashboard').then(m => m.DashboardComponent),
     canActivate: [AuthGuard]
   },
+
   {
-    path:'employees/all',
-    component : All,
+    path: 'employees/all',
+    loadComponent: () =>
+      import('./employee/all/all').then(m => m.All),
     canActivate: [AuthGuard]
   },
+
   {
-    path:'employees/add',
-    component : Add,
+    path: 'employees/add',
+    loadComponent: () =>
+      import('./employee/add/add').then(m => m.Add),
     canActivate: [AuthGuard]
   },
+
   {
-    path:'chart',
-    component : AnalyticsChartsComponent,
+    path: 'chart',
+    loadComponent: () =>
+      import('./simple-charts/simple-charts')
+        .then(m => m.AnalyticsChartsComponent),
     canActivate: [AuthGuard]
   },
+
   {
     path: '**',
-    component: Pagenotfound
+    loadComponent: () =>
+      import('./pagenotfound/pagenotfound')
+        .then(m => m.Pagenotfound)
   }
 ];
+
 
