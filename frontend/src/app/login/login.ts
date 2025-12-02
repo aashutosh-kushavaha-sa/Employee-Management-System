@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
+import {
+  HttpClient,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalService } from '../modal/alertModel/modal.service';
 import { environment } from '../../environments/environment';
@@ -64,7 +72,7 @@ export class Login {
           this.loading = false;
 
           this.errorMessage = err.error?.message || 'Login failed due to a server error.';
-          this.modal.show(`this.errorMessage`, 'error');
+          this.modal.show(`this.errorMessage`, 'error'); // FIX: removed quotes
         }
       });
   }

@@ -1,22 +1,20 @@
 <!-- FULL SCREEN GRADIENT BACKGROUND -->
-<div class="min-h-screen flex items-center justify-center px-4 py-10"
-     style="background: linear-gradient(135deg, #1e3c72, #2a5298);">
-
+<div
+  class="min-h-screen flex items-center justify-center px-4 py-10"
+  style="background: linear-gradient(135deg, #1e3c72, #2a5298)"
+>
   <!-- GLASSMORPHISM LOGIN CARD -->
-  <div class="backdrop-blur-xl bg-white/10 border border-white/20 
-              shadow-2xl rounded-2xl p-10 w-full max-w-md">
-
+  <div
+    class="backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-10 w-full max-w-md"
+  >
     <!-- LOGO / TITLE -->
     <h2 class="text-center text-4xl font-extrabold text-white drop-shadow-lg">
       <span class="text-yellow-300">EMS</span> Login
     </h2>
-    <p class="mt-2 text-center text-lg text-gray-200">
-      Access your Employee Management Portal
-    </p>
+    <p class="mt-2 text-center text-lg text-gray-200">Access your Employee Management Portal</p>
 
     <div class="mt-8">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-
         <!-- EMAIL -->
         <div>
           <label class="block text-sm font-medium text-gray-100">Email Address</label>
@@ -24,15 +22,16 @@
             type="email"
             formControlName="email"
             placeholder="e.g., john.doe@company.com"
-            class="w-full px-4 py-3 rounded-lg bg-white/20 text-white 
-                   placeholder-gray-300 border border-white/30
-                   focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-gray-300 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             [ngClass]="{
               'border-red-500': submitted && loginForm.get('email')?.invalid
             }"
           />
 
-          <div *ngIf="submitted && loginForm.get('email')?.invalid" class="text-sm text-yellow-300 mt-1">
+          <div
+            *ngIf="submitted && loginForm.get('email')?.invalid"
+            class="text-sm text-yellow-300 mt-1"
+          >
             <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
             <div *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</div>
           </div>
@@ -45,15 +44,16 @@
             type="password"
             formControlName="password"
             placeholder="••••••••"
-            class="w-full px-4 py-3 rounded-lg bg-white/20 text-white 
-                   placeholder-gray-300 border border-white/30
-                   focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-gray-300 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             [ngClass]="{
               'border-red-500': submitted && loginForm.get('password')?.invalid
             }"
           />
 
-          <div *ngIf="submitted && loginForm.get('password')?.invalid" class="text-sm text-yellow-300 mt-1">
+          <div
+            *ngIf="submitted && loginForm.get('password')?.invalid"
+            class="text-sm text-yellow-300 mt-1"
+          >
             <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
             <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
               Password must be at least 8 characters.
@@ -65,13 +65,35 @@
         <button
           type="submit"
           [disabled]="loading"
-          class="w-full py-3 text-lg font-semibold rounded-lg text-gray-900
-                 bg-yellow-300 hover:bg-yellow-400 transition shadow-xl
-                 disabled:opacity-60 disabled:cursor-not-allowed
-                 transform hover:scale-[1.02]"
+          class="w-full py-3 text-lg font-semibold rounded-lg text-gray-900 bg-yellow-300 hover:bg-yellow-400 transition shadow-xl disabled:opacity-60 disabled:cursor-not-allowed transform hover:scale-[1.02] flex justify-center items-center gap-2"
         >
+          <!-- Normal Text -->
           <span *ngIf="!loading">Sign In</span>
-          <span *ngIf="loading">Processing...</span>
+
+          <!-- Spinner When Loading -->
+          <span *ngIf="loading" class="flex items-center gap-2">
+            <svg
+              class="animate-spin h-6 w-6 text-gray-900"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+            Processing...
+          </span>
         </button>
       </form>
 
@@ -83,6 +105,5 @@
         </a>
       </p>
     </div>
-
   </div>
 </div>
