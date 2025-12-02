@@ -38,35 +38,27 @@ export class SidebarComponent {
   faChartArea = faChartArea;
 
   employeesOpen = false;
-  sidebarOpen = true;
 
   constructor(private router: Router) {}
 
-  // Get reference to logout modal
+  // Modal reference
   @ViewChild(LogoutModalComponent) logoutModal!: LogoutModalComponent;
 
   toggleEmployees() {
     this.employeesOpen = !this.employeesOpen;
   }
 
+  // No sidebar open/close logic anymore
   onNavClick() {
-    if (window.innerWidth < 1024) {
-      this.sidebarOpen = false;
-    }
+    return; // Removed mobile collapse logic
   }
 
-  // Open logout confirmation modal
   openLogoutModal() {
     if (this.logoutModal) {
       this.logoutModal.show();
-      // Close sidebar on mobile when opening modal
-      if (window.innerWidth < 1024) {
-        this.sidebarOpen = false;
-      }
     }
   }
 
-  // Final logout logic called from modal
   logoutNow() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
