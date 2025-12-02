@@ -1,0 +1,196 @@
+/* Keyframe Animations */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-fast {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes pulse-center {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes dot-1 {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  33% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+  66% {
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes dot-2 {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  33% {
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
+  66% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes dot-3 {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  33% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+  66% {
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes float-1 {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(10px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-10px) translateX(20px);
+  }
+}
+
+@keyframes float-2 {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(15px) translateX(-15px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(15px);
+  }
+  75% {
+    transform: translateY(20px) translateX(-5px);
+  }
+}
+
+@keyframes float-3 {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-15px) translateX(-10px);
+  }
+  50% {
+    transform: translateY(5px) translateX(20px);
+  }
+  75% {
+    transform: translateY(20px) translateX(5px);
+  }
+}
+
+/* Animation Classes */
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+.animate-spin-fast {
+  animation: spin-fast 1.2s linear infinite;
+}
+
+.animate-pulse-center {
+  animation: pulse-center 1.5s ease-in-out infinite;
+}
+
+.animate-pulse-text {
+  animation: pulse-text 2s ease-in-out infinite;
+}
+
+.animate-dot-1 {
+  animation: dot-1 1.5s ease-in-out infinite;
+}
+
+.animate-dot-2 {
+  animation: dot-2 1.5s ease-in-out infinite 0.2s;
+}
+
+.animate-dot-3 {
+  animation: dot-3 1.5s ease-in-out infinite 0.4s;
+}
+
+.animate-float-1 {
+  animation: float-1 6s ease-in-out infinite;
+}
+
+.animate-float-2 {
+  animation: float-2 7s ease-in-out infinite;
+}
+
+.animate-float-3 {
+  animation: float-3 8s ease-in-out infinite;
+}
+
+/* Z-index fix for overlay */
+.z-\[9999\] {
+  z-index: 9999;
+}
+
+/* Smooth transitions for loader */
+.loader-overlay {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .loader-container {
+    transform: scale(0.8);
+  }
+}
+
+/* Custom scrollbar for the loader context */
+.loader-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure body doesn't scroll when loader is active */
+body.loader-active {
+  overflow: hidden;
+}
