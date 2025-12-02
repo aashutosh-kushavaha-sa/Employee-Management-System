@@ -19,11 +19,10 @@ import { LoginResponse } from '../interfaces/auth.interface';
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class Login {
-
   loginForm!: FormGroup;
   submitted = false;
   loading = false;
@@ -62,17 +61,13 @@ export class Login {
       .subscribe({
         next: (response) => {
           this.loading = false;
-
           localStorage.setItem('token', response.token);
-
           this.router.navigate(['/dashboard']);
         },
-
         error: (err: HttpErrorResponse) => {
           this.loading = false;
-
           this.errorMessage = err.error?.message || 'Login failed due to a server error.';
-          this.modal.show(`this.errorMessage`, 'error'); // FIX: removed quotes
+          this.modal.show(`this.errorMessage`, 'error');
         }
       });
   }
