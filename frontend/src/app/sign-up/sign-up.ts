@@ -81,7 +81,6 @@ export class SignUpComponent {
           this.errorMessage =
             err.error?.message || 'Registration failed due to a server error.';
 
-          // FIXED HERE ✔
           this.modal.show(`this.errorMessage`, 'error');
         },
       });
