@@ -17,3 +17,10 @@ build/
 # IDE
 .vscode/
 .idea/
+
+# Node / backend
+/backend/node_modules/
+/backend/.env
+/frontend/dist/
+.env
+*.log
