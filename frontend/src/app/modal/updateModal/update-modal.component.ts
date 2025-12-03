@@ -26,12 +26,12 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
 
   formModel: Partial<Employee> = {
     name: '',
-    age: null,
-    gender: '',
+    age: undefined,
+    gender: undefined,
     email: '',
     position: '',
     department: '',
-    salary: null,
+    salary: undefined,
   };
 
   loading = false;

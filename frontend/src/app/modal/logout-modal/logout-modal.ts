@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 export class LogoutModalComponent {
   visible = false;
 
-  @Output() confirm: EventEmitter<void> = new EventEmitter<void>();
+  @Output() confirmed: EventEmitter<void> = new EventEmitter<void>();
 
   show(): void {
     this.visible = true;
@@ -21,7 +21,7 @@ export class LogoutModalComponent {
   }
 
   confirm(): void {
-    this.confirm.emit();
+    this.confirmed.emit();
     this.visible = false;
   }
 }

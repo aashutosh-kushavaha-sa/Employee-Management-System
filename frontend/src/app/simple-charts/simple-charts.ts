@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Chart from 'chart.js/auto';
@@ -13,7 +13,7 @@ import { Employee } from '../interfaces/employee.interface';
   templateUrl: './simple-charts.html',
   styleUrls: ['./simple-charts.css'],
 })
-export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AnalyticsChartsComponent implements OnInit, OnDestroy {
   // Typed employees
   employees: Employee[] = [];
 

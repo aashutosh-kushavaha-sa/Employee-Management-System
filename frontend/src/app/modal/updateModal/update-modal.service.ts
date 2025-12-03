@@ -16,7 +16,7 @@ export class UpdateModalService {
 
   state = this.state$.asObservable();
 
-  private resolver: ((value?: Employee | null) => void) | null = null;
+  private resolver: ((value: Employee | PromiseLike<Employee | null> | null) => void) | null = null;
 
   show(employee: Employee): Promise<Employee | null> {
     this.state$.next({ visible: true, employee });
