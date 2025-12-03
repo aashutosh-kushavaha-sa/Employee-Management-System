@@ -8,9 +8,8 @@ describe('Pagenotfound', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Pagenotfound]
-    })
-    .compileComponents();
+      imports: [Pagenotfound],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Pagenotfound);
     component = fixture.componentInstance;

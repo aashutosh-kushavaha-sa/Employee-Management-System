@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
@@ -19,7 +19,10 @@ import { SignUpForm } from '../interfaces/signup.interface';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
-  
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private modal = inject(ModalService);
+
   // Typed user form
   userData: SignUpForm = {
     name: '',
@@ -35,11 +38,7 @@ export class SignUpComponent {
   loading = false;
   errorMessage: string | null = null;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private modal: ModalService
-  ) {}
+  // compatibility constructor removed by migration
 
   passwordsMatch(): boolean {
     return (
@@ -62,27 +61,22 @@ export class SignUpComponent {
 
     const { name, email, password } = this.userData;
 
-    this.http
-      .post<SignUpResponse>(this.apiUrl, { name, email, password })
-      .subscribe({
-        next: (response) => {
-          this.loading = false;
+    this.http.post<SignUpResponse>(this.apiUrl, { name, email, password }).subscribe({
+      next: () => {
+        this.loading = false;
 
-          this.modal.show(
-            `Admin Created Successfully!`,
-            'success',
-            () => this.router.navigate(['/dashboard'])
-          );
-        },
+        this.modal.show(`Admin Created Successfully!`, 'success', () =>
+          this.router.navigate(['/dashboard']),
+        );
+      },
 
-        error: (err: HttpErrorResponse) => {
-          this.loading = false;
+      error: (err: HttpErrorResponse) => {
+        this.loading = false;
 
-          this.errorMessage =
-            err.error?.message || 'Registration failed due to a server error.';
+        this.errorMessage = err.error?.message || 'Registration failed due to a server error.';
 
-          this.modal.show(`this.errorMessage`, 'error');
-        },
-      });
+        this.modal.show(`this.errorMessage`, 'error');
+      },
+    });
   }
 }

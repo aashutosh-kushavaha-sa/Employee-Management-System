@@ -8,9 +8,8 @@ describe('SimpleCharts', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SimpleCharts]
-    })
-    .compileComponents();
+      imports: [SimpleCharts],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SimpleCharts);
     component = fixture.componentInstance;

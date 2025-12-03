@@ -1,15 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule
-} from '@angular/forms';
-import {
-  HttpClient,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ModalService } from '../modal/alertModel/modal.service';
 import { environment } from '../../environments/environment';
@@ -20,9 +12,14 @@ import { LoginResponse } from '../interfaces/auth.interface';
   standalone: true,
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class Login {
+  private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private modal = inject(ModalService);
+
   loginForm!: FormGroup;
   submitted = false;
   loading = false;
@@ -30,12 +27,8 @@ export class Login {
 
   private apiUrl = `${environment.apiUrl}/api/auth/login`;
 
-  constructor(
-    private fb: FormBuilder,
-    private http: HttpClient,
-    private router: Router,
-    private modal: ModalService
-  ) {
+  /** compatibility constructor removed by migration */
+  constructor() {
     this.createForm();
   }
 
@@ -56,19 +49,17 @@ export class Login {
 
     this.loading = true;
 
-    this.http
-      .post<LoginResponse>(this.apiUrl, this.loginForm.value)
-      .subscribe({
-        next: (response) => {
-          this.loading = false;
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/dashboard']);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.loading = false;
-          this.errorMessage = err.error?.message || 'Login failed due to a server error.';
-          this.modal.show(`this.errorMessage`, 'error');
-        }
-      });
+    this.http.post<LoginResponse>(this.apiUrl, this.loginForm.value).subscribe({
+      next: (response) => {
+        this.loading = false;
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.loading = false;
+        this.errorMessage = err.error?.message || 'Login failed due to a server error.';
+        this.modal.show(`this.errorMessage`, 'error');
+      },
+    });
   }
 }

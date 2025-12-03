@@ -10,16 +10,16 @@ export interface ModalConfig {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfirmModalService {
-  message: string = "";
+  message = '';
   onConfirm: (() => void) | null = null;
-  requiresVerification: boolean = false;
-  confirmText: string = "Delete";
-  cancelText: string = "Cancel";
-  title: string = "Confirmation Required";
-  visible: boolean = false;
+  requiresVerification = false;
+  confirmText = 'Delete';
+  cancelText = 'Cancel';
+  title = 'Confirmation Required';
+  visible = false;
 
   show(config: ModalConfig | string, onConfirm?: () => void): void {
     if (typeof config === 'string') {
@@ -27,17 +27,16 @@ export class ConfirmModalService {
       this.onConfirm = onConfirm ?? null;
 
       this.requiresVerification = false;
-      this.confirmText = "Delete";
-      this.cancelText = "Cancel";
-      this.title = "Confirmation Required";
-
+      this.confirmText = 'Delete';
+      this.cancelText = 'Cancel';
+      this.title = 'Confirmation Required';
     } else {
       this.message = config.message;
       this.onConfirm = config.onConfirm;
       this.requiresVerification = config.requiresVerification ?? false;
-      this.confirmText = config.confirmText ?? "Delete";
-      this.cancelText = config.cancelText ?? "Cancel";
-      this.title = config.title ?? "Confirmation Required";
+      this.confirmText = config.confirmText ?? 'Delete';
+      this.cancelText = config.cancelText ?? 'Cancel';
+      this.title = config.title ?? 'Confirmation Required';
     }
 
     this.visible = true;

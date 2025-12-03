@@ -1,13 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from './modal.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import {
-  faCircleCheck,
-  faBug,
-  faTriangleExclamation
-} from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faBug, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-modal',
@@ -16,7 +12,9 @@ import {
   templateUrl: './modal.component.html',
 })
 export class ModalComponent {
-  constructor(public modal: ModalService) {}
+  modal = inject(ModalService);
+
+  // compatibility constructor removed by migration
 
   // Icons based on modal type
   successIcon = faCircleCheck;
@@ -25,10 +23,14 @@ export class ModalComponent {
 
   getSubtitle(): string {
     switch (this.modal.type) {
-      case 'success': return 'Operation Completed';
-      case 'error': return 'Something Went Wrong';
-      case 'warning': return 'Attention Required';
-      default: return 'Notification';
+      case 'success':
+        return 'Operation Completed';
+      case 'error':
+        return 'Something Went Wrong';
+      case 'warning':
+        return 'Attention Required';
+      default:
+        return 'Notification';
     }
   }
 

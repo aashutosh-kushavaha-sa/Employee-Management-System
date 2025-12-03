@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
   selector: 'app-logout-modal',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './logout-modal.html'
+  templateUrl: './logout-modal.html',
 })
 export class LogoutModalComponent {
-  visible: boolean = false;
+  visible = false;
 
-  @Output() onConfirm: EventEmitter<void> = new EventEmitter<void>();
+  @Output() confirm: EventEmitter<void> = new EventEmitter<void>();
 
   show(): void {
     this.visible = true;
@@ -21,7 +21,7 @@ export class LogoutModalComponent {
   }
 
   confirm(): void {
-    this.onConfirm.emit();
+    this.confirm.emit();
     this.visible = false;
   }
 }

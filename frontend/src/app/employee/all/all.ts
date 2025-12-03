@@ -19,6 +19,9 @@ import { Employee } from '../../interfaces/employee.interface';
   styleUrl: './all.css',
 })
 export class All implements OnInit {
+  private confirmModal = inject(ConfirmModalService);
+  private updateModalService = inject(UpdateModalService);
+
   // ICON
   faSearch = faSearch;
 
@@ -44,10 +47,7 @@ export class All implements OnInit {
 
   http = inject(HttpClient);
 
-  constructor(
-    private confirmModal: ConfirmModalService,
-    private updateModalService: UpdateModalService
-  ) {}
+  // compatibility constructor removed by migration
 
   ngOnInit(): void {
     this.getEmployee();
@@ -96,7 +96,7 @@ export class All implements OnInit {
 
   // MASTER FILTER
   applyFilters() {
-    let data = this.allData.filter((emp) => {
+    const data = this.allData.filter((emp) => {
       const matchSearch =
         emp.name.toLowerCase().includes(this.searchValue) ||
         emp.email.toLowerCase().includes(this.searchValue) ||
@@ -134,9 +134,9 @@ export class All implements OnInit {
       const valA = a[column as keyof Employee];
       const valB = b[column as keyof Employee];
 
-      let A: string | number = typeof valA === 'string' ? valA.toLowerCase() : valA ?? 0;
+      const A: string | number = typeof valA === 'string' ? valA.toLowerCase() : (valA ?? 0);
 
-      let B: string | number = typeof valB === 'string' ? valB.toLowerCase() : valB ?? 0;
+      const B: string | number = typeof valB === 'string' ? valB.toLowerCase() : (valB ?? 0);
 
       if (this.sortDirection === 'asc') {
         return A > B ? 1 : -1;
@@ -224,7 +224,7 @@ export class All implements OnInit {
   // DELETE CONFIRMATION MODAL
   deleteEmployee(id: string) {
     this.confirmModal.show('Are you sure you want to delete this employee?', () =>
-      this.deleteNow(id)
+      this.deleteNow(id),
     );
   }
 

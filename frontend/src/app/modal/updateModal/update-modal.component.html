@@ -1,31 +1,22 @@
 <!-- BACKDROP -->
-<div
-  class="update-backdrop"
-  *ngIf="visible"
-></div>
+<div class="update-backdrop" *ngIf="visible"></div>
 
 <!-- MODAL WRAPPER -->
-<div
-  class="update-modal-wrapper"
-  *ngIf="visible"
->
+<div class="update-modal-wrapper" *ngIf="visible">
   <div class="update-modal glass-modal">
-
     <!-- CLOSE BUTTON -->
     <button class="close-btn" (click)="onCancel()">✕</button>
 
     <!-- TITLE -->
-    <h2 class="title">
-      <span class="highlight">EMS</span> Update Employee
-    </h2>
+    <h2 class="title"><span class="highlight">EMS</span> Update Employee</h2>
     <p class="subtitle">Update employee details</p>
 
     <form #f="ngForm" (ngSubmit)="onUpdate(f)" class="form-space">
-
       <!-- NAME -->
       <div class="field">
-        <label class="label">Full Name</label>
+        <label for="update-name" class="label">Full Name</label>
         <input
+          id="update-name"
           type="text"
           name="name"
           [(ngModel)]="formModel.name"
@@ -37,8 +28,9 @@
       <!-- AGE + GENDER -->
       <div class="row-2">
         <div class="field">
-          <label class="label">Age</label>
+          <label for="update-age" class="label">Age</label>
           <input
+            id="update-age"
             type="number"
             name="age"
             [(ngModel)]="formModel.age"
@@ -49,8 +41,9 @@
         </div>
 
         <div class="field">
-          <label class="label">Gender</label>
+          <label for="update-gender" class="label">Gender</label>
           <input
+            id="update-gender"
             type="text"
             name="gender"
             class="input disabled"
@@ -62,8 +55,9 @@
 
       <!-- EMAIL -->
       <div class="field">
-        <label class="label">Email</label>
+        <label for="update-email" class="label">Email</label>
         <input
+          id="update-email"
           type="email"
           name="email"
           [(ngModel)]="formModel.email"
@@ -74,10 +68,10 @@
 
       <!-- DEPARTMENT + POSITION -->
       <div class="row-2">
-
         <div class="field">
-          <label class="label">Department</label>
+          <label for="update-department" class="label">Department</label>
           <select
+            id="update-department"
             name="department"
             class="input"
             [(ngModel)]="formModel.department"
@@ -96,8 +90,9 @@
         </div>
 
         <div class="field">
-          <label class="label">Position</label>
+          <label for="update-position" class="label">Position</label>
           <select
+            id="update-position"
             name="position"
             class="input"
             [(ngModel)]="formModel.position"
@@ -116,8 +111,9 @@
 
       <!-- SALARY -->
       <div class="field">
-        <label class="label">Salary</label>
+        <label for="update-salary" class="label">Salary</label>
         <input
+          id="update-salary"
           type="number"
           name="salary"
           [(ngModel)]="formModel.salary"
@@ -128,16 +124,13 @@
 
       <!-- BUTTONS -->
       <div class="actions">
-        <button type="button" class="btn-cancel" (click)="onCancel()">
-          Cancel
-        </button>
+        <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
 
         <button type="submit" class="btn-update" [disabled]="loading">
           <span *ngIf="loading">Updating...</span>
           <span *ngIf="!loading">Update</span>
         </button>
       </div>
-
     </form>
   </div>
 </div>

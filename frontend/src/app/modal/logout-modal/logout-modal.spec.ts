@@ -8,9 +8,8 @@ describe('LogoutModal', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoutModal]
-    })
-    .compileComponents();
+      imports: [LogoutModal],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogoutModal);
     component = fixture.componentInstance;

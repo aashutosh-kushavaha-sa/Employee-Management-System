@@ -1,18 +1,14 @@
 <!-- SIDEBAR (ALWAYS OPEN) -->
 <div
-  class="h-screen fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl
-         bg-linear-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl w-64">
-  
+  class="h-screen fixed top-0 left-0 flex flex-col overflow-y-auto p-6 border-r border-white/10 shadow-2xl bg-linear-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl w-64"
+>
   <!-- Logo -->
   <div class="flex items-center justify-center mb-10">
-    <span class="text-3xl font-extrabold tracking-wide text-yellow-300 drop-shadow-lg">
-      EMS
-    </span>
+    <span class="text-3xl font-extrabold tracking-wide text-yellow-300 drop-shadow-lg"> EMS </span>
   </div>
 
   <!-- NAV MENU -->
   <nav class="flex flex-col gap-2 flex-1">
-
     <!-- DASHBOARD -->
     <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-item">
       <fa-icon [icon]="faHouse" class="nav-icon"></fa-icon>
@@ -24,54 +20,49 @@
       <fa-icon [icon]="faManageEmp" class="nav-icon"></fa-icon>
       <span>Manage Employees</span>
 
-      <fa-icon [icon]="faArrowDown"
-               class="ml-auto transition-transform w-4"
-               [class.rotate-180]="employeesOpen">
+      <fa-icon
+        [icon]="faArrowDown"
+        class="ml-auto transition-transform w-4"
+        [class.rotate-180]="employeesOpen"
+      >
       </fa-icon>
     </button>
 
     <!-- EMPLOYEES DROPDOWN -->
     <div *ngIf="employeesOpen" class="dropdown">
-      <a routerLink="/employees/all"
-         class="dropdown-item"
-         routerLinkActive="active-dropdown-item">
+      <a routerLink="/employees/all" class="dropdown-item" routerLinkActive="active-dropdown-item">
         <fa-icon [icon]="faList" class="text-yellow-300 w-4"></fa-icon>
         All Employees
       </a>
 
-      <a routerLink="/employees/add"
-         class="dropdown-item"
-         routerLinkActive="active-dropdown-item">
+      <a routerLink="/employees/add" class="dropdown-item" routerLinkActive="active-dropdown-item">
         <fa-icon [icon]="faAddEmp" class="text-yellow-300 w-4"></fa-icon>
         Add Employee
       </a>
     </div>
 
     <!-- ANALYTICS -->
-    <a routerLink="/chart"
-       routerLinkActive="active-link"
-       class="nav-item">
+    <a routerLink="/chart" routerLinkActive="active-link" class="nav-item">
       <fa-icon [icon]="faChartArea" class="nav-icon"></fa-icon>
       <span>Analytics</span>
     </a>
 
     <!-- CREATE ADMIN -->
-    <a routerLink="/signup"
-       routerLinkActive="active-link"
-       class="nav-item">
+    <a routerLink="/signup" routerLinkActive="active-link" class="nav-item">
       <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
       <span>Create Admin</span>
     </a>
-
   </nav>
 
   <!-- LOGOUT -->
-  <button (click)="openLogoutModal()"
-          class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg">
+  <button
+    (click)="openLogoutModal()"
+    class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg"
+  >
     <fa-icon [icon]="faLogout" class="nav-icon"></fa-icon>
     <span>Logout</span>
   </button>
 </div>
 
 <!-- LOGOUT MODAL -->
-<app-logout-modal (onConfirm)="logoutNow()"></app-logout-modal>
+<app-logout-modal (confirm)="logoutNow()"></app-logout-modal>

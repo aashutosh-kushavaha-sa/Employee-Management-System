@@ -11,9 +11,18 @@
         <span class="text-yellow-300 font-bold text-xl">EMS</span>
         <span class="text-white font-semibold">Registration</span>
       </div>
-      <button type="button" class="text-white" onclick="document.querySelector('app-sidebar').classList.toggle('hidden')">
+      <button
+        type="button"
+        class="text-white"
+        onclick="document.querySelector('app-sidebar').classList.toggle('hidden')"
+      >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
       </button>
     </div>
@@ -28,14 +37,16 @@
   <div class="flex-1 lg:ml-64">
     <div
       class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-6 py-8 sm:py-6 lg:py-0"
-      style="background: linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%)"
+      style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)"
     >
-
       <!-- GLASS CARD -->
-      <div class="glass-card max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full my-4 sm:my-6 lg:my-0">
-
+      <div
+        class="glass-card max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full my-4 sm:my-6 lg:my-0"
+      >
         <!-- TITLE -->
-        <h2 class="text-center text-2xl sm:text-3xl lg:text-4xl font-bold sm:font-extrabold text-white drop-shadow-lg">
+        <h2
+          class="text-center text-2xl sm:text-3xl lg:text-4xl font-bold sm:font-extrabold text-white drop-shadow-lg"
+        >
           <span class="text-yellow-300">EMS</span> Registration
         </h2>
         <p class="mt-1 sm:mt-2 text-center text-sm sm:text-base text-slate-300">
@@ -43,12 +54,16 @@
         </p>
 
         <!-- FORM -->
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="space-y-4 sm:space-y-6 mt-6 sm:mt-8 lg:mt-10">
-
+        <form
+          #f="ngForm"
+          (ngSubmit)="onSubmit(f)"
+          class="space-y-4 sm:space-y-6 mt-6 sm:mt-8 lg:mt-10"
+        >
           <!-- FULL NAME -->
           <div class="field">
-            <label class="label">Full Name</label>
+            <label for="signup-name" class="label">Full Name</label>
             <input
+              id="signup-name"
               type="text"
               name="name"
               required
@@ -63,8 +78,9 @@
 
           <!-- EMAIL -->
           <div class="field">
-            <label class="label">Email Address</label>
+            <label for="signup-email" class="label">Email Address</label>
             <input
+              id="signup-email"
               type="email"
               name="email"
               required
@@ -84,8 +100,9 @@
 
           <!-- PASSWORD -->
           <div class="field">
-            <label class="label">Password</label>
+            <label for="signup-password" class="label">Password</label>
             <input
+              id="signup-password"
               type="password"
               name="password"
               required
@@ -95,7 +112,7 @@
               placeholder="Minimum 8 characters"
               class="input"
               [ngClass]="{
-                'input-error': submitted && (password.invalid || !passwordsMatch())
+                'input-error': submitted && (password.invalid || !passwordsMatch()),
               }"
             />
 
@@ -107,8 +124,9 @@
 
           <!-- CONFIRM PASSWORD -->
           <div class="field">
-            <label class="label">Confirm Password</label>
+            <label for="signup-confirm" class="label">Confirm Password</label>
             <input
+              id="signup-confirm"
               type="password"
               name="confirmPassword"
               required
@@ -117,14 +135,11 @@
               placeholder="Re-enter password"
               class="input"
               [ngClass]="{
-                'input-error': submitted && (cpass.invalid || !passwordsMatch())
+                'input-error': submitted && (cpass.invalid || !passwordsMatch()),
               }"
             />
 
-            <div
-              *ngIf="submitted && !passwordsMatch()"
-              class="error-box"
-            >
+            <div *ngIf="submitted && !passwordsMatch()" class="error-box">
               <p class="font-semibold">Password Error</p>
               <p>Passwords do not match.</p>
             </div>
@@ -134,8 +149,18 @@
           <button type="submit" class="btn-submit">
             <span *ngIf="!loading">Create Account</span>
             <span *ngIf="loading" class="flex items-center justify-center gap-2">
-              <svg class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              <svg
+                class="w-4 h-4 sm:w-5 sm:h-5 animate-spin"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
               </svg>
               Creating Account...
             </span>
@@ -145,11 +170,13 @@
         <!-- LOGIN LINK -->
         <p class="mt-4 sm:mt-6 text-center text-sm text-slate-300">
           Already have an account?
-          <a routerLink="/login" class="text-yellow-300 hover:text-yellow-400 font-medium hover:underline">
+          <a
+            routerLink="/login"
+            class="text-yellow-300 hover:text-yellow-400 font-medium hover:underline"
+          >
             Sign in here
           </a>
         </p>
-
       </div>
     </div>
   </div>

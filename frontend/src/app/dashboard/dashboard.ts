@@ -14,7 +14,6 @@ import { Employee } from '../interfaces/employee.interface';
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
-
   http = inject(HttpClient);
 
   adminName = '';
@@ -39,7 +38,7 @@ export class DashboardComponent implements OnInit {
     const token = localStorage.getItem('token');
 
     if (token) {
-      const decoded: any = jwtDecode(token);
+      const decoded = jwtDecode<{ name?: string }>(token as string);
       this.adminName = decoded?.name || 'Admin';
     }
 
@@ -53,50 +52,46 @@ export class DashboardComponent implements OnInit {
       Authorization: token,
     });
 
-    this.http.get<Employee[]>(`${environment.apiUrl}/api/employee/getall`, { headers })
-      .subscribe({
-        next: (res: Employee[]) => {
+    this.http.get<Employee[]>(`${environment.apiUrl}/api/employee/getall`, { headers }).subscribe({
+      next: (res: Employee[]) => {
+        // Save full list
+        this.employeeList = res;
+        this.totalEmployees = res.length;
 
-          // Save full list
-          this.employeeList = res;
-          this.totalEmployees = res.length;
+        // Departments
+        this.allDepartments = res.map((emp) => emp.department);
+        this.uniqueDepartments = [...new Set(this.allDepartments)];
+        this.departments = this.uniqueDepartments.length;
 
-          // Departments
-          this.allDepartments = res.map(emp => emp.department);
-          this.uniqueDepartments = [...new Set(this.allDepartments)];
-          this.departments = this.uniqueDepartments.length;
+        // Recent Employees (Last 5)
+        this.recentEmployees = [...res].slice(-5).reverse();
 
-          // Recent Employees (Last 5)
-          this.recentEmployees = [...res].slice(-5).reverse();
+        // Gender Count
+        this.genderCount = { male: 0, female: 0, other: 0 };
+        res.forEach((emp) => {
+          const g = emp.gender.toLowerCase();
+          if (g === 'male') this.genderCount.male++;
+          else if (g === 'female') this.genderCount.female++;
+          else this.genderCount.other++;
+        });
 
-          // Gender Count
-          this.genderCount = { male: 0, female: 0, other: 0 };
-          res.forEach(emp => {
-            const g = emp.gender.toLowerCase();
-            if (g === 'male') this.genderCount.male++;
-            else if (g === 'female') this.genderCount.female++;
-            else this.genderCount.other++;
-          });
+        // Salary Analytics
+        const salaries = res.map((e) => e.salary);
 
-          // Salary Analytics
-          const salaries = res.map(e => e.salary);
+        this.avgSalary = Math.round(salaries.reduce((a, b) => a + b, 0) / salaries.length);
+        this.highestSalary = Math.max(...salaries);
+        this.lowestSalary = Math.min(...salaries);
 
-          this.avgSalary = Math.round(
-            salaries.reduce((a, b) => a + b, 0) / salaries.length
-          );
-          this.highestSalary = Math.max(...salaries);
-          this.lowestSalary = Math.min(...salaries);
+        // Department-wise Count
+        this.deptWiseCount = this.uniqueDepartments.map((dept) => ({
+          department: dept,
+          count: res.filter((e) => e.department === dept).length,
+        }));
+      },
 
-          // Department-wise Count
-          this.deptWiseCount = this.uniqueDepartments.map(dept => ({
-            department: dept,
-            count: res.filter(e => e.department === dept).length
-          }));
-        },
-
-        error: (err: HttpErrorResponse) => {
-          console.error("Error fetching employee data:", err);
-        }
-      });
+      error: (err: HttpErrorResponse) => {
+        console.error('Error fetching employee data:', err);
+      },
+    });
   }
 }

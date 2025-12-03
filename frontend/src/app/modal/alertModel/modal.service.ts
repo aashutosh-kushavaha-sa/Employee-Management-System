@@ -9,20 +9,16 @@ export interface ModalConfig {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModalService {
-  message: string = '';
+  message = '';
   type: ModalType = 'success';
   onClose: (() => void) | null = null;
-  visible: boolean = false;
+  visible = false;
 
   // Method 1: Simple usage
-  show(
-    msg: string,
-    type: ModalType = 'success',
-    onClose?: () => void
-  ): void {
+  show(msg: string, type: ModalType = 'success', onClose?: () => void): void {
     this.message = msg;
     this.type = type;
     this.onClose = onClose ?? null;

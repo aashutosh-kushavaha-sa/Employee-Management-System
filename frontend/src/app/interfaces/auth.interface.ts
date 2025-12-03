@@ -7,7 +7,6 @@ export interface LoginResponse {
   };
 }
 
-
 export interface SignUpResponse {
   token: string;
   user: {

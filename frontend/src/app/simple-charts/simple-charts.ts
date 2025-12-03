@@ -17,8 +17,8 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
   // Typed employees
   employees: Employee[] = [];
 
-  isLoading: boolean = false;
-  hasError: boolean = false;
+  isLoading = false;
+  hasError = false;
 
   // Typed chart instances
   genderChart: Chart | null = null;
@@ -31,7 +31,7 @@ export class AnalyticsChartsComponent implements OnInit, AfterViewInit, OnDestro
     this.loadEmployeeData();
   }
 
-  ngAfterViewInit() {}
+  // removed empty lifecycle hook
 
   ngOnDestroy() {
     this.destroyCharts();

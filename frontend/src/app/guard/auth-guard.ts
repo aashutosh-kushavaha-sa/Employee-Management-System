@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  // compatibility constructor removed by migration
 
   canActivate(): boolean {
-
     const token = localStorage.getItem('token');
 
     // If no token → redirect to login
