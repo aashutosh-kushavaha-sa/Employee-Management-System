@@ -1,6 +1,5 @@
-const validateRequest = require('../middleware/validateRequest');
-const { employeeCreateSchema } = require('../validators/employeeValidator');
 const express = require("express");
+// removed unused imports: validateRequest, employeeCreateSchema
 const routes = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");

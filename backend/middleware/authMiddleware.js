@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const logger = require("../utils/logger");
 
-// Protect Routes 
+// Protect Routes
 const authMiddleware = (req, res, next) => {
   try {
     // Get token from header
@@ -18,6 +19,7 @@ const authMiddleware = (req, res, next) => {
 
     next(); 
   } catch (error) {
+    logger.warn(error && (error.stack || error.message) ? (error.stack || error.message) : error);
     res.status(401).json({ message: "Invalid or Expired Token" });
   }
 };
