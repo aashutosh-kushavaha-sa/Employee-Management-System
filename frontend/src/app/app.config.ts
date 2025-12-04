@@ -1,24 +1,32 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
-} from '@angular/core';
-
+import { ApplicationConfig, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { routes } from './app.routes';
 
-// 🟢 Import your loader interceptor
+// Import interceptors
 import { loaderInterceptor } from './loader/loader.interceptor';
+import { httpErrorInterceptor } from './core/http-error.interceptor';
+import { GlobalErrorHandler } from './core/global-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    // Global error handler for uncaught errors
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
 
-    // 🟡 Add loader interceptor here
-    provideHttpClient(withInterceptors([loaderInterceptor])),
+    // Router and HTTP client configuration
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([
+        loaderInterceptor,
+        httpErrorInterceptor, // Add HTTP error interceptor (functional interceptor)
+      ]),
+    ),
+
+    // Material and animations
+    provideAnimations(),
+    importProvidersFrom(MatSnackBarModule),
   ],
 };
