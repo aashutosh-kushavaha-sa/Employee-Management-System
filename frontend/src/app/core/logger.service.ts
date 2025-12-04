@@ -1,34 +1,40 @@
 import { Injectable, isDevMode } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoggerService {
-  constructor() {}
-
   private dev = isDevMode();
 
-  info(message: any, meta?: any) {
-    if (this.dev) {
-      console.info('[INFO]', message, meta ?? '');
+  private format(value: unknown): string {
+    try {
+      return typeof value === 'string' ? value : JSON.stringify(value);
+    } catch {
+      return String(value);
     }
   }
 
-  warn(message: any, meta?: any) {
+  info(message: unknown, meta?: unknown): void {
     if (this.dev) {
-      console.warn('[WARN]', message, meta ?? '');
+      console.info('[INFO]', this.format(message), this.format(meta ?? ''));
     }
   }
 
-  error(message: any, meta?: any) {
+  warn(message: unknown, meta?: unknown): void {
     if (this.dev) {
-      console.error('[ERROR]', message, meta ?? '');
+      console.warn('[WARN]', this.format(message), this.format(meta ?? ''));
     }
   }
 
-  debug(message: any, meta?: any) {
+  error(message: unknown, meta?: unknown): void {
     if (this.dev) {
-      console.debug('[DEBUG]', message, meta ?? '');
+      console.error('[ERROR]', this.format(message), this.format(meta ?? ''));
+    }
+  }
+
+  debug(message: unknown, meta?: unknown): void {
+    if (this.dev) {
+      console.debug('[DEBUG]', this.format(message), this.format(meta ?? ''));
     }
   }
 }

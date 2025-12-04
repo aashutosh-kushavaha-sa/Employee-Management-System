@@ -84,7 +84,7 @@ export class Add implements OnInit {
       },
 
       error: (err: HttpErrorResponse) => {
-        this.logger.error('Error:', err)
+        this.logger.error('Error:', err);
         this.modal.show('Failed to add employee!', 'error');
       },
     });

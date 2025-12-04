@@ -20,7 +20,7 @@ import { SignUpForm } from '../interfaces/signup.interface';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
-  constructor(private logger: LoggerService) {}
+  private logger = inject(LoggerService);
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -56,7 +56,7 @@ export class SignUpComponent {
     this.errorMessage = null;
 
     if (form.invalid || !this.passwordsMatch()) {
-      this.logger.info('Form invalid or passwords do not match.')
+      this.logger.info('Form invalid or passwords do not match.');
       return;
     }
 

@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit {
       },
 
       error: (err: HttpErrorResponse) => {
-        this.logger.error('Error fetching employee data:', err)
+        this.logger.error('Error fetching employee data:', err);
       },
     });
   }

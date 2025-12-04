@@ -1,16 +1,20 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
+import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { LoggerService } from './logger.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private logger: LoggerService, private injector: Injector) {}
+  private logger = inject(LoggerService);
 
-  handleError(error: any): void {
-    const logger = this.injector.get(LoggerService);
+  handleError(error: unknown): void {
     try {
-      logger.error('Unhandled Error', error && error.stack ? error.stack : error);
+      if (typeof error === 'object' && error !== null && 'stack' in error) {
+        const withStack = error as { stack?: unknown };
+        this.logger.error('Unhandled Error', withStack.stack ?? error);
+      } else {
+        this.logger.error('Unhandled Error', error);
+      }
     } catch (e) {
-      this.logger.error('Error in GlobalErrorHandler', e)
+      this.logger.error('Error in GlobalErrorHandler', e);
     }
   }
 }
