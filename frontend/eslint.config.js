@@ -2,7 +2,6 @@
 
 /**
  * Angular + TypeScript + Prettier ESLint Configuration (Flat Config)
- * Works for Angular 16/17+ using eslint.config.js format.
  */
 
 const eslint = require("@eslint/js");
@@ -13,7 +12,6 @@ const prettier = require("eslint-plugin-prettier");
 const prettierConfig = require("eslint-config-prettier");
 
 module.exports = defineConfig([
-  // Global ignores for generated/cache files (prevents scanning `.angular` cache)
   {
     ignores: ["**/.angular/**", ".angular/**", "**/dist/**", "**/node_modules/**"],
   },
@@ -27,17 +25,13 @@ module.exports = defineConfig([
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
       angular.configs.tsRecommended,
-      prettierConfig // Important: Disable rules conflicting with Prettier
+      prettierConfig
     ],
-    plugins: {
-      prettier // Enables Prettier plugin
-    },
+    plugins: { prettier },
     processor: angular.processInlineTemplates,
     rules: {
-      // 🔥 Prettier integration (shows formatting errors as warnings)
       "prettier/prettier": "warn",
 
-      // Angular style guidelines
       "@angular-eslint/directive-selector": [
         "error",
         {
@@ -70,9 +64,6 @@ module.exports = defineConfig([
     plugins: { prettier },
     rules: {
       "prettier/prettier": "warn",
-      // Some projects use non-standard template control-flow patterns (custom loops or
-      // transformed templates). Prefer fixing templates where practical, but disable
-      // the strict control-flow rule for now to avoid blocking the full cleanup.
       "@angular-eslint/template/prefer-control-flow": "off"
     }
   }
