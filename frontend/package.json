@@ -64,5 +64,13 @@
     "prettier": "^3.7.4",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.46.4"
+  },
+  "overrides": {
+    "glob": "^10.4.0",
+    "rimraf": "^5.0.0",
+    "karma": {
+      "glob": "^10.4.0",
+      "rimraf": "^5.0.0"
+    }
   }
 }
