@@ -1,3 +1,4 @@
+import { LoggerService } from '../../core/logger.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
@@ -21,6 +22,7 @@ export class Add implements OnInit {
   private http = inject(HttpClient);
   private router = inject(Router);
   private modal = inject(ModalService);
+  private logger = inject(LoggerService);
 
   empForm!: FormGroup;
   submitted = false;
@@ -82,7 +84,7 @@ export class Add implements OnInit {
       },
 
       error: (err: HttpErrorResponse) => {
-        console.error('Error:', err);
+        this.logger.error('Error:', err)
         this.modal.show('Failed to add employee!', 'error');
       },
     });

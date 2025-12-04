@@ -1,3 +1,4 @@
+import { LoggerService } from '../core/logger.service';
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,6 +20,8 @@ import { SignUpForm } from '../interfaces/signup.interface';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
+  constructor(private logger: LoggerService) {}
+
   private http = inject(HttpClient);
   private router = inject(Router);
   private modal = inject(ModalService);
@@ -53,7 +56,7 @@ export class SignUpComponent {
     this.errorMessage = null;
 
     if (form.invalid || !this.passwordsMatch()) {
-      console.log('Form invalid or passwords do not match.');
+      this.logger.info('Form invalid or passwords do not match.')
       return;
     }
 

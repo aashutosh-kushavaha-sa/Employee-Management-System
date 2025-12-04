@@ -1,3 +1,4 @@
+import { LoggerService } from '../core/logger.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar';
@@ -15,6 +16,7 @@ import { Employee } from '../interfaces/employee.interface';
 })
 export class DashboardComponent implements OnInit {
   http = inject(HttpClient);
+  logger = inject(LoggerService);
 
   adminName = '';
 
@@ -90,7 +92,7 @@ export class DashboardComponent implements OnInit {
       },
 
       error: (err: HttpErrorResponse) => {
-        console.error('Error fetching employee data:', err);
+        this.logger.error('Error fetching employee data:', err)
       },
     });
   }
