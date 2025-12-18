@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from '../../sidebar/sidebar';
 import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.service';
@@ -10,6 +10,9 @@ import { UpdateModalComponent } from '../../modal/updateModal/update-modal.compo
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '../../../environments/environment';
 import { Employee } from '../../interfaces/employee.interface';
+
+import { Employee } from '../../../app/interfaces/employee.interface';
+import { EmployeeUpdate } from '../../../app/interfaces/employee-update.interface';
 
 @Component({
   selector: 'app-all',
@@ -98,15 +101,16 @@ export class All implements OnInit {
   applyFilters() {
     const data = this.allData.filter((emp) => {
       const matchSearch =
-        emp.name.toLowerCase().includes(this.searchValue) ||
-        emp.email.toLowerCase().includes(this.searchValue) ||
-        emp.department.toLowerCase().includes(this.searchValue) ||
-        emp.position.toLowerCase().includes(this.searchValue);
+        emp.name.toLowerCase().includes(search) ||
+        emp.email.toLowerCase().includes(search) ||
+        emp.department.toLowerCase().includes(search) ||
+        (emp.position ?? '').toLowerCase().includes(search);
 
       const matchDepartment =
-        !this.selectedDepartment || emp.department.toLowerCase() === this.selectedDepartment;
+        !selectedDept || emp.department.toLowerCase() === selectedDept;
 
-      const matchGender = !this.selectedGender || emp.gender.toLowerCase() === this.selectedGender;
+      const matchGender =
+        !selectedGen || emp.gender.toLowerCase() === selectedGen;
 
       return matchSearch && matchDepartment && matchGender;
     });
@@ -115,7 +119,8 @@ export class All implements OnInit {
     this.currentPage = 1;
 
     if (this.sortColumn) {
-      this.sortData(this.sortColumn);
+      // cast is safe here because sortColumn is keyof Employee
+      this.sortData(this.sortColumn as keyof Employee);
     } else {
       this.updatePagination();
     }
@@ -193,21 +198,21 @@ export class All implements OnInit {
     return [1, 0, current - 1, current, current + 1, 0, total];
   }
 
-  goToPage(page: number) {
+  goToPage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePagination();
     }
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updatePagination();
     }
   }
 
-  previousPage() {
+  previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePagination();

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import Chart from 'chart.js/auto';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { environment } from '../../environments/environment';
@@ -42,7 +42,8 @@ export class AnalyticsChartsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.hasError = false;
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || '';
+
     const headers = new HttpHeaders({
       Authorization: token || '',
     });
@@ -61,7 +62,9 @@ export class AnalyticsChartsComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Build all charts
+  // ========================
+  // Chart Builders
+  // ========================
   buildCharts() {
     if (this.employees.length === 0) return;
 

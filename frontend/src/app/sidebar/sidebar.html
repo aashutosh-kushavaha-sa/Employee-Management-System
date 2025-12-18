@@ -4,11 +4,14 @@
 >
   <!-- Logo -->
   <div class="flex items-center justify-center mb-10">
-    <span class="text-3xl font-extrabold tracking-wide text-yellow-300 drop-shadow-lg"> EMS </span>
+    <span class="text-3xl font-extrabold tracking-wide text-yellow-300 drop-shadow-lg">
+      EMS
+    </span>
   </div>
 
   <!-- NAV MENU -->
   <nav class="flex flex-col gap-2 flex-1">
+
     <!-- DASHBOARD -->
     <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-item">
       <fa-icon [icon]="faHouse" class="nav-icon"></fa-icon>
@@ -52,13 +55,12 @@
       <fa-icon [icon]="userTie" class="nav-icon"></fa-icon>
       <span>Create Admin</span>
     </a>
+
   </nav>
 
   <!-- LOGOUT -->
-  <button
-    (click)="openLogoutModal()"
-    class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg"
-  >
+  <button (click)="openLogoutModal()"
+          class="mt-auto nav-item bg-red-600 hover:bg-red-700 text-white shadow-lg">
     <fa-icon [icon]="faLogout" class="nav-icon"></fa-icon>
     <span>Logout</span>
   </button>

@@ -10,6 +10,9 @@ import { environment } from '../../../environments/environment';
 
 import { EmployeeCreateRequest } from '../../interfaces/employee-create.interface';
 
+import { EmployeeAddRequest } from '../../../app/interfaces/employee-add-request.interface';
+import { EmployeeResponse } from '../../../app/interfaces/employee-response.interface';
+
 @Component({
   selector: 'app-employee-add',
   standalone: true,
@@ -62,7 +65,7 @@ export class Add implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
 
     if (this.empForm.invalid) return;

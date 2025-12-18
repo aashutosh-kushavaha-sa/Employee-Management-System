@@ -34,7 +34,7 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     salary: undefined,
   };
 
-  loading = false;
+  loading: boolean = false;
   private sub!: Subscription;
 
   baseUrl = `${environment.apiUrl}/api/employee`;
@@ -56,22 +56,24 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  onCancel() {
+  onCancel(): void {
     this.updateModalService.cancel();
   }
 
-  onUpdate(form: NgForm) {
+  onUpdate(form: NgForm): void {
     if (form.invalid) {
       this.modal.show('Please fix validation errors.', 'error');
       return;
     }
+
+    if (!this.employee) return;
 
     this.loading = true;
 
     const token = localStorage.getItem('token') ?? '';
     const headers = new HttpHeaders({ Authorization: token });
 
-    const payload = { ...this.formModel };
+    const payload: EmployeeUpdate = { ...this.formModel };
 
     this.http
       .put<

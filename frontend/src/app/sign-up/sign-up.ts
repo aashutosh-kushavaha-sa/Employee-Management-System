@@ -12,6 +12,9 @@ import { environment } from '../../environments/environment';
 import { SignUpResponse } from '../interfaces/auth.interface';
 import { SignUpForm } from '../interfaces/signup.interface';
 
+import { SignupResponse } from '../../app/interfaces/signup-response.interface';
+import { SignupRequest } from '../../app/interfaces/signup-request.interface';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.html',
@@ -32,7 +35,7 @@ export class SignUpComponent {
     email: '',
     password: '',
     confirmPassword: '',
-    terms: false,
+    terms: false
   };
 
   private apiUrl = `${environment.apiUrl}/api/auth/signUp`;
@@ -51,7 +54,7 @@ export class SignUpComponent {
     );
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit(form: NgForm): void {
     this.submitted = true;
     this.errorMessage = null;
 
@@ -62,7 +65,11 @@ export class SignUpComponent {
 
     this.loading = true;
 
-    const { name, email, password } = this.userData;
+    const requestBody: SignupRequest = {
+      name: this.userData.name,
+      email: this.userData.email,
+      password: this.userData.password
+    };
 
     this.http.post<SignUpResponse>(this.apiUrl, { name, email, password }).subscribe({
       next: () => {

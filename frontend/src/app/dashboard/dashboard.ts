@@ -15,6 +15,7 @@ import { Employee } from '../interfaces/employee.interface';
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
+
   http = inject(HttpClient);
   logger = inject(LoggerService);
 
@@ -36,7 +37,9 @@ export class DashboardComponent implements OnInit {
   highestSalary = 0;
   lowestSalary = 0;
 
-  ngOnInit(): void {
+  deptWiseCount: DepartmentCount[] = [];
+
+  ngOnInit(): void {  
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -65,7 +68,7 @@ export class DashboardComponent implements OnInit {
         this.uniqueDepartments = [...new Set(this.allDepartments)];
         this.departments = this.uniqueDepartments.length;
 
-        // Recent Employees (Last 5)
+        // Recent Employees
         this.recentEmployees = [...res].slice(-5).reverse();
 
         // Gender Count

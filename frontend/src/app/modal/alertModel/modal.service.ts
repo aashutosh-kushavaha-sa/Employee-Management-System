@@ -15,7 +15,7 @@ export class ModalService {
   message = '';
   type: ModalType = 'success';
   onClose: (() => void) | null = null;
-  visible = false;
+  visible: boolean = false;
 
   // Method 1: Simple usage
   show(msg: string, type: ModalType = 'success', onClose?: () => void): void {

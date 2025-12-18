@@ -21,26 +21,20 @@ export class UpdateModalService {
   show(employee: Employee): Promise<Employee | null> {
     this.state$.next({ visible: true, employee });
 
-    return new Promise((resolve) => {
+    return new Promise<EmployeeUpdate | null>((resolve) => {
       this.resolver = resolve;
     });
   }
 
   confirm(updated: Employee) {
     this.state$.next({ visible: false, employee: null });
-
-    if (this.resolver) {
-      this.resolver(updated);
-      this.resolver = null;
-    }
+    this.resolver?.(updated);
+    this.resolver = null;
   }
 
-  cancel() {
+  cancel(): void {
     this.state$.next({ visible: false, employee: null });
-
-    if (this.resolver) {
-      this.resolver(null);
-      this.resolver = null;
-    }
+    this.resolver?.(null);
+    this.resolver = null;
   }
 }
