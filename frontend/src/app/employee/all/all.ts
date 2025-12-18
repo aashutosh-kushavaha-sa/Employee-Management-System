@@ -6,7 +6,10 @@ import { SidebarComponent } from '../../sidebar/sidebar';
 import { ConfirmModalService } from '../../modal/confirm-model/confirm-modal.service';
 import { UpdateModalService } from '../../modal/updateModal/update-modal.service';
 import { UpdateModalComponent } from '../../modal/updateModal/update-modal.component';
+
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { environment } from '../../../environments/environment';
+import { Employee } from '../../interfaces/employee.interface';
 
 import { Employee } from '../../../app/interfaces/employee.interface';
 import { EmployeeUpdate } from '../../../app/interfaces/employee-update.interface';
@@ -19,93 +22,84 @@ import { EmployeeUpdate } from '../../../app/interfaces/employee-update.interfac
   styleUrl: './all.css',
 })
 export class All implements OnInit {
-  // icons
+  private confirmModal = inject(ConfirmModalService);
+  private updateModalService = inject(UpdateModalService);
+
+  // ICON
   faSearch = faSearch;
 
-  // data arrays
+  // DATA ARRAYS (TYPED)
   allData: Employee[] = [];
   filteredData: Employee[] = [];
   pagedData: Employee[] = [];
 
-  // filter values
+  // FILTERS
   departmentList: string[] = [];
   selectedDepartment = '';
   selectedGender = '';
   searchValue = '';
 
-  // sorting value
-  sortColumn: keyof Employee | '' = '';
+  // SORTING
+  sortColumn = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  // pagination values
+  // PAGINATION
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
 
   http = inject(HttpClient);
 
-  constructor(
-    private confirmModal: ConfirmModalService,
-    private updateModalService: UpdateModalService
-  ) {}
+  // compatibility constructor removed by migration
 
   ngOnInit(): void {
     this.getEmployee();
   }
 
-  // fetch all employee data
-  getEmployee(): void {
-    const token = localStorage.getItem('token');
+  // FETCH ALL EMPLOYEE DATA
+  getEmployee() {
+    const token = localStorage.getItem('token') ?? '';
 
     const headers = new HttpHeaders({
-      Authorization: token ?? '',
+      Authorization: token,
     });
 
     this.http
-      .get<Employee[]>('http://localhost:3000/api/employee/getall', { headers })
-      .subscribe({
-        next: (res: Employee[]) => {
-          this.allData = res;
-          this.filteredData = res;
-          this.updatePagination();
+      .get<Employee[]>(`${environment.apiUrl}/api/employee/getall`, { headers })
+      .subscribe((res) => {
+        this.allData = res;
+        this.filteredData = res;
+        this.updatePagination();
 
-          // extract unique department list
-          this.departmentList = [...new Set(res.map((e) => e.department))];
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('Error fetching employees:', err);
-        },
+        // Unique departments
+        this.departmentList = [...new Set(res.map((e) => e.department))];
       });
   }
 
-  // search filter
-  search(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.searchValue = input.value.toLowerCase();
+  // SEARCH FILTER
+  search(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.searchValue = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // department filter
-  filterDepartment(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.selectedDepartment = select.value.toLowerCase();
+  // DEPARTMENT FILTER
+  filterDepartment(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedDepartment = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // gender filter
-  filterGender(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.selectedGender = select.value.toLowerCase();
+  // GENDER FILTER
+  filterGender(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedGender = target.value.toLowerCase();
     this.applyFilters();
   }
 
-  // master filter (search + gender + department)
-  applyFilters(): void {
-    const search = this.searchValue;
-    const selectedDept = this.selectedDepartment;
-    const selectedGen = this.selectedGender;
-
-    const data = this.allData.filter((emp: Employee) => {
+  // MASTER FILTER
+  applyFilters() {
+    const data = this.allData.filter((emp) => {
       const matchSearch =
         emp.name.toLowerCase().includes(search) ||
         emp.email.toLowerCase().includes(search) ||
@@ -122,9 +116,8 @@ export class All implements OnInit {
     });
 
     this.filteredData = data;
-    this.currentPage = 1; // Reset to first page when filters change
+    this.currentPage = 1;
 
-    // sort again after filtering
     if (this.sortColumn) {
       // cast is safe here because sortColumn is keyof Employee
       this.sortData(this.sortColumn as keyof Employee);
@@ -133,9 +126,8 @@ export class All implements OnInit {
     }
   }
 
-  // SORTING LOGIC
-  sortData(column: keyof Employee): void {
-    // toggle direction when clicking same column
+  // SORTING
+  sortData(column: keyof Employee | string) {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -143,40 +135,35 @@ export class All implements OnInit {
       this.sortDirection = 'asc';
     }
 
-    // apply sorting to filteredData only
-    this.filteredData.sort((a: Employee, b: Employee) => {
-      // get values in a safe, typed manner
-      const valA = a[column] as unknown;
-      const valB = b[column] as unknown;
+    this.filteredData.sort((a, b) => {
+      const valA = a[column as keyof Employee];
+      const valB = b[column as keyof Employee];
 
-      // If both are numbers -> numeric compare
-      if (typeof valA === 'number' && typeof valB === 'number') {
-        return this.sortDirection === 'asc' ? (valA - (valB as number)) : ((valB as number) - valA);
+      const A: string | number = typeof valA === 'string' ? valA.toLowerCase() : (valA ?? 0);
+
+      const B: string | number = typeof valB === 'string' ? valB.toLowerCase() : (valB ?? 0);
+
+      if (this.sortDirection === 'asc') {
+        return A > B ? 1 : -1;
+      } else {
+        return A < B ? 1 : -1;
       }
-
-      // Otherwise compare as strings (safe guard with String())
-      const strA = String(valA ?? '').toLowerCase();
-      const strB = String(valB ?? '').toLowerCase();
-
-      if (strA === strB) return 0;
-      if (this.sortDirection === 'asc') return strA > strB ? 1 : -1;
-      return strA < strB ? 1 : -1;
     });
 
     this.updatePagination();
   }
 
-  // PAGINATION METHODS
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize) || 1;
+  // PAGINATION
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
-    // Ensure current page is valid
     if (this.currentPage > this.totalPages) {
       this.currentPage = this.totalPages || 1;
     }
 
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
+
     this.pagedData = this.filteredData.slice(startIndex, endIndex);
   }
 
@@ -232,54 +219,46 @@ export class All implements OnInit {
     }
   }
 
-  onPageSizeChange(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    const parsed = parseInt(select.value, 10);
-    if (!Number.isNaN(parsed) && parsed > 0) {
-      this.pageSize = parsed;
-    } else {
-      this.pageSize = 10;
-    }
+  onPageSizeChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.pageSize = parseInt(target.value);
     this.currentPage = 1;
     this.updatePagination();
   }
 
-  // delete confirmation modal
-  deleteEmployee(id: string): void {
+  // DELETE CONFIRMATION MODAL
+  deleteEmployee(id: string) {
     this.confirmModal.show('Are you sure you want to delete this employee?', () =>
-      this.deleteNow(id)
+      this.deleteNow(id),
     );
   }
 
-  // delete final
-  deleteNow(id: string): void {
-    const token = localStorage.getItem('token');
+  // FINAL DELETE
+  deleteNow(id: string) {
+    const token = localStorage.getItem('token') ?? '';
 
-    const headers = new HttpHeaders({
-      Authorization: token ?? '',
-    });
+    const headers = new HttpHeaders({ Authorization: token });
 
-    this.http.delete(`http://localhost:3000/api/employee/delete/${id}`, { headers }).subscribe({
-      next: () => {
+    this.http
+      .delete(`${environment.apiUrl}/api/employee/delete/${id}`, { headers })
+      .subscribe(() => {
         this.allData = this.allData.filter((emp) => emp._id !== id);
         this.applyFilters();
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error('Delete error:', err);
-      },
-    });
+      });
   }
 
-  // update modal
-  openUpdate(emp: Employee): void {
-    this.updateModalService.show(emp).then((updatedEmployee: EmployeeUpdate | null) => {
+  // UPDATE MODAL
+  openUpdate(emp: Employee) {
+    this.updateModalService.show(emp).then((updatedEmployee) => {
       if (!updatedEmployee) return;
 
       const index = this.allData.findIndex((e) => e._id === updatedEmployee._id);
 
       if (index !== -1) {
-        // Merge partial update safely (EmployeeUpdate is a Partial-like type)
-        this.allData[index] = { ...this.allData[index], ...updatedEmployee } as Employee;
+        this.allData[index] = {
+          ...this.allData[index],
+          ...updatedEmployee,
+        };
       }
 
       this.applyFilters();

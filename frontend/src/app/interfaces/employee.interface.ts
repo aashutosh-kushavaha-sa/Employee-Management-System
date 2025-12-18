@@ -5,7 +5,7 @@ export interface Employee {
   department: string;
   position: string;
   gender: 'Male' | 'Female' | 'Other';
-  salary: number ;
+  salary: number;
   age?: number;
   createdAt?: string;
 }

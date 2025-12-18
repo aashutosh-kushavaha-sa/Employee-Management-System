@@ -1,17 +1,26 @@
-# Node.js
-backend/node_modules/
-frontend/node_modules/
 
-# Environment files
-backend/.env
-frontend/.env
+# Node
+node_modules/
+npm-debug.log
 
-# Build outputs
-backend/dist/
-frontend/build/
+# Env
+.env
+.env.*.local
 
-# Editor / OS
+# Build
+dist/
+build/
+
+# OS
 .DS_Store
+
+# IDE
 .vscode/
 .idea/
+
+# Node / backend
+/backend/node_modules/
+/backend/.env
+/frontend/dist/
+.env
 *.log

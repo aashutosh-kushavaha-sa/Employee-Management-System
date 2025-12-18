@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Employee } from '../../interfaces/employee.interface';
 
 import { UpdateModalService } from './update-modal.service';
 import { ModalService } from '../alertModel/modal.service';
-import { Employee } from '../../interfaces/employee.interface';
-import { EmployeeUpdate } from '../../interfaces/employee-update.interface';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-update-modal',
@@ -17,31 +17,29 @@ import { EmployeeUpdate } from '../../interfaces/employee-update.interface';
   styleUrls: ['./update-modal.component.css'],
 })
 export class UpdateModalComponent implements OnInit, OnDestroy {
+  private updateModalService = inject(UpdateModalService);
+  private http = inject(HttpClient);
+  private modal = inject(ModalService);
 
-  visible: boolean = false;
+  visible = false;
   employee: Employee | null = null;
 
-  formModel: EmployeeUpdate = {
-    _id: '',
+  formModel: Partial<Employee> = {
     name: '',
     age: undefined,
-    gender: '',
+    gender: undefined,
     email: '',
     position: '',
     department: '',
-    salary: undefined
+    salary: undefined,
   };
 
   loading: boolean = false;
   private sub!: Subscription;
 
-  baseUrl = 'http://localhost:3000/api/employee';
+  baseUrl = `${environment.apiUrl}/api/employee`;
 
-  constructor(
-    private updateModalService: UpdateModalService,
-    private http: HttpClient,
-    private modal: ModalService
-  ) {}
+  // compatibility constructor removed by migration
 
   ngOnInit(): void {
     this.sub = this.updateModalService.state.subscribe((s) => {
@@ -78,14 +76,19 @@ export class UpdateModalComponent implements OnInit, OnDestroy {
     const payload: EmployeeUpdate = { ...this.formModel };
 
     this.http
-      .put<EmployeeUpdate>(`${this.baseUrl}/update/${this.employee._id}`, payload, { headers })
+      .put<
+        Employee | Partial<Employee>
+      >(`${this.baseUrl}/update/${this.employee?._id}`, payload, { headers })
       .subscribe({
-        next: (res: EmployeeUpdate) => {
+        next: (res) => {
           this.loading = false;
 
-          const updated = res?._id ? res : { ...this.employee!, ...payload };
+          const updated =
+            res && (res as Employee & { _id?: string })._id
+              ? (res as Employee)
+              : { ...this.employee, ...payload };
 
-          this.updateModalService.confirm(updated);
+          this.updateModalService.confirm(updated as Employee);
           this.modal.show('Employee updated successfully!', 'success');
         },
         error: (err: HttpErrorResponse) => {

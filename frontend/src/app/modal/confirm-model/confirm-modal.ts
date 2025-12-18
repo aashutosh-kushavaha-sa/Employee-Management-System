@@ -1,24 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfirmModalService } from './confirm-modal.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { 
-  faTriangleExclamation, 
-  faTrash, 
-  faTimes, 
-  faExclamationTriangle 
+import {
+  faTriangleExclamation,
+  faTrash,
+  faTimes,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-confirm-modal',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, FormsModule],
-  templateUrl: './confirm-modal.html'
+  templateUrl: './confirm-modal.html',
 })
 export class ConfirmModalComponent {
-  constructor(public modal: ConfirmModalService) {}
+  modal = inject(ConfirmModalService);
+
+  // compatibility constructor removed by migration
 
   // Icons
   warning = faTriangleExclamation;
@@ -27,9 +29,9 @@ export class ConfirmModalComponent {
   errorIcon = faExclamationTriangle;
 
   // Verification properties
-  confirmationText: string = '';
-  showError: boolean = false;
-  isConfirmed: boolean = false;
+  confirmationText = '';
+  showError = false;
+  isConfirmed = false;
 
   onConfirmationInput(): void {
     if (this.modal.requiresVerification) {

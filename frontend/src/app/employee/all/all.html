@@ -166,8 +166,7 @@
 
           <!-- TABLE BODY -->
           <tbody class="text-gray-200">
-            @for (emp of pagedData; track $index) {
-            <tr class="row">
+            <tr *ngFor="let emp of pagedData; let i = index" class="row">
               <td class="td text-gray-300">{{ emp._id }}</td>
               <td class="td">{{ emp.name }}</td>
               <td class="td">{{ emp.age }}</td>
@@ -185,7 +184,6 @@
                 <button class="btn-delete" (click)="deleteEmployee(emp._id)">Delete</button>
               </td>
             </tr>
-            }
           </tbody>
         </table>
       </div>
@@ -252,7 +250,7 @@
           <span>Show:</span>
           <select
             class="bg-white/10 border border-white/20 rounded-lg px-2 py-1 text-gray-300 outline-none focus:border-blue-400 page-select"
-            (change)="onPageSizeChange($event) "
+            (change)="onPageSizeChange($event)"
           >
             <option value="5">5</option>
             <option value="10" selected>10</option>

@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { LoggerService } from '../core/logger.service';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+
 import { SidebarComponent } from '../sidebar/sidebar';
 import { ModalService } from '../modal/alertModel/modal.service';
+import { environment } from '../../environments/environment';
+
+import { SignUpResponse } from '../interfaces/auth.interface';
+import { SignUpForm } from '../interfaces/signup.interface';
 
 import { SignupResponse } from '../../app/interfaces/signup-response.interface';
 import { SignupRequest } from '../../app/interfaces/signup-request.interface';
@@ -18,8 +23,14 @@ import { SignupRequest } from '../../app/interfaces/signup-request.interface';
   imports: [FormsModule, CommonModule, RouterLink, SidebarComponent],
 })
 export class SignUpComponent {
+  private logger = inject(LoggerService);
 
-  userData: SignupRequest & { confirmPassword: string; terms: boolean } = {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private modal = inject(ModalService);
+
+  // Typed user form
+  userData: SignUpForm = {
     name: '',
     email: '',
     password: '',
@@ -27,23 +38,20 @@ export class SignUpComponent {
     terms: false
   };
 
-  private apiUrl = 'http://localhost:3003/api/auth/signUp';
+  private apiUrl = `${environment.apiUrl}/api/auth/signUp`;
 
-  submitted: boolean = false;
-  loading: boolean = false;
+  submitted = false;
+  loading = false;
   errorMessage: string | null = null;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private modal: ModalService
-  ) {}
+  // compatibility constructor removed by migration
 
   passwordsMatch(): boolean {
-    const { password, confirmPassword } = this.userData;
-    if (!password || !confirmPassword) return true;
-
-    return password === confirmPassword;
+    return (
+      !this.userData.password ||
+      !this.userData.confirmPassword ||
+      this.userData.password === this.userData.confirmPassword
+    );
   }
 
   onSubmit(form: NgForm): void {
@@ -51,7 +59,7 @@ export class SignUpComponent {
     this.errorMessage = null;
 
     if (form.invalid || !this.passwordsMatch()) {
-      console.log('Form invalid or passwords do not match.');
+      this.logger.info('Form invalid or passwords do not match.');
       return;
     }
 
@@ -63,24 +71,19 @@ export class SignUpComponent {
       password: this.userData.password
     };
 
-    this.http.post<SignupResponse>(this.apiUrl, requestBody).subscribe({
-      next: (response: SignupResponse) => {
+    this.http.post<SignUpResponse>(this.apiUrl, { name, email, password }).subscribe({
+      next: () => {
         this.loading = false;
-        console.log('Registration successful!', response);
 
-        this.modal.show(
-          `Admin Created Successfully!`,
-          'success',
-          () => this.router.navigate(['/dashboard'])
+        this.modal.show(`Admin Created Successfully!`, 'success', () =>
+          this.router.navigate(['/dashboard']),
         );
       },
 
       error: (err: HttpErrorResponse) => {
         this.loading = false;
-        console.error('Registration error:', err);
 
-        this.errorMessage =
-          err.error?.message || 'Registration failed due to a server error.';
+        this.errorMessage = err.error?.message || 'Registration failed due to a server error.';
 
         this.modal.show(`this.errorMessage`, 'error');
       },

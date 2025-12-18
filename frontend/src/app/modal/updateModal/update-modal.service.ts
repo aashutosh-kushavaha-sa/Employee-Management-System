@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Employee } from '../../interfaces/employee.interface';
-import { EmployeeUpdate } from '../../interfaces/employee-update.interface';
 
 export interface UpdateModalPayload {
   visible: boolean;
@@ -10,17 +9,16 @@ export interface UpdateModalPayload {
 
 @Injectable({ providedIn: 'root' })
 export class UpdateModalService {
-
   private state$ = new BehaviorSubject<UpdateModalPayload>({
     visible: false,
-    employee: null
+    employee: null,
   });
 
   state = this.state$.asObservable();
 
-  private resolver: ((value: EmployeeUpdate | null) => void) | null = null;
+  private resolver: ((value: Employee | PromiseLike<Employee | null> | null) => void) | null = null;
 
-  show(employee: Employee): Promise<EmployeeUpdate | null> {
+  show(employee: Employee): Promise<Employee | null> {
     this.state$.next({ visible: true, employee });
 
     return new Promise<EmployeeUpdate | null>((resolve) => {
@@ -28,7 +26,7 @@ export class UpdateModalService {
     });
   }
 
-  confirm(updated: EmployeeUpdate): void {
+  confirm(updated: Employee) {
     this.state$.next({ visible: false, employee: null });
     this.resolver?.(updated);
     this.resolver = null;

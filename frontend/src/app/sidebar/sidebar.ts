@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,10 +12,10 @@ import {
   faPersonCirclePlus,
   faBars,
   faChartArea,
-  faUsersGear
+  faUsersGear,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { LogoutModalComponent } from "../modal/logout-modal/logout-modal";
+import { LogoutModalComponent } from '../modal/logout-modal/logout-modal';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +25,7 @@ import { LogoutModalComponent } from "../modal/logout-modal/logout-modal";
   imports: [CommonModule, RouterModule, FontAwesomeModule, LogoutModalComponent],
 })
 export class SidebarComponent {
+  private router = inject(Router);
 
   // ICONS
   faHouse = faHouse;
@@ -39,7 +40,7 @@ export class SidebarComponent {
 
   employeesOpen = false;
 
-  constructor(private router: Router) {}
+  // compatibility constructor removed by migration
 
   // Modal reference
   @ViewChild(LogoutModalComponent) logoutModal!: LogoutModalComponent;
